@@ -23,60 +23,75 @@ void main() {
       );
       container.registerInstance(person);
 
-      expect(container.get<int>(), 5);
-      expect(container.get<int>('named'), 6);
-      expect(container.get<num>(), 7);
-      expect(container.get<num>('named'), null);
-      expect(container.get<Person>(), person);
+      expect(container.resolve<int>(), 5);
+      expect(container.resolve<int>('named'), 6);
+      expect(container.resolve<num>(), 7);
+      expect(container.resolve<num>('named'), null);
+      expect(container.resolve<Person>(), person);
     });
 
     test('instances can be overridden', () {
       container.registerInstance(5);
-      expect(container.get<int>(), 5);
+      expect(container.resolve<int>(), 5);
 
       container.registerInstance(6);
-      expect(container.get<int>(), 6);
+      expect(container.resolve<int>(), 6);
     });
 
     test('builders should be resolved', () {
-      container.registerBuilder((c) => 5, oneTime: true);
-      container.registerBuilder(
+      container.registerFactory((c) => 5, oneTime: true);
+      container.registerFactory(
           (c) => const Employee('Anakin', 'Skywalker', 'DARK'));
-      container.registerBuilder<Person, Employee>(
+      container.registerFactory<Person, Employee>(
           (c) => const Person('Anakin', 'Skywalker'));
 
-      expect(container.get<int>(), 5);
-      expect(container.get<Employee>(),
+      expect(container.resolve<int>(), 5);
+      expect(container.resolve<Employee>(),
           const Employee('Anakin', 'Skywalker', 'DARK'));
-      expect(container.get<Person>(), const Person('Anakin', 'Skywalker'));
+      expect(container.resolve<Person>(), const Person('Anakin', 'Skywalker'));
     });
 
     test('builders should always be created', () {
-      container.registerBuilder((c) => Person('Anakin', 'Skywalker'));
+      container.registerFactory((c) => Person('Anakin', 'Skywalker'));
 
-      expect(container.get<Person>(), isNot(same(container.get<Person>())));
+      expect(container.resolve<Person>(),
+          isNot(same(container.resolve<Person>())));
     });
 
     test('one time builders should be resolved', () {
-      container.registerBuilder((c) => 5, oneTime: true);
-      container.registerBuilder(
+      container.registerFactory((c) => 5, oneTime: true);
+      container.registerFactory(
           (c) => const Employee('Anakin', 'Skywalker', 'DARK'),
           oneTime: true);
-      container.registerBuilder<Person, Employee>(
+      container.registerFactory<Person, Employee>(
           (c) => const Person('Anakin', 'Skywalker'),
           oneTime: true);
 
-      expect(container.get<int>(), 5);
-      expect(container.get<Employee>(),
+      expect(container.resolve<int>(), 5);
+      expect(container.resolve<Employee>(),
           const Employee('Anakin', 'Skywalker', 'DARK'));
-      expect(container.get<Person>(), const Person('Anakin', 'Skywalker'));
+      expect(container.resolve<Person>(), const Person('Anakin', 'Skywalker'));
     });
 
     test('one time builders should be created one time only', () {
-      container.registerBuilder((c) => Person('Anakin', 'Skywalker'),
+      container.registerFactory((c) => Person('Anakin', 'Skywalker'),
           oneTime: true);
 
-      expect(container.get<Person>(), container.get<Person>());
+      expect(container.resolve<Person>(), container.resolve<Person>());
+    });
+
+    test('unregister should remove items from container', () {
+      container.registerInstance(5);
+      container.registerInstance(6, name: 'named');
+
+      expect(container.resolve<int>(), 5);
+      expect(container.resolve<int>('named'), 6);
+
+      container.unregister<int>();
+      expect(container.resolve<int>(), null);
+
+      container.unregister<int>('named');
+      expect(container.resolve<int>('named'), null);
     });
   });
 }

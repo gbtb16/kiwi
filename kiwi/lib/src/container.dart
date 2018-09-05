@@ -1,7 +1,7 @@
-/// Signature for a factory which creates an object of type [T].
-typedef T Builder<T>(Container container);
+/// Signature for a builder which creates an object of type [T].
+typedef T Factory<T>(Container container);
 
-/// A simple dependency container.
+/// A simple service container.
 class Container {
   Container._() : _namedProviders = Map<String, Map<Type, _Provider<Object>>>();
 
@@ -19,7 +19,7 @@ class Container {
   ///
   /// If [name] is set, the instance will be registered under this name.
   /// To retrieve the same instance, the same name should be provided
-  /// to [Container.get].
+  /// to [Container.resolve].
   void registerInstance<S, T extends S>(
     S instance, {
     String name,
@@ -27,42 +27,42 @@ class Container {
     _setProvider(name, _Provider<S>.singleton(instance));
   }
 
-  /// Registers a builder into the container.
+  /// Registers a factory into the container.
   ///
-  /// A builder returning an object of type [T] can be registered with a
+  /// A factory returning an object of type [T] can be registered with a
   /// supertype [S] if specified.
   ///
-  /// If [name] is set, the builder will be registered under this name.
-  /// To retrieve the same builder, the same name should be provided
-  /// to [Container.get].
+  /// If [name] is set, the factory will be registered under this name.
+  /// To retrieve the same factory, the same name should be provided
+  /// to [Container.resolve].
   ///
-  /// If [oneTime] is set to `true`, then the builder will be called only when
+  /// If [oneTime] is set to `true`, then the factory will be called only when
   /// accessing it for the first time.
-  void registerBuilder<S, T extends S>(
-    Builder<S> builder, {
+  void registerFactory<S, T extends S>(
+    Factory<S> factory, {
     String name,
     bool oneTime = false,
   }) {
-    _setProvider(name, _Provider<S>.builder(builder, oneTime));
+    _setProvider(name, _Provider<S>.factory(factory, oneTime));
   }
 
   /// Removes the entry previously registered for the type [T].
   ///
   /// If [name] is set, removes the one registered for that name.
-  void unregister<T>({String name}) {
+  void unregister<T>([String name]) {
     _namedProviders[name]?.remove(T);
   }
 
-  /// Gets an object registered under the type [T].
+  /// Attemps to resolve the type [T].
   ///
   /// If [name] is set, the instance or builder registered with this
   /// name will be get.
   ///
   /// See also:
   ///
-  ///  * [Container.registerBuilder] for register a builder function.
+  ///  * [Container.registerFactory] for register a builder function.
   ///  * [Container.registerInstance] for register an instance.
-  T get<T>([String name]) {
+  T resolve<T>([String name]) {
     Map<Type, _Provider<Object>> providers = _namedProviders[name];
 
     if (providers == null) {
@@ -86,9 +86,9 @@ class Container {
 class _Provider<T> {
   _Provider.singleton(this.instance) : instanceBuilder = null;
 
-  _Provider.builder(this.instanceBuilder, this.oneTime);
+  _Provider.factory(this.instanceBuilder, this.oneTime);
 
-  final Builder<T> instanceBuilder;
+  final Factory<T> instanceBuilder;
   T instance;
   bool oneTime = false;
 
