@@ -44,7 +44,12 @@ class InjectorGenerator extends Generator {
     return Class((cb) => cb
       ..name = '_${injector.name}'
       ..extend = refer(injector.name, injector.librarySource.uri.toString())
+      ..constructors.add(_generateInjectorConstructor(cb.name))
       ..methods.addAll(_generateInjectorMethods(injector, library, buildStep)));
+  }
+
+  Constructor _generateInjectorConstructor(String name) {
+    return Constructor((cb) => cb..constant = true);
   }
 
   List<Method> _generateInjectorMethods(
@@ -76,7 +81,7 @@ class InjectorGenerator extends Generator {
   Code _generateRegister(AnnotatedElement annotatedMethod,
       LibraryReader library, BuildStep buildStep) {
     final ConstantReader annotation = annotatedMethod.annotation;
-    final DartObject registerObject = annotatedMethod.annotation.objectValue;
+    final DartObject registerObject = annotation.objectValue;
 
     final DartObject object = registerObject.getField('object');
     final String name = registerObject.getField('name').toStringValue();
@@ -115,7 +120,7 @@ class InjectorGenerator extends Generator {
           _generateRegisterArguments(implementationClass, resolvers).join(', ');
 
       return Code(
-          'container.registerFactory$typeParameters(() => $className($factoryParameters$nameArgument$oneTimeArgument));');
+          'container.registerFactory$typeParameters((c) => $className($factoryParameters)$nameArgument$oneTimeArgument);');
     } else {
       // When object is not null, we assume the developer used
       // the Register.instance constructor.
@@ -139,7 +144,7 @@ class InjectorGenerator extends Generator {
       ParameterElement parameter, Map<DartType, String> resolvers) {
     final String name = resolvers == null ? null : resolvers[parameter.type];
     final String nameArgument = name == null ? '' : "'$name'";
-    return '${parameter.isNamed ? parameter.name + ': ' : ''}container.resolve<${parameter.type.name}>($nameArgument)';
+    return '${parameter.isNamed ? parameter.name + ': ' : ''}c.resolve<${parameter.type.name}>($nameArgument)';
   }
 
   Map<DartType, String> _computeResolvers(

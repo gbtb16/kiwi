@@ -7,7 +7,6 @@ abstract class Injector {
   @Register.singleton(ServiceB)
   @Register.factory(ServiceC, as: Service)
   @Register.factory(ServiceC, resolvers: <Type, String>{ServiceA: 'serviceA'})
-  //@Register.instance(const Person('Anakin', 'Skywalker'))
   void configure();
 }
 
@@ -23,14 +22,4 @@ class ServiceB extends Service {
 
 class ServiceC extends Service {
   ServiceC(ServiceA serviceA, ServiceB serviceB) {}
-}
-
-class Person {
-  const Person(
-    this.firstName,
-    this.lastName,
-  );
-
-  final String firstName;
-  final String lastName;
 }

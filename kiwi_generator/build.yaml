@@ -2,7 +2,7 @@
 builders:
   kiwi:
     import: "package:kiwi_generator/builder.dart"
-    builder_factories: ["kiwi"]
+    builder_factories: ["buildKiwi"]
     build_extensions: {".dart": [".kiwi.g.part"]}
     auto_apply: dependents
     build_to: cache

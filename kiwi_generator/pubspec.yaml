@@ -8,7 +8,7 @@ environment:
   sdk: '>=2.0.0 <3.0.0'
 
 dependencies:  
-  source_gen: any
+  source_gen: ^0.9.0+1
   code_builder: ^3.1.3
   build_config: ^0.3.1+2
   kiwi:

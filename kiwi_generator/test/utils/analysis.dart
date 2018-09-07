@@ -6,11 +6,8 @@ import 'package:build_test/build_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
-Future<LibraryReader> resolveCompilationUnit(String sourceDirectory) async {
-  var files = Directory(sourceDirectory).listSync().whereType<File>().toList();
-
-  // Sort files to ensure the "first" one is first
-  files.sort((a, b) => p.basename(a.path).compareTo(p.basename(b.path)));
+Future<LibraryReader> resolveCompilationUnit(String sourceFile) async {
+  var files = [File(sourceFile)];
 
   var fileMap = Map<String, String>.fromEntries(files.map(
       (f) => MapEntry('a|lib/${p.basename(f.path)}', f.readAsStringSync())));

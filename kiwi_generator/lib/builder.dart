@@ -12,16 +12,8 @@ import 'package:source_gen/source_gen.dart';
 
 import 'src/injector_generator.dart';
 
-Builder kiwi(BuilderOptions options) {
-  if (options.config.isNotEmpty) {
-    if (log == null) {
-      throw new StateError('Requires build_runner >=0.8.2 – please upgrade.');
-    }
-    log.warning(
-        'These options were ignored: `${options.config.keys.join(', ')}`.');
-  }
-
-  return new SharedPartBuilder(const [
+Builder buildKiwi([BuilderOptions options]) {
+  return SharedPartBuilder(const [
     const InjectorGenerator(),
   ], 'kiwi');
 }
