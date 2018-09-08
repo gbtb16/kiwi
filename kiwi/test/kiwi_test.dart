@@ -30,6 +30,22 @@ void main() {
       expect(container.resolve<Person>(), person);
     });
 
+    test('container should resolve when called', () {
+      var person = Person('Anakin', 'Skywalker');
+      container.registerInstance(5);
+      container.registerInstance(6, name: 'named');
+      container.registerInstance<num, int>(
+        7,
+      );
+      container.registerInstance(person);
+
+      expect(container<int>(), 5);
+      expect(container<int>('named'), 6);
+      expect(container<num>(), 7);
+      expect(container<num>('named'), null);
+      expect(container<Person>(), person);
+    });
+
     test('instances can be overridden', () {
       container.registerInstance(5);
       expect(container.resolve<int>(), 5);
@@ -39,7 +55,7 @@ void main() {
     });
 
     test('builders should be resolved', () {
-      container.registerFactory((c) => 5, oneTime: true);
+      container.registerSingleton((c) => 5);
       container.registerFactory(
           (c) => const Employee('Anakin', 'Skywalker', 'DARK'));
       container.registerFactory<Person, Employee>(
@@ -59,13 +75,11 @@ void main() {
     });
 
     test('one time builders should be resolved', () {
-      container.registerFactory((c) => 5, oneTime: true);
-      container.registerFactory(
-          (c) => const Employee('Anakin', 'Skywalker', 'DARK'),
-          oneTime: true);
-      container.registerFactory<Person, Employee>(
-          (c) => const Person('Anakin', 'Skywalker'),
-          oneTime: true);
+      container.registerSingleton((c) => 5);
+      container.registerSingleton(
+          (c) => const Employee('Anakin', 'Skywalker', 'DARK'));
+      container.registerSingleton<Person, Employee>(
+          (c) => const Person('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);
       expect(container.resolve<Employee>(),
@@ -74,8 +88,7 @@ void main() {
     });
 
     test('one time builders should be created one time only', () {
-      container.registerFactory((c) => Person('Anakin', 'Skywalker'),
-          oneTime: true);
+      container.registerSingleton((c) => Person('Anakin', 'Skywalker'));
 
       expect(container.resolve<Person>(), container.resolve<Person>());
     });

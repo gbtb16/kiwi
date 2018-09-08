@@ -24,14 +24,19 @@ class InjectorGenerator extends Generator {
   String generate(LibraryReader library, BuildStep buildStep) {
     // An injector is an abstract class where all abstract methods are
     // annotated with Register.
-    final injectors = library.classElements.where((c) =>
-        c.isAbstract &&
-        c.methods
-            .where((m) => m.isAbstract)
-            .every((m) => _isRegisterMethod(m)));
+    final injectors = library.classElements
+        .where((c) =>
+            c.isAbstract &&
+            c.methods
+                .where((m) => m.isAbstract)
+                .every((m) => _isRegisterMethod(m)))
+        .toList();
+
+    if (injectors.isEmpty) {
+      return null;
+    }
 
     final file = Library((lb) => lb
-      ..body.add(Directive.import('package:kiwi/kiwi.dart'))
       ..body.addAll(
           injectors.map((i) => _generateInjector(i, library, buildStep))));
 
@@ -42,113 +47,103 @@ class InjectorGenerator extends Generator {
   Class _generateInjector(
       ClassElement injector, LibraryReader library, BuildStep buildStep) {
     return Class((cb) => cb
-      ..name = '_${injector.name}'
-      ..extend = refer(injector.name, injector.librarySource.uri.toString())
-      ..constructors.add(_generateInjectorConstructor(cb.name))
-      ..methods.addAll(_generateInjectorMethods(injector, library, buildStep)));
+      ..name = '_\$${injector.name}'
+      ..extend = refer(injector.name)
+      ..methods.addAll(_generateInjectorMethods(injector)));
   }
 
-  Constructor _generateInjectorConstructor(String name) {
-    return Constructor((cb) => cb..constant = true);
-  }
-
-  List<Method> _generateInjectorMethods(
-      ClassElement injector, LibraryReader library, BuildStep buildStep) {
+  List<Method> _generateInjectorMethods(ClassElement injector) {
     return injector.methods
         .where((m) => m.isAbstract && _isRegisterMethod(m))
-        .map((m) => _generateInjectorMethod(m, library, buildStep))
+        .map((m) => _generateInjectorMethod(m))
         .toList();
   }
 
-  Method _generateInjectorMethod(
-      MethodElement method, LibraryReader library, BuildStep buildStep) {
+  Method _generateInjectorMethod(MethodElement method) {
     return Method.returnsVoid((mb) => mb
       ..name = method.name
       ..body = Block((bb) => bb
         ..statements.add(Code('final Container container = Container();'))
-        ..statements.addAll(_generateRegisters(method, library, buildStep))));
+        ..statements.addAll(_generateRegisters(method))));
   }
 
-  List<Code> _generateRegisters(
-      MethodElement method, LibraryReader library, BuildStep buildStep) {
+  List<Code> _generateRegisters(MethodElement method) {
     return _registerTypeChecker
         .annotationsOfExact(method)
-        .map((a) => _generateRegister(
-            AnnotatedElement(ConstantReader(a), method), library, buildStep))
+        .map((a) =>
+            _generateRegister(AnnotatedElement(ConstantReader(a), method)))
         .toList();
   }
 
-  Code _generateRegister(AnnotatedElement annotatedMethod,
-      LibraryReader library, BuildStep buildStep) {
+  Code _generateRegister(AnnotatedElement annotatedMethod) {
     final ConstantReader annotation = annotatedMethod.annotation;
     final DartObject registerObject = annotation.objectValue;
 
-    final DartObject object = registerObject.getField('object');
     final String name = registerObject.getField('name').toStringValue();
     final DartType implementation =
         registerObject.getField('implementation').toTypeValue();
     final DartType abstraction = registerObject.getField('as').toTypeValue();
 
-    ConstantReader objectConstantReader = ConstantReader(object);
-    if (!objectConstantReader.isLiteral) {
-      throw ArgumentError('The instance argument should be a literal');
-    }
-
-    final String className = implementation?.name ?? object.type.name;
+    final String className = implementation?.name;
     final String typeParameters =
         abstraction == null ? '' : '<${abstraction.name}, $className>';
 
     final String nameArgument = name == null ? '' : ", name: '$name'";
+    final String constructorName =
+        registerObject.getField('constructorName').toStringValue();
+    final String constructorNameArgument =
+        constructorName == null ? '' : '.$constructorName';
 
-    if (objectConstantReader.isNull) {
-      // When object is null, we assume the developer used either
-      // Register.singleton or Register.factory constructor.
-      if (implementation == null) {
-        throw ArgumentError.notNull('implementation');
-      }
+    final ClassElement clazz =
+        implementation.element.library.getType(implementation.name);
 
-      final ClassElement implementationClass =
-          implementation.element.library.getType(implementation.name);
+    final bool oneTime =
+        registerObject.getField('oneTime').toBoolValue() ?? false;
+    final Map<DartType, String> resolvers =
+        _computeResolvers(registerObject.getField('resolvers').toMapValue());
 
-      final bool oneTime =
-          registerObject.getField('oneTime').toBoolValue() ?? false;
-      final Map<DartType, String> resolvers =
-          _computeResolvers(registerObject.getField('resolvers').toMapValue());
+    final String methodSuffix = oneTime ? 'Singleton' : 'Factory';
 
-      final String oneTimeArgument = oneTime ? ', oneTime: true' : '';
-      final String factoryParameters =
-          _generateRegisterArguments(implementationClass, resolvers).join(', ');
+    final constructor = constructorName == null
+        ? clazz.unnamedConstructor
+        : clazz.getNamedConstructor(constructorName);
 
-      return Code(
-          'container.registerFactory$typeParameters((c) => $className($factoryParameters)$nameArgument$oneTimeArgument);');
-    } else {
-      // When object is not null, we assume the developer used
-      // the Register.instance constructor.
-      final Object literal = objectConstantReader.literalValue;
-      final String literalCode =
-          objectConstantReader.isString ? "'$literal'" : literal.toString();
-      return Code(
-          'container.registerInstance$typeParameters($literalCode$nameArgument);');
+    if (constructor == null) {
+      throw ArgumentError(
+        'the constructor ${clazz.name}.$constructorName does not exist',
+      );
     }
+
+    final String factoryParameters = _generateRegisterArguments(
+      constructor,
+      resolvers,
+    ).join(', ');
+
+    return Code(
+        'container.register$methodSuffix$typeParameters((c) => $className$constructorNameArgument($factoryParameters)$nameArgument);');
   }
 
   List<String> _generateRegisterArguments(
-      ClassElement implementationClass, Map<DartType, String> resolvers) {
-    return implementationClass.unnamedConstructor.parameters
-        .map(
-            (p) => _generateRegisterArgument(implementationClass, p, resolvers))
+    ConstructorElement constructor,
+    Map<DartType, String> resolvers,
+  ) {
+    return constructor.parameters
+        .map((p) => _generateRegisterArgument(p, resolvers))
         .toList();
   }
 
-  String _generateRegisterArgument(ClassElement implementationClass,
-      ParameterElement parameter, Map<DartType, String> resolvers) {
+  String _generateRegisterArgument(
+    ParameterElement parameter,
+    Map<DartType, String> resolvers,
+  ) {
     final String name = resolvers == null ? null : resolvers[parameter.type];
     final String nameArgument = name == null ? '' : "'$name'";
-    return '${parameter.isNamed ? parameter.name + ': ' : ''}c.resolve<${parameter.type.name}>($nameArgument)';
+    return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.name}>($nameArgument)';
   }
 
   Map<DartType, String> _computeResolvers(
-      Map<DartObject, DartObject> resolvers) {
+    Map<DartObject, DartObject> resolvers,
+  ) {
     return resolvers?.map((key, value) =>
         MapEntry<DartType, String>(key.toTypeValue(), value.toStringValue()));
   }

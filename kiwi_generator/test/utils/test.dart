@@ -16,7 +16,7 @@ Future<void> testKiwi(
   final library = await resolveCompilationUnit(inputFilePath);
 
   String actual = _injectorGenerator.generate(library, null);
-  expect(actual, contains(output));
+  expect(actual, output);
 }
 
 Future<void> testKiwiException(

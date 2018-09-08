@@ -1,6 +1,6 @@
 import 'package:kiwi/kiwi.dart';
 
 abstract class Injector {
-  @Register.instance(5)
+  @Register.singleton(null)
   void configure();
 }

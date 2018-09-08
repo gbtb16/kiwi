@@ -24,7 +24,7 @@ class Container {
     S instance, {
     String name,
   }) {
-    _setProvider(name, _Provider<S>.singleton(instance));
+    _setProvider(name, _Provider<S>.instance(instance));
   }
 
   /// Registers a factory into the container.
@@ -35,15 +35,27 @@ class Container {
   /// If [name] is set, the factory will be registered under this name.
   /// To retrieve the same factory, the same name should be provided
   /// to [Container.resolve].
-  ///
-  /// If [oneTime] is set to `true`, then the factory will be called only when
-  /// accessing it for the first time.
   void registerFactory<S, T extends S>(
     Factory<S> factory, {
     String name,
-    bool oneTime = false,
   }) {
-    _setProvider(name, _Provider<S>.factory(factory, oneTime));
+    _setProvider(name, _Provider<S>.factory(factory));
+  }
+
+  /// Registers a factory that will be called only only when
+  /// accessing it for the first time, into the container.
+  ///
+  /// A factory returning an object of type [T] can be registered with a
+  /// supertype [S] if specified.
+  ///
+  /// If [name] is set, the factory will be registered under this name.
+  /// To retrieve the same factory, the same name should be provided
+  /// to [Container.resolve].
+  void registerSingleton<S, T extends S>(
+    Factory<S> factory, {
+    String name,
+  }) {
+    _setProvider(name, _Provider<S>.singleton(factory));
   }
 
   /// Removes the entry previously registered for the type [T].
@@ -72,6 +84,8 @@ class Container {
     return providers[T]?.get(this);
   }
 
+  T call<T>([String name]) => resolve<T>(name);
+
   /// Removes all instances and builders from the container.
   ///
   /// After this, the container is empty.
@@ -84,22 +98,26 @@ class Container {
 }
 
 class _Provider<T> {
-  _Provider.singleton(this.instance) : instanceBuilder = null;
+  _Provider.instance(this.object)
+      : instanceBuilder = null,
+        _oneTime = false;
 
-  _Provider.factory(this.instanceBuilder, this.oneTime);
+  _Provider.factory(this.instanceBuilder) : _oneTime = false;
+
+  _Provider.singleton(this.instanceBuilder) : _oneTime = true;
 
   final Factory<T> instanceBuilder;
-  T instance;
-  bool oneTime = false;
+  T object;
+  bool _oneTime = false;
 
   T get(Container container) {
-    if (oneTime && instanceBuilder != null) {
-      instance = instanceBuilder(container);
-      oneTime = false;
+    if (_oneTime && instanceBuilder != null) {
+      object = instanceBuilder(container);
+      _oneTime = false;
     }
 
-    if (instance != null) {
-      return instance;
+    if (object != null) {
+      return object;
     }
 
     if (instanceBuilder != null) {

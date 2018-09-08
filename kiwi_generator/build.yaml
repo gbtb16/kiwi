@@ -1,6 +1,6 @@
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
-  kiwi:
+  kiwi|kiwi:
     import: "package:kiwi_generator/builder.dart"
     builder_factories: ["buildKiwi"]
     build_extensions: {".dart": [".kiwi.g.part"]}
