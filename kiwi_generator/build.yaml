@@ -1,3 +1,10 @@
+targets:
+  $default:
+    builders:
+      kiwi:
+        generate_for:
+          - example/kiwi_generator_example.dart
+
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
   kiwi|kiwi:
