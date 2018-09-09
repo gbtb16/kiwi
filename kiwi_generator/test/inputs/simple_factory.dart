@@ -2,11 +2,11 @@ import 'package:kiwi/kiwi.dart';
 
 abstract class Injector {
   @Register.factory(ServiceA)
-  @Register.factory(ServiceB, as: null)
+  @Register.factory(ServiceB, from: null)
   @Register.factory(ServiceB, name: null)
-  @Register.factory(ServiceB, as: Service)
+  @Register.factory(Service, from: ServiceB)
   @Register.factory(ServiceA, name: 'factoryA')
-  @Register.factory(ServiceB, as: Service, name: 'factoryB')
+  @Register.factory(Service, from: ServiceB, name: 'factoryB')
   void configure();
 }
 

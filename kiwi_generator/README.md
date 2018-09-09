@@ -1,8 +1,8 @@
 # kiwi_generator
 
-![Logo](../images/logo_220x160.png)
+![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo_220x160.png)
 
-Generates dependency injection code using the kiwi package to reduce development time.
+Generates dependency injection code using the [kiwi](https://github.com/letsar/kiwi) package to reduce development time.
 
 ## Configuration
 
@@ -48,12 +48,12 @@ abstract class Injector {
 }
 ```
 
-Annotate the abstract method with the kiwi `Register` annotations.
+Annotate the abstract method with the **kiwi** `Register` annotations.
 
 ```dart
 abstract class Injector {  
   @Register.singleton(ServiceA)
-  @Register.factory(ServiceB, as: Service)
+  @Register.factory(Service, from: ServiceB)
   @Register.factory(ServiceB, name: 'factoryB')
   @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
   void configure();
@@ -119,9 +119,9 @@ If you want to register a factory:
 Both constructors have the same parameters:
 **Parameter**|**Type**|**Required**|**Description**
 -----|:-----:|:-----:|-----
-`implementation`|Type|Yes|This is your concrete type
+`type`|Type|Yes|This is the type to register
 `name`|String|No|This is the name under which the factory will be registered
-`as`|Type|No|The abstract type
+`of`|Type|No|The type to create when requesting [type], if different of [type].
 `constructorName`|String|No|The name of the constructor to use inside the factory
 `resolvers`|Map<String, String>|No|A map that give for a type, the name under which it should be resolved
 
@@ -136,7 +136,7 @@ part 'test01.g.dart';
 
 abstract class Injector {
   @Register.singleton(ServiceA)
-  @Register.factory(ServiceB, as: Service)
+  @Register.factory(Service, from: ServiceB)
   @Register.factory(ServiceB, name: 'factoryB')
   @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
   void common();

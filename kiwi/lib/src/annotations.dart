@@ -3,32 +3,29 @@
 class Register {
   /// Create an annotation that will generate a `registerFactory` method.
   const Register.factory(
-    this.concrete, {
+    this.type, {
     this.name,
-    this.as,
+    this.from,
     this.resolvers,
     this.constructorName,
-  })  : assert(concrete != null),
+  })  : assert(type != null),
         oneTime = null;
 
   /// Create an annotation that will generate a `registerSingleton` method.
   const Register.singleton(
-    this.concrete, {
+    this.type, {
     this.name,
-    this.as,
+    this.from,
     this.resolvers,
     this.constructorName,
-  })  : assert(concrete != null),
+  })  : assert(type != null),
         oneTime = true;
 
-  /// The concrete type.
-  final Type concrete;
+  /// The type to register.
+  final Type type;
 
-  /// The abstract type.
-  ///
-  /// If you don't define an abstract type, the
-  /// factory will be registered under the concrete type.
-  final Type as;
+  /// The type to create when requesting [type].
+  final Type from;
 
   /// The name under which the factory will be registered
   ///

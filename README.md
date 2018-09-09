@@ -1,6 +1,6 @@
 # kiwi
 
-![Logo](images/logo_220x160.png)
+![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo_220x160.png)
 
 A simple yet efficient IoC container for Dart and Flutter, coupled with a powerful generator to allow you to write less code.
 
@@ -35,6 +35,12 @@ Import it into your pubspec `dev_dependencies:` section.
 [Source Code](https://github.com/letsar/kiwi/tree/master/example)
 
 An example showing how to setup `kiwi` and `kiwi_generator`.
+
+## Flutter Example
+
+[Source Code](https://github.com/letsar/kiwi/tree/master/flutter_example)
+
+An example showing how to setup `kiwi` and `kiwi_generator` inside a Flutter project.
 
 ## Contributions
 

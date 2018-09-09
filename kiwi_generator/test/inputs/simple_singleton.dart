@@ -2,11 +2,11 @@ import 'package:kiwi/kiwi.dart';
 
 abstract class Injector {
   @Register.singleton(ServiceA)
-  @Register.singleton(ServiceB, as: null)
+  @Register.singleton(ServiceB, from: null)
   @Register.singleton(ServiceB, name: null)
-  @Register.singleton(ServiceB, as: Service)
+  @Register.singleton(Service, from: ServiceB)
   @Register.singleton(ServiceA, name: 'singletonA')
-  @Register.singleton(ServiceB, as: Service, name: 'singletonB')
+  @Register.singleton(Service, from: ServiceB, name: 'singletonB')
   void configure();
 }
 
