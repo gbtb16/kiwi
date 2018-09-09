@@ -7,8 +7,13 @@ abstract class Injector {
   @Register.factory(ServiceB, as: Service)
   @Register.factory(ServiceB, name: 'factoryB')
   @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
+  void common();
+
+  @Register.factory(ServiceC)
+  void development();
+
   @Register.factory(ServiceC, constructorName: 'other')
-  void configure();
+  void production();
 }
 
 class Service {}
@@ -24,6 +29,12 @@ class ServiceC extends Service {
   ServiceC.other(ServiceB serviceA);
 }
 
-void setup() {
-  new _$Injector().configure();
+void setup(bool isProduction) {
+  var injector = _$Injector();
+  injector.common();
+  if (isProduction) {
+    injector.production();
+  } else {
+    injector.development();
+  }
 }

@@ -1,9 +1,10 @@
 # kiwi_generator
 
-A library for Dart developers.
+![Logo](../images/logo_220x160.png)
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Generates dependency injection code using the kiwi package to reduce development time.
+
+
 
 ## Usage
 

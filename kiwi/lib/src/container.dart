@@ -12,6 +12,11 @@ class Container {
 
   final Map<String, Map<Type, _Provider<Object>>> _namedProviders;
 
+  /// Whether ignoring asserts you when register a type a second time and when a value is not found.
+  ///
+  /// Defaults to false.
+  bool silent = false;
+
   /// Registers an instance into the container.
   ///
   /// An instance of type [T] can be registered with a
@@ -62,6 +67,8 @@ class Container {
   ///
   /// If [name] is set, removes the one registered for that name.
   void unregister<T>([String name]) {
+    assert(silent || (_namedProviders[name]?.containsKey(T) ?? false),
+        _assertRegisterMessage<T>('not', name));
     _namedProviders[name]?.remove(T);
   }
 
@@ -77,6 +84,8 @@ class Container {
   T resolve<T>([String name]) {
     Map<Type, _Provider<Object>> providers = _namedProviders[name];
 
+    assert(silent || (providers?.containsKey(T) ?? false),
+        _assertRegisterMessage<T>('not', name));
     if (providers == null) {
       return null;
     }
@@ -93,8 +102,20 @@ class Container {
     _namedProviders.clear();
   }
 
-  void _setProvider<T>(String name, _Provider<T> provider) => _namedProviders
-      .putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] = provider;
+  void _setProvider<T>(String name, _Provider<T> provider) {
+    assert(
+        silent ||
+            (!_namedProviders.containsKey(name) ||
+                !_namedProviders[name].containsKey(T)),
+        _assertRegisterMessage<T>('already', name),);
+
+    _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
+        provider;
+  }
+
+  String _assertRegisterMessage<T>(String word, String name) {
+    return 'The type $T was $word registered${name == null ? '' : ' for the name $name'}';
+  }
 }
 
 class _Provider<T> {

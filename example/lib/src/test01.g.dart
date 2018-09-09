@@ -7,7 +7,7 @@ part of 'test01.dart';
 // **************************************************************************
 
 class _$Injector extends Injector {
-  void configure() {
+  void common() {
     final Container container = Container();
     container.registerSingleton((c) => ServiceA());
     container
@@ -15,6 +15,15 @@ class _$Injector extends Injector {
     container.registerFactory((c) => ServiceB(c<ServiceA>()), name: 'factoryB');
     container.registerFactory(
         (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));
+  }
+
+  void development() {
+    final Container container = Container();
+    container.registerFactory((c) => ServiceC(c<ServiceA>(), c<ServiceB>()));
+  }
+
+  void production() {
+    final Container container = Container();
     container.registerFactory((c) => ServiceC.other(c<ServiceB>()));
   }
 }

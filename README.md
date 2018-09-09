@@ -1,8 +1,8 @@
 # kiwi
 
-![Logo](./images/logo_220x160.png)
+![Logo](images/logo_220x160.png)
 
- A simple compile-time dependency injection library for Dart and Flutter, that does not rely on reflection.
+A simple compile-time dependency injection library for Dart and Flutter, that does not rely on reflection.
 Only constructor injection is supported.
 
 **IMPORTANT: Dart2 is required to use this package.**
