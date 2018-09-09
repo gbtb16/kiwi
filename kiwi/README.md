@@ -3,7 +3,7 @@
 [![Pub](https://img.shields.io/pub/v/kiwi.svg)](https://pub.dartlang.org/packages/kiwi)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/RomainRastel)
 
-![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo_220x160.png)
+![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
 
 A simple yet efficient IoC container for Dart and Flutter.
 

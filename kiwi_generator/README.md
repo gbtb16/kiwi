@@ -1,6 +1,6 @@
 # kiwi_generator
 
-![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo_220x160.png)
+![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
 
 Generates dependency injection code using the [kiwi](https://github.com/letsar/kiwi) package to reduce development time.
 
