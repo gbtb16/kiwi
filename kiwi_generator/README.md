@@ -1,6 +1,6 @@
 # kiwi_generator
 
-[![Pub](https://img.shields.io/pub/v/kiwi.svg)](https://pub.dartlang.org/packages/kiwi)
+[![Pub](https://img.shields.io/pub/v/kiwi_generator.svg)](https://pub.dartlang.org/packages/kiwi_generator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/RomainRastel)
 
 ![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
