@@ -12,7 +12,10 @@ class Container {
 
   final Map<String, Map<Type, _Provider<Object>>> _namedProviders;
 
-  /// Whether ignoring asserts you when register a type a second time and when a value is not found.
+  /// Whether ignoring assertion errors in the following cases:
+  /// * if you register the same type under the same name a second time.
+  /// * if you try to resolve or unregister a type that was not
+  /// previously registered.
   ///
   /// Defaults to false.
   bool silent = false;

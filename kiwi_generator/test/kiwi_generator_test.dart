@@ -19,9 +19,9 @@ void main() async {
       );
     });
 
-    test('null implementation', () async {
+    test('null concrete', () async {
       await testKiwiException(
-        'null_implementation_factory',
+        'null_concrete_factory',
         const TypeMatcher<UnresolvedAnnotationException>(),
       );
     });
@@ -53,9 +53,9 @@ void main() async {
       );
     });
 
-    test('null implementation', () async {
+    test('null concrete', () async {
       await testKiwiException(
-        'null_implementation_singleton',
+        'null_concrete_singleton',
         const TypeMatcher<UnresolvedAnnotationException>(),
       );
     });

@@ -80,11 +80,10 @@ class InjectorGenerator extends Generator {
     final DartObject registerObject = annotation.objectValue;
 
     final String name = registerObject.getField('name').toStringValue();
-    final DartType implementation =
-        registerObject.getField('implementation').toTypeValue();
+    final DartType concrete = registerObject.getField('concrete').toTypeValue();
     final DartType abstraction = registerObject.getField('as').toTypeValue();
 
-    final String className = implementation?.name;
+    final String className = concrete?.name;
     final String typeParameters =
         abstraction == null ? '' : '<${abstraction.name}, $className>';
 
@@ -94,8 +93,7 @@ class InjectorGenerator extends Generator {
     final String constructorNameArgument =
         constructorName == null ? '' : '.$constructorName';
 
-    final ClassElement clazz =
-        implementation.element.library.getType(implementation.name);
+    final ClassElement clazz = concrete.element.library.getType(concrete.name);
 
     final bool oneTime =
         registerObject.getField('oneTime').toBoolValue() ?? false;

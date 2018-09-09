@@ -1,5 +1,5 @@
 name: kiwi
-description: A simple compile-time dependency injection library for Dart and Flutter.
+description: A simple yet efficient IoC container for Dart and Flutter (can be coupled with the kiwi_generator package).
 version: 0.1.0
 author: Romain Rastel <lets4r@gmail.com>
 homepage: https://github.com/letsar/kiwi

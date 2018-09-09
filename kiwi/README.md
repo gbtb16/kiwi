@@ -1,26 +1,27 @@
 # kiwi
 
+[![Pub](https://img.shields.io/pub/v/kiwi.svg)](https://pub.dartlang.org/packages/kiwi)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/RomainRastel)
+
 ![Logo](../images/logo_220x160.png)
 
-A simple yet efficient IoC container for Dart and Flutter, coupled with a powerful generator to allow you to write less code.
+A simple yet efficient IoC container for Dart and Flutter.
 
-The container does not rely on reflection, it's just a bunch of `Map` so it's fast.
-
-A simple compile-time dependency injection library for Dart and Flutter, that does not rely on reflection.
-Only constructor injection is supported.
+The container does not rely on reflection, it's just a `Map`, so it's fast.
 
 **IMPORTANT: Dart2 is required to use this package.**
 
 This package can be used with, or without code generation. While code generation allows you to code faster, it comes with extra configuration on you side (to be setup only one time).
-This section is only about **kiwi** which contains the IoC container and the annotations. For the kiwi_generator configuration, it's here.
+This section is only about **kiwi** which contains the IoC container and the annotations. If you are looking for the kiwi_generator configuration, you can find documentation [here](https://github.com/letsar/kiwi/tree/master/kiwi_generator).
 
 ## Configuration
 
 Add `kiwi` to `pubspec.yaml` under the `dependencies` field.
+The latest version is [![Pub](https://img.shields.io/pub/v/kiwi.svg)](https://pub.dartlang.org/packages/kiwi)
 
 ```yaml
 dependencies:
-  kiwi: ^0.1.0
+  kiwi: ^latest_version
 ```
 
 ## Import
@@ -48,7 +49,7 @@ It works like a lot of IoC containers: you can register a factory under a type, 
 
 You can register 3 kinds of objects:
 
-1. Instances
+#### Instances
 
 **Kiwi** can register simple instances like that:
 
@@ -138,3 +139,42 @@ container.registerFactory((c) => ServiceB(c.resolve<ServiceA>()));
 ```
 
 For services with a lot of dependencies, it can be tedious to write that sort of code. That's why **kiwi** comes with a generator :smiley:!
+
+## Unregistering
+
+You can unregister a factory/instance at any time:
+
+```dart
+// Unregisters the Sith type.
+container.unregister<Sith>();
+
+// Unregister the Sith type that was registered under the name DartVader.
+container.unregister<Sith>('DartVader');
+```
+
+## Cleaning
+
+You can remove all the registered types by calling the `clear` method:
+
+```dart
+container.clear();
+```
+
+## Ignoring assert errors in development mode
+
+By default **kiwi** throws an `AssertionError` in the following cases:
+
+* if you register the same type under the same name a second time.
+* if you try to resolve or unregister a type that was not previously registered.
+
+This helps you to prevent potential errors in production, however you might want to ignore these assertion errors. To do this you can set `true` to the `silent` property of the `Container`:
+
+```dart
+container.silent = true;
+```
+
+In production, or when `silent` is `true`, you will get `null` if you try to resolve a type that was not previously registered.
+
+## Changelog
+
+Please see the [Changelog](https://github.com/letsar/kiwi/blob/master/kiwi/CHANGELOG.md) page to know what's recently changed.
