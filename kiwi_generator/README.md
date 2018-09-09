@@ -122,7 +122,7 @@ Both constructors have the same parameters:
 -----|:-----:|:-----:|-----
 `type`|Type|Yes|This is the type to register
 `name`|String|No|This is the name under which the factory will be registered
-`from`|Type|No|The type to create when requesting [type], if different of [type].
+`from`|Type|No|The type to create when requesting `type`, if different of `type`.
 `constructorName`|String|No|The name of the constructor to use inside the factory
 `resolvers`|Map<String, String>|No|A map that give for a type, the name under which it should be resolved
 
