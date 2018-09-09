@@ -117,6 +117,7 @@ If you want to register a factory:
 ```
 
 Both constructors have the same parameters:
+
 **Parameter**|**Type**|**Required**|**Description**
 -----|:-----:|:-----:|-----
 `type`|Type|Yes|This is the type to register

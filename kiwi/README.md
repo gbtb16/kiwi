@@ -160,7 +160,7 @@ You can remove all the registered types by calling the `clear` method:
 container.clear();
 ```
 
-## Ignoring assert errors in development mode
+## Ignoring assertion errors in development mode
 
 By default **kiwi** throws an `AssertionError` in the following cases:
 
