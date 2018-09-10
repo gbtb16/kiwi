@@ -2,6 +2,8 @@
 language: dart
 
 # Custom configuration
+before_install:
+  - chmod +x ./tool/travis.sh
 sudo: required
 
 jobs:
