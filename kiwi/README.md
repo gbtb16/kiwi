@@ -43,6 +43,14 @@ Container container = Container();
 
 **Note:** I promise you, even if this is looking like a constructor, you will always end up with the same instance :wink:.
 
+**Important: If you want to use the `Container` class with Flutter code, you have to specify a library prefix:**
+
+```dart
+import 'package:kiwi/kiwi.dart' as kiwi;
+...
+kiwi.Container container = kiwi.Container();
+```
+
 It works like a lot of IoC containers: you can register a factory under a type, and then resolve the type to get a value.
 
 ### Registering
