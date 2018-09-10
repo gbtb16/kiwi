@@ -1,5 +1,7 @@
 # kiwi
 
+![travis](https://img.shields.io/travis/letsar/kiwi.svg)
+
 ![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
 
 A simple yet efficient IoC container for Dart and Flutter, coupled with a powerful generator to allow you to write less code.
