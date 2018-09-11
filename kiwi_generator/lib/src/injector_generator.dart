@@ -27,6 +27,7 @@ class InjectorGenerator extends Generator {
     final injectors = library.classElements
         .where((c) =>
             c.isAbstract &&
+            c.methods.where((m) => m.isAbstract).isNotEmpty &&
             c.methods
                 .where((m) => m.isAbstract)
                 .every((m) => _isRegisterMethod(m)))

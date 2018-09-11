@@ -71,6 +71,29 @@ void main() async {
       );
     });
   });
+
+  group('Generates null', () {
+    test('abstract class', () async {
+      await testKiwi(
+        'abstract_class',
+        null,
+      );
+    });
+
+    test('abstract class without method', () async {
+      await testKiwi(
+        'abstract_class_without_method',
+        null,
+      );
+    });
+
+    test('abstract class without abstract method', () async {
+      await testKiwi(
+        'abstract_class_without_abstract_method',
+        null,
+      );
+    });
+  });
 }
 
 const _outputSimpleFactory = r'''
