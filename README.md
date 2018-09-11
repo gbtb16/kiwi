@@ -1,6 +1,6 @@
 # kiwi
 
-![travis](https://img.shields.io/travis/letsar/kiwi.svg)
+[![travis](https://img.shields.io/travis/letsar/kiwi.svg)](https://travis-ci.org/letsar/kiwi)
 
 ![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
 
