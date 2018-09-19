@@ -80,7 +80,8 @@ For Flutter the command is different though:
 ```bash
 flutter packages pub run build_runner watch --delete-conflicting-outputs
 ```
-The argument --delete-conficting-outputs will let the command delete the .g.dart generated file, before re-creating it. Without that parameter running the command will fail because the generated file already exists
+The argument --delete-conficting-outputs will let the command delete the .g.dart generated file, before re-creating it. Without that parameter running the command will fail because the generated file already exists.
+
 
 
 
