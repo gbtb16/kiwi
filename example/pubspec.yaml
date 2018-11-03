@@ -8,13 +8,9 @@ environment:
   sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
-  kiwi:
-    path:
-      ../kiwi
+  kiwi: ^0.1.0
 
 dev_dependencies:
   test: ^1.0.0
   build_runner: ^0.10.1
-  kiwi_generator:
-    path:
-      ../kiwi_generator
+  kiwi_generator: ^0.1.1
