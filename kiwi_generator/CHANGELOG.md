@@ -1,3 +1,7 @@
+## 0.2.0
+### Fixed
+* Upgrade dependencies
+
 ## 0.1.1
 ### Fixed
 * The generator no longer generates a `.g.dart` file for abstract classes without abstract methods.
