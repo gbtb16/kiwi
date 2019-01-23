@@ -1,3 +1,7 @@
+## 0.3.0
+### Fixed
+* Upgrade dependencies
+
 ## 0.2.0
 ### Fixed
 * Upgrade dependencies
