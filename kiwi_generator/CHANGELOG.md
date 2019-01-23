@@ -1,3 +1,7 @@
+## 0.3.1
+### Fixed
+* Upgrade dependencies and fix a deprecated error.
+
 ## 0.3.0
 ### Fixed
 * Upgrade dependencies

@@ -24,7 +24,7 @@ class InjectorGenerator extends Generator {
   String generate(LibraryReader library, BuildStep buildStep) {
     // An injector is an abstract class where all abstract methods are
     // annotated with Register.
-    final injectors = library.classElements
+    final injectors = library.classes
         .where((c) =>
             c.isAbstract &&
             c.methods.where((m) => m.isAbstract).isNotEmpty &&
