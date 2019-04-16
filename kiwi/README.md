@@ -11,7 +11,7 @@ The container does not rely on reflection, it's just a `Map`, so it's fast.
 
 **IMPORTANT: Dart2 is required to use this package.**
 
-This package can be used with, or without code generation. While code generation allows you to code faster, it comes with extra configuration on you side (to be setup only one time).
+This package can be used with, or without code generation. While code generation allows you to code faster, it requires extra configuration but that only needs to be done once.
 This section is only about **kiwi** which contains the IoC container and the annotations. If you are looking for the kiwi_generator configuration, you can find documentation [here](https://github.com/letsar/kiwi/tree/master/kiwi_generator).
 
 ## Configuration
@@ -26,7 +26,7 @@ dependencies:
 
 ## Import
 
-In your library add the following import:
+Add the following import in your code:
 
 ```dart
 import 'package:kiwi/kiwi.dart';
@@ -97,7 +97,7 @@ By default factories are registered under the return type of the factory. If you
 container.registerFactory<Character, Sith>((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
-**Note:** the `c` parameter is the instance of the `Container`, we will saw later how it can be useful.
+**Note:** the `c` parameter is the instance of the `Container`. We will see how it can be used later.
 
 #### Singletons
 
