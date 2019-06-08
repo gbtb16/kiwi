@@ -43,6 +43,12 @@ Container container = Container();
 
 **Note:** I promise you, even if this is looking like a constructor, you will always end up with the same instance :wink:.
 
+If you want different containers, you can create scoped ones easily:
+
+```dart
+Container container = Container.scoped();
+```
+
 **Important: If you want to use the `Container` class with Flutter code, you have to specify a library prefix:**
 
 ```dart

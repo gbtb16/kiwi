@@ -3,9 +3,11 @@ typedef T Factory<T>(Container container);
 
 /// A simple service container.
 class Container {
-  Container._() : _namedProviders = Map<String, Map<Type, _Provider<Object>>>();
+  /// Creates a scoped container.
+  Container.scoped()
+      : _namedProviders = Map<String, Map<Type, _Provider<Object>>>();
 
-  static final Container _instance = new Container._();
+  static final Container _instance = new Container.scoped();
 
   /// Always returns a singleton representing the only container to be alive.
   factory Container() => _instance;
