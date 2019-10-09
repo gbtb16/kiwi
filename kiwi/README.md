@@ -103,7 +103,7 @@ By default factories are registered under the return type of the factory. If you
 container.registerFactory<Character, Sith>((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
-**Note:** the `c` parameter is the instance of the `Container`, we will saw later how it can be useful.
+**Note:** the `c` parameter is the instance of the `Container`, we will see later how it can be useful.
 
 #### Singletons
 
