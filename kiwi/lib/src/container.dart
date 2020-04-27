@@ -109,10 +109,11 @@ class Container {
 
   void _setProvider<T>(String name, _Provider<T> provider) {
     assert(
-        silent ||
-            (!_namedProviders.containsKey(name) ||
-                !_namedProviders[name].containsKey(T)),
-        _assertRegisterMessage<T>('already', name),);
+      silent ||
+          (!_namedProviders.containsKey(name) ||
+              !_namedProviders[name].containsKey(T)),
+      _assertRegisterMessage<T>('already', name),
+    );
 
     _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
         provider;
