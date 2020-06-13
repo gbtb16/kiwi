@@ -84,9 +84,9 @@ class InjectorGenerator extends Generator {
     final DartType concrete = registerObject.getField('from').toTypeValue();
     final DartType concreteType = concrete ?? type;
 
-    final String className = concreteType.name;
+    final String className = concreteType.getDisplayString();
     final String typeParameters =
-        concrete == null ? '' : '<${type.name}, $className>';
+        concrete == null ? '' : '<${type.getDisplayString()}, $className>';
 
     final String nameArgument = name == null ? '' : ", name: '$name'";
     final String constructorName =
@@ -140,7 +140,7 @@ class InjectorGenerator extends Generator {
   ) {
     final String name = resolvers == null ? null : resolvers[parameter.type];
     final String nameArgument = name == null ? '' : "'$name'";
-    return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.name}>($nameArgument)';
+    return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.getDisplayString()}>($nameArgument)';
   }
 
   Map<DartType, String> _computeResolvers(
