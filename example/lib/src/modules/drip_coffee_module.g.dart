@@ -8,7 +8,7 @@ part of 'drip_coffee_module.dart';
 
 class _$CoffeeInjector extends CoffeeInjector {
   void _configureFactories() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => PowerOutlet());
     container.registerSingleton((c) => Electricity(c<PowerOutlet>()));
     container.registerSingleton<Heater, ElectricHeater>(

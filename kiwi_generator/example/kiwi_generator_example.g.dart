@@ -8,7 +8,7 @@ part of 'kiwi_generator_example.dart';
 
 class _$Injector extends Injector {
   void configure() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
     container
         .registerFactory<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));

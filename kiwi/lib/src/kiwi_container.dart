@@ -1,16 +1,16 @@
 /// Signature for a builder which creates an object of type [T].
-typedef T Factory<T>(Container container);
+typedef T Factory<T>(KiwiContainer container);
 
 /// A simple service container.
-class Container {
+class KiwiContainer {
   /// Creates a scoped container.
-  Container.scoped()
+  KiwiContainer.scoped()
       : _namedProviders = Map<String, Map<Type, _Provider<Object>>>();
 
-  static final Container _instance = Container.scoped();
+  static final KiwiContainer _instance = KiwiContainer.scoped();
 
   /// Always returns a singleton representing the only container to be alive.
-  factory Container() => _instance;
+  factory KiwiContainer() => _instance;
 
   final Map<String, Map<Type, _Provider<Object>>> _namedProviders;
 
@@ -29,7 +29,7 @@ class Container {
   ///
   /// If [name] is set, the instance will be registered under this name.
   /// To retrieve the same instance, the same name should be provided
-  /// to [Container.resolve].
+  /// to [KiwiContainer.resolve].
   void registerInstance<S, T extends S>(
     S instance, {
     String name,
@@ -44,7 +44,7 @@ class Container {
   ///
   /// If [name] is set, the factory will be registered under this name.
   /// To retrieve the same factory, the same name should be provided
-  /// to [Container.resolve].
+  /// to [KiwiContainer.resolve].
   void registerFactory<S, T extends S>(
     Factory<S> factory, {
     String name,
@@ -60,7 +60,7 @@ class Container {
   ///
   /// If [name] is set, the factory will be registered under this name.
   /// To retrieve the same factory, the same name should be provided
-  /// to [Container.resolve].
+  /// to [KiwiContainer.resolve].
   void registerSingleton<S, T extends S>(
     Factory<S> factory, {
     String name,
@@ -72,8 +72,10 @@ class Container {
   ///
   /// If [name] is set, removes the one registered for that name.
   void unregister<T>([String name]) {
-    assert(silent || (_namedProviders[name]?.containsKey(T) ?? false),
-        _assertRegisterMessage<T>('not', name));
+    assert(
+      silent || (_namedProviders[name]?.containsKey(T) ?? false),
+      'Failed to unregister `$T`:\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\nMake sure `$T` is added to your KiwiContainer and rerun flutter build',
+    );
     _namedProviders[name]?.remove(T);
   }
 
@@ -84,13 +86,15 @@ class Container {
   ///
   /// See also:
   ///
-  ///  * [Container.registerFactory] for register a builder function.
-  ///  * [Container.registerInstance] for register an instance.
+  ///  * [KiwiContainer.registerFactory] for register a builder function.
+  ///  * [KiwiContainer.registerInstance] for register an instance.
   T resolve<T>([String name]) {
     Map<Type, _Provider<Object>> providers = _namedProviders[name];
 
-    assert(silent || (providers?.containsKey(T) ?? false),
-        _assertRegisterMessage<T>('not', name));
+    assert(
+      silent || (providers?.containsKey(T) ?? false),
+      'Failed to resolve `$T`:\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\nMake sure `$T` is added to your KiwiContainer and rerun flutter build',
+    );
     if (providers == null) {
       return null;
     }
@@ -112,15 +116,11 @@ class Container {
       silent ||
           (!_namedProviders.containsKey(name) ||
               !_namedProviders[name].containsKey(T)),
-      _assertRegisterMessage<T>('already', name),
+      'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}',
     );
 
     _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
         provider;
-  }
-
-  String _assertRegisterMessage<T>(String word, String name) {
-    return 'The type $T was $word registered${name == null ? '' : ' for the name $name'}';
   }
 }
 
@@ -137,7 +137,7 @@ class _Provider<T> {
   T object;
   bool _oneTime = false;
 
-  T get(Container container) {
+  T get(KiwiContainer container) {
     if (_oneTime && instanceBuilder != null) {
       object = instanceBuilder(container);
       _oneTime = false;

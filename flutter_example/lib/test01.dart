@@ -12,13 +12,13 @@ abstract class Injector {
 class Test {}
 
 class Counter {
-  static int _value = 0;
+  int _value = 0;
 
-  Counter(Test test) {
-    _value++;
-  }
+  Counter(Test test);
 
   int get value => _value;
+
+  void add() => _value++;
 }
 
 void setup() {

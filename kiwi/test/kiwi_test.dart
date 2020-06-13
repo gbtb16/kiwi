@@ -2,7 +2,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Container container = Container();
+  KiwiContainer container = KiwiContainer();
 
   group('Silent=true tests', () {
     setUp(() {
@@ -11,9 +11,22 @@ void main() {
     });
 
     test('containers should be the same', () {
-      Container c1 = Container();
-      Container c2 = Container();
+      KiwiContainer c1 = KiwiContainer();
+      KiwiContainer c2 = KiwiContainer();
       expect(c1, c2);
+    });
+
+    test('KiwiContainer.scope should be a different object', () {
+      KiwiContainer c1 = KiwiContainer();
+      KiwiContainer c2 = KiwiContainer();
+      KiwiContainer c3 = KiwiContainer.scoped();
+      KiwiContainer c4 = KiwiContainer.scoped();
+      expect(c1, c2);
+      expect(c1, isNot(c3));
+      expect(c1, isNot(c4));
+      expect(c2, isNot(c3));
+      expect(c2, isNot(c4));
+      expect(c3, isNot(c4));
     });
 
     test('instances should be resolved', () {
@@ -130,7 +143,7 @@ void main() {
           throwsA(TypeMatcher<AssertionError>().having(
             (f) => f.message,
             'message',
-            'The type int was already registered',
+            'The type `int` was already registered',
           )));
 
       expect(
@@ -138,7 +151,7 @@ void main() {
           throwsA(TypeMatcher<AssertionError>().having(
             (f) => f.message,
             'message',
-            'The type int was already registered for the name name',
+            'The type `int` was already registered for the name `name`',
           )));
     });
 
@@ -148,7 +161,7 @@ void main() {
           throwsA(TypeMatcher<AssertionError>().having(
             (f) => f.message,
             'message',
-            'The type int was not registered',
+            'Failed to unregister `int`:\nThe type `int` was not registered\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
           )));
 
       expect(
@@ -156,7 +169,7 @@ void main() {
           throwsA(TypeMatcher<AssertionError>().having(
             (f) => f.message,
             'message',
-            'The type int was not registered for the name name',
+            'Failed to unregister `int`:\nThe type `int` was not registered for the name `name`\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
           )));
     });
 
@@ -166,7 +179,7 @@ void main() {
           throwsA(TypeMatcher<AssertionError>().having(
             (f) => f.message,
             'message',
-            'The type int was not registered',
+            'Failed to resolve `int`:\nThe type `int` was not registered\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
           )));
 
       expect(
@@ -174,7 +187,7 @@ void main() {
           throwsA(TypeMatcher<AssertionError>().having(
             (f) => f.message,
             'message',
-            'The type int was not registered for the name name',
+            'Failed to resolve `int`:\nThe type `int` was not registered for the name `name`\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
           )));
     });
   });

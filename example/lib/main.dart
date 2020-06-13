@@ -6,7 +6,7 @@ void main() {
   CoffeeInjector coffeeInjector = getCoffeeInjector();
   coffeeInjector.configure();
 
-  Container container = Container();
+  final container = KiwiContainer();
 
   CoffeeMaker coffeeMaker = container<CoffeeMaker>();
   coffeeMaker.brew();
