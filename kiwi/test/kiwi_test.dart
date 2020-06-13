@@ -1,4 +1,5 @@
 import 'package:kiwi/kiwi.dart';
+import 'package:kiwi/src/model/exception/kiwi_error.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -148,54 +149,54 @@ void main() {
 
       expect(
           () => container.registerInstance(6),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'The type `int` was already registered',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nThe type `int` was already registered\n\n\n',
           )));
 
       expect(
           () => container.registerInstance(9, name: 'name'),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'The type `int` was already registered for the name `name`',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nThe type `int` was already registered for the name `name`\n\n\n',
           )));
     });
 
     test('values should exist when unregistering', () {
       expect(
           () => container.unregister<int>(),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'Failed to unregister `int`:\nThe type `int` was not registered\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nFailed to unregister `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
 
       expect(
           () => container.unregister<int>('name'),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'Failed to unregister `int`:\nThe type `int` was not registered for the name `name`\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nFailed to unregister `int`:\n\nThe type `int` was not registered for the name `name`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
 
     test('values should exist when resolving', () {
       expect(
           () => container.resolve<int>(),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'Failed to resolve `int`:\nThe type `int` was not registered\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
 
       expect(
           () => container.resolve<int>('name'),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'Failed to resolve `int`:\nThe type `int` was not registered for the name `name`\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `name`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
     test('values should exist when resolving as', () {
@@ -204,18 +205,18 @@ void main() {
       container.registerInstance(person, name: 'named');
       expect(
           () => container.resolveAs<Character, Sith>(),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'Failed to resolve `Character` as `Sith`\nMake sure `Sith` is added to your KiwiContainer and rerun flutter build',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nFailed to resolve `Character` as `Sith`:\n\nThe type `Character` as `Sith` was not registered\n\nMake sure `Sith` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
 
       expect(
           () => container.resolveAs<Character, Sith>('named'),
-          throwsA(TypeMatcher<AssertionError>().having(
-            (f) => f.message,
-            'message',
-            'Failed to resolve `Character` as `Sith` for the name `named`\nMake sure `Sith` is added to your KiwiContainer and rerun flutter build',
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'KiwiError:\n\n\nFailed to resolve `Character` as `Sith`:\n\nThe type `Character` as `Sith` was not registered for the name `named`\n\nMake sure `Sith` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
   });

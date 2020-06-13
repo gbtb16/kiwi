@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_example/test01.dart';
+import 'package:flutter_example/di/test01.dart';
+import 'package:flutter_example/widget/resolve_by_name_error_widget.dart';
+import 'package:flutter_example/widget/resolve_error_widget.dart';
 import 'package:kiwi/kiwi.dart';
 
 void main() {
@@ -36,23 +38,37 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: [
+            Container(height: 16),
             Text(
               'Counter instances:',
+              textAlign: TextAlign.center,
             ),
             Text(
               KiwiContainer().resolve<Counter>('display').value.toString(),
               style: Theme.of(context).textTheme.headline4,
+              textAlign: TextAlign.center,
             ),
             Text(
               KiwiContainer().resolve<Counter>().value.toString(),
               style: Theme.of(context).textTheme.headline4,
+              textAlign: TextAlign.center,
             ),
             Text(
               KiwiContainer().resolve<Test>().toString(),
               style: Theme.of(context).textTheme.headline4,
+              textAlign: TextAlign.center,
+            ),
+            Container(height: 16),
+            Container(
+              height: 600,
+              child: ResolveError(),
+            ),
+            Container(height: 16),
+            Container(
+              height: 600,
+              child: ResolveByNameError(),
             ),
           ],
         ),
