@@ -1,7 +1,7 @@
 name: kiwi
 description: A simple yet efficient IoC container for Dart and Flutter (can be coupled with the kiwi_generator package).
-version: 0.3.0
-homepage: https://github.com/letsar/kiwi/kiwi
+version: 0.3.2
+homepage: https://github.com/vanlooverenkoen/kiwi/kiwi
 
 environment:
   sdk: '>=2.2.0 <3.0.0'

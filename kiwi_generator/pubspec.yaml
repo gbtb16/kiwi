@@ -1,7 +1,7 @@
 name: kiwi_generator
 description: Generates dependency injection code using the kiwi package to reduce development time.
-version: 0.5.0
-homepage: https://github.com/letsar/kiwi/kiwi_generator
+version: 0.5.1
+homepage: https://github.com/vanlooverenkoen/kiwi/kiwi_generator
 
 environment:
   sdk: '>=2.2.0 <3.0.0'

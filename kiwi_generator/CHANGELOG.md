@@ -1,3 +1,7 @@
+## 0.5.1
+### Fixed
+- Fixed pub.dev score
+
 ## 0.5.0
 ### Fixed
 - Upgrade dependencies
