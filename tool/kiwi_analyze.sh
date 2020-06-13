@@ -4,36 +4,36 @@ cd ..
 
 echo ""
 echo "==========================="
-echo "example build_runner build"
+echo "example analyze"
 echo "---------------------------"
 cd example
-flutter packages pub run build_runner build --delete-conflicting-outputs
+flutter analyze
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "flutter_example build_runner build"
+echo "flutter_example analyze"
 echo "---------------------------"
 cd flutter_example
-flutter packages pub run build_runner build --delete-conflicting-outputs
+flutter analyze
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "kiwi build_runner build"
+echo "kiwi analyze"
 echo "---------------------------"
 cd kiwi
-echo "Nothing to generate here"
+flutter analyze
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "kiwi_generator build_runner build"
+echo "kiwi_generator analyze"
 echo "---------------------------"
 cd kiwi_generator
-flutter packages pub run build_runner build --delete-conflicting-outputs
+flutter analyze
 echo "==========================="
 cd ..
