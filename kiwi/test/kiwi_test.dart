@@ -79,28 +79,37 @@ void main() {
 
     test('builders should be resolved', () {
       container.registerSingleton((c) => 5);
-      container.registerFactory((c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
-      container.registerFactory<Character, Sith>((c) => const Character('Anakin', 'Skywalker'));
+      container.registerFactory(
+          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
+      container.registerFactory<Character, Sith>(
+          (c) => const Character('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);
-      expect(container.resolve<Sith>(), const Sith('Anakin', 'Skywalker', 'DartVader'));
-      expect(container.resolve<Character>(), const Character('Anakin', 'Skywalker'));
+      expect(container.resolve<Sith>(),
+          const Sith('Anakin', 'Skywalker', 'DartVader'));
+      expect(container.resolve<Character>(),
+          const Character('Anakin', 'Skywalker'));
     });
 
     test('builders should always be created', () {
       container.registerFactory((c) => Character('Anakin', 'Skywalker'));
 
-      expect(container.resolve<Character>(), isNot(same(container.resolve<Character>())));
+      expect(container.resolve<Character>(),
+          isNot(same(container.resolve<Character>())));
     });
 
     test('one time builders should be resolved', () {
       container.registerSingleton((c) => 5);
-      container.registerSingleton((c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
-      container.registerSingleton<Character, Sith>((c) => const Character('Anakin', 'Skywalker'));
+      container.registerSingleton(
+          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
+      container.registerSingleton<Character, Sith>(
+          (c) => const Character('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);
-      expect(container.resolve<Sith>(), const Sith('Anakin', 'Skywalker', 'DartVader'));
-      expect(container.resolve<Character>(), const Character('Anakin', 'Skywalker'));
+      expect(container.resolve<Sith>(),
+          const Sith('Anakin', 'Skywalker', 'DartVader'));
+      expect(container.resolve<Character>(),
+          const Character('Anakin', 'Skywalker'));
     });
 
     test('one time builders should be created one time only', () {
