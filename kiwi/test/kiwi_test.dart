@@ -45,6 +45,14 @@ void main() {
       expect(container.resolve<Character>(), person);
     });
 
+    test('instances should be resolveAs', () {
+      final sith = Sith('Anakin', 'Skywalker', 'DartVader');
+      container.registerSingleton<Character, Sith>((c) => sith);
+
+      expect(container.resolveAs<Character, Sith>(), sith);
+      expect(container.resolveAs<Character, Sith>('named'), null);
+    });
+
     test('container should resolve when called', () {
       var person = Character('Anakin', 'Skywalker');
       container.registerInstance(5);
@@ -71,37 +79,28 @@ void main() {
 
     test('builders should be resolved', () {
       container.registerSingleton((c) => 5);
-      container.registerFactory(
-          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
-      container.registerFactory<Character, Sith>(
-          (c) => const Character('Anakin', 'Skywalker'));
+      container.registerFactory((c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
+      container.registerFactory<Character, Sith>((c) => const Character('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);
-      expect(container.resolve<Sith>(),
-          const Sith('Anakin', 'Skywalker', 'DartVader'));
-      expect(container.resolve<Character>(),
-          const Character('Anakin', 'Skywalker'));
+      expect(container.resolve<Sith>(), const Sith('Anakin', 'Skywalker', 'DartVader'));
+      expect(container.resolve<Character>(), const Character('Anakin', 'Skywalker'));
     });
 
     test('builders should always be created', () {
       container.registerFactory((c) => Character('Anakin', 'Skywalker'));
 
-      expect(container.resolve<Character>(),
-          isNot(same(container.resolve<Character>())));
+      expect(container.resolve<Character>(), isNot(same(container.resolve<Character>())));
     });
 
     test('one time builders should be resolved', () {
       container.registerSingleton((c) => 5);
-      container.registerSingleton(
-          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
-      container.registerSingleton<Character, Sith>(
-          (c) => const Character('Anakin', 'Skywalker'));
+      container.registerSingleton((c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
+      container.registerSingleton<Character, Sith>((c) => const Character('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);
-      expect(container.resolve<Sith>(),
-          const Sith('Anakin', 'Skywalker', 'DartVader'));
-      expect(container.resolve<Character>(),
-          const Character('Anakin', 'Skywalker'));
+      expect(container.resolve<Sith>(), const Sith('Anakin', 'Skywalker', 'DartVader'));
+      expect(container.resolve<Character>(), const Character('Anakin', 'Skywalker'));
     });
 
     test('one time builders should be created one time only', () {
@@ -188,6 +187,26 @@ void main() {
             (f) => f.message,
             'message',
             'Failed to resolve `int`:\nThe type `int` was not registered for the name `name`\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
+          )));
+    });
+    test('values should exist when resolving as', () {
+      var person = Character('Anakin', 'Skywalker');
+      container.registerInstance(person);
+      container.registerInstance(person, name: 'named');
+      expect(
+          () => container.resolveAs<Character, Sith>(),
+          throwsA(TypeMatcher<AssertionError>().having(
+            (f) => f.message,
+            'message',
+            'Failed to resolve `Character` as `Sith`\nMake sure `Sith` is added to your KiwiContainer and rerun flutter build',
+          )));
+
+      expect(
+          () => container.resolveAs<Character, Sith>('named'),
+          throwsA(TypeMatcher<AssertionError>().having(
+            (f) => f.message,
+            'message',
+            'Failed to resolve `Character` as `Sith` for the name `named`\nMake sure `Sith` is added to your KiwiContainer and rerun flutter build',
           )));
     });
   });
