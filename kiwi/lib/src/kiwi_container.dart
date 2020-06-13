@@ -1,3 +1,4 @@
+import 'package:kiwi/src/model/exception/kiwi_error.dart';
 import 'package:meta/meta.dart';
 
 /// Signature for a builder which creates an object of type [T].
@@ -74,10 +75,10 @@ class KiwiContainer {
   ///
   /// If [name] is set, removes the one registered for that name.
   void unregister<T>([String name]) {
-    assert(
-      silent || (_namedProviders[name]?.containsKey(T) ?? false),
-      'Failed to unregister `$T`:\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\nMake sure `$T` is added to your KiwiContainer and rerun flutter build',
-    );
+    if (!silent && !(_namedProviders[name]?.containsKey(T) ?? false)) {
+      throw KiwiError(
+          'Failed to unregister `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
+    }
     _namedProviders[name]?.remove(T);
   }
 
@@ -92,11 +93,10 @@ class KiwiContainer {
   ///  * [KiwiContainer.registerInstance] for register an instance.
   T resolve<T>([String name]) {
     Map<Type, _Provider<Object>> providers = _namedProviders[name];
-
-    assert(
-      silent || (providers?.containsKey(T) ?? false),
-      'Failed to resolve `$T`:\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\nMake sure `$T` is added to your KiwiContainer and rerun flutter build',
-    );
+    if (!silent && !(providers?.containsKey(T) ?? false)) {
+      throw KiwiError(
+          'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
+    }
     if (providers == null) {
       return null;
     }
@@ -119,10 +119,10 @@ class KiwiContainer {
   @visibleForTesting
   T resolveAs<S, T extends S>([String name]) {
     final obj = resolve<S>(name);
-    assert(
-      silent || (obj is T),
-      'Failed to resolve `$S` as `$T`${name == null ? '' : ' for the name `$name`'}\nMake sure `$T` is added to your KiwiContainer and rerun flutter build',
-    );
+    if (!silent && !(obj is T)) {
+      throw KiwiError(
+          'Failed to resolve `$S` as `$T`:\n\nThe type `$S` as `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
+    }
     return obj;
   }
 
@@ -136,13 +136,12 @@ class KiwiContainer {
   }
 
   void _setProvider<T>(String name, _Provider<T> provider) {
-    assert(
-      silent ||
-          (!_namedProviders.containsKey(name) ||
-              !_namedProviders[name].containsKey(T)),
-      'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}',
-    );
-
+    if (!silent &&
+        (_namedProviders.containsKey(name) &&
+            _namedProviders[name].containsKey(T))) {
+      throw KiwiError(
+          'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
+    }
     _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
         provider;
   }
