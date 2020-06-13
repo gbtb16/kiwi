@@ -196,7 +196,7 @@ part of 'test01.dart';
 
 class _$Injector extends Injector {
   void common() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
     container
         .registerFactory<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));
@@ -206,12 +206,12 @@ class _$Injector extends Injector {
   }
 
   void development() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ServiceC(c<ServiceA>(), c<ServiceB>()));
   }
 
   void production() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ServiceC.other(c<ServiceB>()));
   }
 }

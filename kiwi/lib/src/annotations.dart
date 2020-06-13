@@ -1,3 +1,5 @@
+import 'package:kiwi/kiwi.dart';
+
 /// An annotation that generates code for registering factories
 /// using the kiwi container.
 class Register {
@@ -29,7 +31,7 @@ class Register {
 
   /// The name under which the factory will be registered
   ///
-  /// You must provide the same name in [Container.resolve]
+  /// You must provide the same name in [KiwiContainer.resolve]
   /// to get the same factory.
   final String name;
 

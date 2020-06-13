@@ -15,8 +15,8 @@ abstract class CoffeeInjector {
   }
 
   void _configureInstances() {
-    Container container = Container();
-    container.registerInstance(new Model('DartCoffee', 'DripCoffeeStandard'));
+    final container = KiwiContainer();
+    container.registerInstance(Model('DartCoffee', 'DripCoffeeStandard'));
   }
 
   @Register.factory(PowerOutlet)
@@ -27,4 +27,4 @@ abstract class CoffeeInjector {
   void _configureFactories();
 }
 
-CoffeeInjector getCoffeeInjector() => new _$CoffeeInjector();
+CoffeeInjector getCoffeeInjector() => _$CoffeeInjector();

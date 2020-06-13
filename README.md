@@ -12,7 +12,9 @@ While using the generator, only constructor injection is supported.
 
 **IMPORTANT: Dart2 is required to use this package.**
 
-## Container and annotations
+**IMPORTANT: From 1.0.0 Container is removed. Use KiwiContainer instead. (better Flutter support)**
+
+## KiwiContainer and annotations
 
 [![Pub](https://img.shields.io/pub/v/kiwi.svg)](https://pub.dartlang.org/packages/kiwi)
 

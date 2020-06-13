@@ -8,7 +8,7 @@ part of 'test01.dart';
 
 class _$Injector extends Injector {
   void configure() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => Test());
     container.registerFactory((c) => Counter(c<Test>()));
     container.registerSingleton((c) => Counter(c<Test>()), name: 'display');

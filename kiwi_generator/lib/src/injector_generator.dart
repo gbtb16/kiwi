@@ -63,7 +63,8 @@ class InjectorGenerator extends Generator {
     return Method.returnsVoid((mb) => mb
       ..name = method.name
       ..body = Block((bb) => bb
-        ..statements.add(Code('final Container container = Container();'))
+        ..statements
+            .add(Code('final KiwiContainer container = KiwiContainer();'))
         ..statements.addAll(_generateRegisters(method))));
   }
 

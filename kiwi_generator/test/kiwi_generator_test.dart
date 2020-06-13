@@ -99,7 +99,7 @@ void main() async {
 const _outputSimpleFactory = r'''
 class _$Injector extends Injector {
   void configure() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ServiceA());
     container.registerFactory((c) => ServiceB());
     container.registerFactory((c) => ServiceB());
@@ -114,7 +114,7 @@ class _$Injector extends Injector {
 const _outputComplexFactory = r'''
 class _$Injector extends Injector {
   void configure() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ServiceA());
     container
         .registerFactory<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));
@@ -129,7 +129,7 @@ class _$Injector extends Injector {
 const _outputSimpleSingleton = r'''
 class _$Injector extends Injector {
   void configure() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
     container.registerSingleton((c) => ServiceB());
     container.registerSingleton((c) => ServiceB());
@@ -144,7 +144,7 @@ class _$Injector extends Injector {
 const _outputComplexSingleton = r'''
 class _$Injector extends Injector {
   void configure() {
-    final Container container = Container();
+    final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
     container
         .registerSingleton<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));

@@ -38,7 +38,7 @@ The core of **kiwi** is the `Container` class. This is where all your instances 
 The `Container` is implemented as a singleton, you can access the single instance like this:
 
 ```dart
-Container container = Container();
+KiwiContainer container = KiwiContainer();
 ```
 
 **Note:** I promise you, even if this is looking like a constructor, you will always end up with the same instance :wink:.
@@ -46,15 +46,7 @@ Container container = Container();
 If you want different containers, you can create scoped ones easily:
 
 ```dart
-Container container = Container.scoped();
-```
-
-**Important: If you want to use the `Container` class with Flutter code, you have to specify a library prefix:**
-
-```dart
-import 'package:kiwi/kiwi.dart' as kiwi;
-...
-kiwi.Container container = kiwi.Container();
+KiwiContainer container = KiwiContainer.scoped();
 ```
 
 It works like a lot of IoC containers: you can register a factory under a type, and then resolve the type to get a value.
@@ -103,7 +95,7 @@ By default factories are registered under the return type of the factory. If you
 container.registerFactory<Character, Sith>((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
-**Note:** the `c` parameter is the instance of the `Container`, we will see later how it can be useful.
+**Note:** the `c` parameter is the instance of the `KiwiContainer`, we will see later how it can be useful.
 
 #### Singletons
 
@@ -148,7 +140,7 @@ class ServiceB extends Service {
 ...
 // Registers a complex factory by resolving the dependency
 // when the type is resolved.
-Container container = Container();
+KiwiContainer conFtainer = KiwiContainer();
 container.registerFactory((c) => ServiceB(c.resolve<ServiceA>()));
 ```
 

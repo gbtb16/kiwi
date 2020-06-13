@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_example/test01.dart';
-import 'package:kiwi/kiwi.dart' as kiwi;
+import 'package:kiwi/kiwi.dart';
 
 void main() {
   setup();
@@ -29,13 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    setState(() {
-      var container = kiwi.Container();
-      var newCounter = container<Counter>();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,13 +38,21 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
             Text(
               'Counter instances:',
             ),
             Text(
-              '${kiwi.Container().resolve<Counter>('display').value}',
-              style: Theme.of(context).textTheme.display1,
+              KiwiContainer().resolve<Counter>('display').value.toString(),
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              KiwiContainer().resolve<Counter>().value.toString(),
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              KiwiContainer().resolve<Test>().toString(),
+              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
@@ -60,7 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
+  }
+
+  void _incrementCounter() {
+    setState(() => KiwiContainer().resolve<Counter>('display').add());
   }
 }

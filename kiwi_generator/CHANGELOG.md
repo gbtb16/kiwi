@@ -1,3 +1,7 @@
+## 1.0.0
+### BREAKING CHANGE
+- renamed `Container` to `KiwiContainer` so it is easier for Flutter devs to import the KiwiContainer (kiwi: 1.0.0 required)
+
 ## 0.5.2
 ### Fixed
 - Updated homepage
