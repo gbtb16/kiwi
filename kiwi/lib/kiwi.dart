@@ -1,4 +1,4 @@
 library kiwi;
 
-export 'src/container.dart';
+export 'src/kiwi_container.dart';
 export 'src/annotations.dart';

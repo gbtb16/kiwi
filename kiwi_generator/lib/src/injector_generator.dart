@@ -10,8 +10,7 @@ import 'package:dart_style/dart_style.dart';
 
 import 'package:kiwi/kiwi.dart';
 
-const TypeChecker _registerTypeChecker =
-    const TypeChecker.fromRuntime(Register);
+const TypeChecker _registerTypeChecker = TypeChecker.fromRuntime(Register);
 
 bool _isRegisterMethod(MethodElement method) =>
     method.returnType.isVoid &&
