@@ -140,7 +140,7 @@ class ServiceB extends Service {
 ...
 // Registers a complex factory by resolving the dependency
 // when the type is resolved.
-KiwiContainer conFtainer = KiwiContainer();
+KiwiContainer container = KiwiContainer();
 container.registerFactory((c) => ServiceB(c.resolve<ServiceA>()));
 ```
 
