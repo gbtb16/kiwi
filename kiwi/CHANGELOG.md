@@ -1,3 +1,7 @@
+## 0.3.3
+### Fixed
+- Updated homepage
+
 ## 0.3.2
 ### Fixed
 - Fixed pub.dev score
