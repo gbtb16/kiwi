@@ -45,6 +45,14 @@ void main() {
       expect(container.resolve<Character>(), person);
     });
 
+    test('instances should be resolveAs', () {
+      final sith = Sith('Anakin', 'Skywalker', 'DartVader');
+      container.registerSingleton<Character, Sith>((c) => sith);
+
+      expect(container.resolveAs<Character, Sith>(), sith);
+      expect(container.resolveAs<Character, Sith>('named'), null);
+    });
+
     test('container should resolve when called', () {
       var person = Character('Anakin', 'Skywalker');
       container.registerInstance(5);
@@ -188,6 +196,26 @@ void main() {
             (f) => f.message,
             'message',
             'Failed to resolve `int`:\nThe type `int` was not registered for the name `name`\nMake sure `int` is added to your KiwiContainer and rerun flutter build',
+          )));
+    });
+    test('values should exist when resolving as', () {
+      var person = Character('Anakin', 'Skywalker');
+      container.registerInstance(person);
+      container.registerInstance(person, name: 'named');
+      expect(
+          () => container.resolveAs<Character, Sith>(),
+          throwsA(TypeMatcher<AssertionError>().having(
+            (f) => f.message,
+            'message',
+            'Failed to resolve `Character` as `Sith`\nMake sure `Sith` is added to your KiwiContainer and rerun flutter build',
+          )));
+
+      expect(
+          () => container.resolveAs<Character, Sith>('named'),
+          throwsA(TypeMatcher<AssertionError>().having(
+            (f) => f.message,
+            'message',
+            'Failed to resolve `Character` as `Sith` for the name `named`\nMake sure `Sith` is added to your KiwiContainer and rerun flutter build',
           )));
     });
   });

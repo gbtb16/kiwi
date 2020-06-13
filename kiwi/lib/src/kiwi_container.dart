@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// Signature for a builder which creates an object of type [T].
 typedef T Factory<T>(KiwiContainer container);
 
@@ -100,6 +102,28 @@ class KiwiContainer {
     }
 
     return providers[T]?.get(this);
+  }
+
+  /// Attemps to resolve the type [S] and tries to cast it to T.
+  ///
+  /// If [name] is set, the instance or builder registered with this
+  /// name will be get.
+  ///
+  /// This method is only available for Testing.
+  ///
+  /// See also:
+  ///
+  ///  * [KiwiContainer.resolve] for resolving the object itself.
+  ///  * [KiwiContainer.registerFactory] for register a builder function.
+  ///  * [KiwiContainer.registerInstance] for register an instance.
+  @visibleForTesting
+  T resolveAs<S, T extends S>([String name]) {
+    final obj = resolve<S>(name);
+    assert(
+      silent || (obj is T),
+      'Failed to resolve `$S` as `$T`${name == null ? '' : ' for the name `$name`'}\nMake sure `$T` is added to your KiwiContainer and rerun flutter build',
+    );
+    return obj;
   }
 
   T call<T>([String name]) => resolve<T>(name);
