@@ -34,9 +34,7 @@ void main() {
       var person = Character('Anakin', 'Skywalker');
       container.registerInstance(5);
       container.registerInstance(6, name: 'named');
-      container.registerInstance<num>(
-        7,
-      );
+      container.registerInstance<num>(7);
       container.registerInstance(person);
 
       expect(container.resolve<int>(), 5);
