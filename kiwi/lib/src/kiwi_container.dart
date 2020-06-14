@@ -17,10 +17,10 @@ class KiwiContainer {
 
   final Map<String, Map<Type, _Provider<Object>>> _namedProviders;
 
-  /// Whether ignoring assertion errors in the following cases:
+  /// Whether ignoring KiwiErrors in the following cases:
   /// * if you register the same type under the same name a second time.
-  /// * if you try to resolve or unregister a type that was not
-  /// previously registered.
+  /// * if you try to resolve a type that was not previously registered.
+  /// * if you try to unregister a type that was not previously registered.
   ///
   /// Defaults to false.
   bool silent = false;

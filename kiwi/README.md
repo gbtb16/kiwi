@@ -34,8 +34,8 @@ import 'package:kiwi/kiwi.dart';
 
 ## Usage
 
-The core of **kiwi** is the `Container` class. This is where all your instances and factories are stored.
-The `Container` is implemented as a singleton, you can access the single instance like this:
+The core of **kiwi** is the `KiwiContainer` class. This is where all your instances and factories are stored.
+The `KiwiContainer` is implemented as a singleton, you can access the single instance like this:
 
 ```dart
 KiwiContainer container = KiwiContainer();
@@ -131,7 +131,7 @@ If it was registered with a superclass under a name, you can get its value like 
 Sith theSith = container.resolveAs<Character, Sith>('DartVader');
 ```
 
-The `Container` is a callable class. You can also resolve a type like that:
+The `KiwiContainer` is a callable class. You can also resolve a type like that:
 
 ```dart
 Sith theSith = container<Sith>('DartVader');
@@ -178,14 +178,15 @@ You can remove all the registered types by calling the `clear` method:
 container.clear();
 ```
 
-## Ignoring assertion errors in development mode
+## Ignoring KiwiErrors in development mode
 
-By default **kiwi** throws an `AssertionError` in the following cases:
+By default **kiwi** throws an `KiwiError` in the following cases:
 
 * if you register the same type under the same name a second time.
-* if you try to resolve or unregister a type that was not previously registered.
+* if you try to resolve a type that was not previously registered.
+* if you try to unregister a type that was not previously registered.
 
-This helps you to prevent potential errors in production, however you might want to ignore these assertion errors. To do this you can set `true` to the `silent` property of the `Container`:
+This helps you to prevent potential errors in production, however you might want to ignore these KiwiErrors. To do this you can set `true` to the `silent` property of the `KiwiContainer`:
 
 ```dart
 container.silent = true;
