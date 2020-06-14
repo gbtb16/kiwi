@@ -2,7 +2,7 @@
 
 [![travis](https://img.shields.io/travis/vanlooverenkoen/kiwi.svg)](https://travis-ci.org/vanlooverenkoen/kiwi)
 
-![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
+![Logo](https://raw.githubusercontent.com/vanlooverenkoen/kiwi/master/images/logo.png)
 
 A simple yet efficient IoC container for Dart and Flutter, coupled with a powerful generator to allow you to write less code.
 

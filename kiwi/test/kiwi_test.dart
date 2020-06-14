@@ -34,7 +34,7 @@ void main() {
       var person = Character('Anakin', 'Skywalker');
       container.registerInstance(5);
       container.registerInstance(6, name: 'named');
-      container.registerInstance<num, int>(
+      container.registerInstance<num>(
         7,
       );
       container.registerInstance(person);
@@ -48,7 +48,7 @@ void main() {
 
     test('instances should be resolveAs', () {
       final sith = Sith('Anakin', 'Skywalker', 'DartVader');
-      container.registerSingleton<Character, Sith>((c) => sith);
+      container.registerSingleton<Character>((c) => sith);
 
       expect(container.resolveAs<Character, Sith>(), sith);
       expect(container.resolveAs<Character, Sith>('named'), null);
@@ -58,9 +58,7 @@ void main() {
       var person = Character('Anakin', 'Skywalker');
       container.registerInstance(5);
       container.registerInstance(6, name: 'named');
-      container.registerInstance<num, int>(
-        7,
-      );
+      container.registerInstance<num>(7);
       container.registerInstance(person);
 
       expect(container<int>(), 5);
@@ -82,14 +80,18 @@ void main() {
       container.registerSingleton((c) => 5);
       container.registerFactory(
           (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
-      container.registerFactory<Character, Sith>(
-          (c) => const Character('Anakin', 'Skywalker'));
+      container.registerFactory((c) => const Character('Anakin', 'Skywalker'));
+      container.registerFactory<Character>(
+          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'),
+          name: 'named');
 
       expect(container.resolve<int>(), 5);
       expect(container.resolve<Sith>(),
           const Sith('Anakin', 'Skywalker', 'DartVader'));
       expect(container.resolve<Character>(),
           const Character('Anakin', 'Skywalker'));
+      expect(container.resolve<Character>('named'),
+          const Sith('Anakin', 'Skywalker', 'DartVader'));
     });
 
     test('builders should always be created', () {
@@ -103,7 +105,7 @@ void main() {
       container.registerSingleton((c) => 5);
       container.registerSingleton(
           (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
-      container.registerSingleton<Character, Sith>(
+      container.registerSingleton<Character>(
           (c) => const Character('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);

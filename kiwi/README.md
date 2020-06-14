@@ -3,7 +3,7 @@
 [![Pub](https://img.shields.io/pub/v/kiwi.svg)](https://pub.dartlang.org/packages/kiwi)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/RomainRastel)
 
-![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
+![Logo](https://raw.githubusercontent.com/vanlooverenkoen/kiwi/master/images/logo.png)
 
 A simple yet efficient IoC container for Dart and Flutter.
 
@@ -72,7 +72,7 @@ container.registerInstance(Sith('Anakin', 'Skywalker'), name: 'DartVader');
 By default instances are registered under their type. If you want to register an instance under a supertype, you have to specify both of them:
 
 ```dart
-container.registerInstance<Character, Sith>(Sith('Anakin', 'Skywalker'), name: 'DartVader');
+container.registerInstance<Character>(Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
 In the above example `Character` is a supertype of `Sith`.
@@ -92,7 +92,7 @@ container.registerFactory((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader')
 By default factories are registered under the return type of the factory. If you want to register an factory under a supertype, you have to specify both of them:
 
 ```dart
-container.registerFactory<Character, Sith>((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader');
+container.registerFactory<Character>((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
 **Note:** the `c` parameter is the instance of the `KiwiContainer`, we will see later how it can be useful.
@@ -117,6 +117,18 @@ If it was registered under a name, you can get its value like this:
 
 ```dart
 Sith theSith = container.resolve<Sith>('DartVader');
+```
+
+If it was registered with a superclass, you can get its value like this:
+
+```dart
+Sith theSith = container.resolveAs<Character, Sith>();
+```
+
+If it was registered with a superclass under a name, you can get its value like this:
+
+```dart
+Sith theSith = container.resolveAs<Character, Sith>('DartVader');
 ```
 
 The `Container` is a callable class. You can also resolve a type like that:

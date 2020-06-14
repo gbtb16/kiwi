@@ -3,7 +3,7 @@
 [![Pub](https://img.shields.io/pub/v/kiwi_generator.svg)](https://pub.dartlang.org/packages/kiwi_generator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/RomainRastel)
 
-![Logo](https://raw.githubusercontent.com/letsar/kiwi/master/images/logo.png)
+![Logo](https://raw.githubusercontent.com/vanlooverenkoen/kiwi/master/images/logo.png)
 
 Generates dependency injection code using the [kiwi](https://github.com/letsar/kiwi) package to reduce development time.
 
@@ -199,7 +199,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
     container
-        .registerFactory<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));
+        .registerFactory<Service>((c) => ServiceB(c<ServiceA>()));
     container.registerFactory((c) => ServiceB(c<ServiceA>()), name: 'factoryB');
     container.registerFactory(
         (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));

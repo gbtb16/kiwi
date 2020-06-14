@@ -87,7 +87,7 @@ class InjectorGenerator extends Generator {
 
     final String className = concreteType.getDisplayString();
     final String typeParameters =
-        concrete == null ? '' : '<${type.getDisplayString()}, $className>';
+        concrete == null ? '' : '<${type.getDisplayString()}>';
 
     final String nameArgument = name == null ? '' : ", name: '$name'";
     final String constructorName =
