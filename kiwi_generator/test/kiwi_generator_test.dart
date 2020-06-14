@@ -1,3 +1,4 @@
+import 'package:kiwi_generator/src/model/kiwi_generator_error.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
@@ -29,10 +30,10 @@ void main() async {
     test('unknown constructor', () async {
       await testKiwiException(
         'unknown_ctor_factory',
-        const TypeMatcher<ArgumentError>().having(
-          (f) => f.message,
-          'message',
-          'the constructor Service.unknown does not exist',
+        const TypeMatcher<KiwiGeneratorError>().having(
+          (f) => f.toString(),
+          'toString()',
+          '\nKiwiGeneratorError\n\nthe constructor Service.unknown does not exist\n\n',
         ),
       );
     });
@@ -63,10 +64,10 @@ void main() async {
     test('unknown constructor', () async {
       await testKiwiException(
         'unknown_ctor_singleton',
-        const TypeMatcher<ArgumentError>().having(
-          (f) => f.message,
-          'message',
-          'the constructor Service.unknown does not exist',
+        const TypeMatcher<KiwiGeneratorError>().having(
+          (f) => f.toString(),
+          'toString()',
+          '\nKiwiGeneratorError\n\nthe constructor Service.unknown does not exist\n\n',
         ),
       );
     });

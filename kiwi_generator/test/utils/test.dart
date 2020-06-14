@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 import 'analysis.dart';
 
-final InjectorGenerator _injectorGenerator = const InjectorGenerator();
+final KiwiInjectorGenerator _injectorGenerator = const KiwiInjectorGenerator();
 
 Future<void> testKiwi(
   String fileName,

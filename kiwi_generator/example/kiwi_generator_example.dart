@@ -7,6 +7,21 @@ abstract class Injector {
   @Register.factory(Service, from: ServiceB)
   @Register.factory(ServiceB, name: 'factoryB')
   @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
+  void configureWithScopedContainer(KiwiContainer scopedContainer);
+
+  @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
+  void configureWithScopedContainer2([KiwiContainer scopedContainer]);
+
+  @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
+  void configureWithScopedContainer3({KiwiContainer scopedContainer});
+
+  @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
+  void configureWithScopedContainer4({KiwiContainer scopedContainer});
+
+  @Register.singleton(ServiceA)
+  @Register.factory(Service, from: ServiceB)
+  @Register.factory(ServiceB, name: 'factoryB')
+  @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
   void configure();
 }
 
@@ -20,6 +35,7 @@ class ServiceB extends Service {
 
 class ServiceC extends Service {
   ServiceC(ServiceA serviceA, ServiceB serviceB);
+
   ServiceC.other(ServiceB serviceA);
 }
 

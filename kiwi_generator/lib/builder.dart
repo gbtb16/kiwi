@@ -10,10 +10,10 @@ library builder;
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'src/injector_generator.dart';
+import 'src/kiwi_injector_generator.dart';
 
 Builder buildKiwi([BuilderOptions options]) {
   return SharedPartBuilder(const [
-    InjectorGenerator(),
+    KiwiInjectorGenerator(),
   ], 'kiwi');
 }
