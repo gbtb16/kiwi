@@ -21,7 +21,9 @@ class Counter {
   void add() => _value++;
 }
 
-void setup() {
-  var injector = _$Injector();
-  injector.configure();
+class Di {
+  static void setup() {
+    var injector = _$Injector();
+    injector.configure();
+  }
 }
