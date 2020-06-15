@@ -1,3 +1,7 @@
+## 2.0.0
+### BREAKING CHANGE
+- \#9 Removed the unused T generic for some functions
+
 ## 1.1.0
 ### Added
 - \#34 resolveAs<S,T>() added for testing only

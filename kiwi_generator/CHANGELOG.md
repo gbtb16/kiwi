@@ -1,3 +1,9 @@
+## 2.0.0
+### BREAKING CHANGE
+- \#9 Removed the unused T generic for some functions
+### Added
+- \#19 added support for scopes with the kiwi_generator
+
 ## 1.0.0
 ### BREAKING CHANGE
 - renamed `Container` to `KiwiContainer` so it is easier for Flutter devs to import the KiwiContainer (kiwi: 1.0.0 required)
