@@ -10,8 +10,7 @@ class _$Injector extends Injector {
   void configureWithScopedContainer(KiwiContainer scopedContainer) {
     final KiwiContainer container = scopedContainer ?? KiwiContainer();
     container.registerSingleton((c) => ServiceA());
-    container
-        .registerFactory<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));
+    container.registerFactory<Service>((c) => ServiceB(c<ServiceA>()));
     container.registerFactory((c) => ServiceB(c<ServiceA>()), name: 'factoryB');
     container.registerFactory(
         (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));

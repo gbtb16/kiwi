@@ -3,7 +3,7 @@
 part of 'test01.dart';
 
 // **************************************************************************
-// InjectorGenerator
+// KiwiInjectorGenerator
 // **************************************************************************
 
 class _$Injector extends Injector {
