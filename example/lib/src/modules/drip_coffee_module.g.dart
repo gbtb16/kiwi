@@ -3,7 +3,7 @@
 part of 'drip_coffee_module.dart';
 
 // **************************************************************************
-// InjectorGenerator
+// KiwiInjectorGenerator
 // **************************************************************************
 
 class _$CoffeeInjector extends CoffeeInjector {

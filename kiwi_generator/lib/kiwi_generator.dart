@@ -1,3 +1,3 @@
 library kiwi_generator;
 
-export 'src/injector_generator.dart';
+export 'src/kiwi_injector_generator.dart';
