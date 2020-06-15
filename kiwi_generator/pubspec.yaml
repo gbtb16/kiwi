@@ -15,6 +15,7 @@ dependencies:
   kiwi: ^2.0.0
   path: ^1.6.4
   source_gen: ^0.9.5
+  built_collection: ^4.3.2
 
 dev_dependencies:
   build_runner: ^1.10.0
