@@ -72,7 +72,7 @@ container.registerInstance(Sith('Anakin', 'Skywalker'), name: 'DartVader');
 By default instances are registered under their type. If you want to register an instance under a supertype, you have to specify both of them:
 
 ```dart
-container.registerInstance<Character, Sith>(Sith('Anakin', 'Skywalker'), name: 'DartVader');
+container.registerInstance<Character>(Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
 In the above example `Character` is a supertype of `Sith`.
@@ -92,7 +92,7 @@ container.registerFactory((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader')
 By default factories are registered under the return type of the factory. If you want to register an factory under a supertype, you have to specify both of them:
 
 ```dart
-container.registerFactory<Character, Sith>((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader');
+container.registerFactory<Character>((c) => Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
 **Note:** the `c` parameter is the instance of the `KiwiContainer`, we will see later how it can be useful.
