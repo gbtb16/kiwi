@@ -103,10 +103,9 @@ class _$Injector extends Injector {
     container.registerFactory((c) => ServiceA());
     container.registerFactory((c) => ServiceB());
     container.registerFactory((c) => ServiceB());
-    container.registerFactory<Service, ServiceB>((c) => ServiceB());
+    container.registerFactory<Service>((c) => ServiceB());
     container.registerFactory((c) => ServiceA(), name: 'factoryA');
-    container.registerFactory<Service, ServiceB>((c) => ServiceB(),
-        name: 'factoryB');
+    container.registerFactory<Service>((c) => ServiceB(), name: 'factoryB');
   }
 }
 ''';
@@ -116,8 +115,7 @@ class _$Injector extends Injector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ServiceA());
-    container
-        .registerFactory<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));
+    container.registerFactory<Service>((c) => ServiceB(c<ServiceA>()));
     container.registerFactory((c) => ServiceB(c<ServiceA>()), name: 'factoryB');
     container.registerFactory(
         (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));
@@ -133,10 +131,9 @@ class _$Injector extends Injector {
     container.registerSingleton((c) => ServiceA());
     container.registerSingleton((c) => ServiceB());
     container.registerSingleton((c) => ServiceB());
-    container.registerSingleton<Service, ServiceB>((c) => ServiceB());
+    container.registerSingleton<Service>((c) => ServiceB());
     container.registerSingleton((c) => ServiceA(), name: 'singletonA');
-    container.registerSingleton<Service, ServiceB>((c) => ServiceB(),
-        name: 'singletonB');
+    container.registerSingleton<Service>((c) => ServiceB(), name: 'singletonB');
   }
 }
 ''';
@@ -146,8 +143,7 @@ class _$Injector extends Injector {
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
-    container
-        .registerSingleton<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));
+    container.registerSingleton<Service>((c) => ServiceB(c<ServiceA>()));
     container.registerSingleton((c) => ServiceB(c<ServiceA>()),
         name: 'factoryB');
     container.registerSingleton(

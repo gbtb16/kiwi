@@ -11,10 +11,9 @@ class _$CoffeeInjector extends CoffeeInjector {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => PowerOutlet());
     container.registerSingleton((c) => Electricity(c<PowerOutlet>()));
-    container.registerSingleton<Heater, ElectricHeater>(
-        (c) => ElectricHeater(c<Electricity>()));
-    container.registerSingleton<Pump, Thermosiphon>(
-        (c) => Thermosiphon(c<Heater>()));
+    container
+        .registerSingleton<Heater>((c) => ElectricHeater(c<Electricity>()));
+    container.registerSingleton<Pump>((c) => Thermosiphon(c<Heater>()));
     container.registerFactory(
         (c) => CoffeeMaker(c<Heater>(), c<Pump>(), c<Model>()));
   }

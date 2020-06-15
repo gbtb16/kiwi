@@ -199,7 +199,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
     container
-        .registerFactory<Service, ServiceB>((c) => ServiceB(c<ServiceA>()));
+        .registerFactory<Service>((c) => ServiceB(c<ServiceA>()));
     container.registerFactory((c) => ServiceB(c<ServiceA>()), name: 'factoryB');
     container.registerFactory(
         (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));

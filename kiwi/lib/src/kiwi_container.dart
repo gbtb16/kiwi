@@ -27,13 +27,12 @@ class KiwiContainer {
 
   /// Registers an instance into the container.
   ///
-  /// An instance of type [T] can be registered with a
-  /// supertype [S] if specified.
+  /// An instance of type [S] can be registered.
   ///
   /// If [name] is set, the instance will be registered under this name.
   /// To retrieve the same instance, the same name should be provided
   /// to [KiwiContainer.resolve].
-  void registerInstance<S, T extends S>(
+  void registerInstance<S>(
     S instance, {
     String name,
   }) {
@@ -42,13 +41,12 @@ class KiwiContainer {
 
   /// Registers a factory into the container.
   ///
-  /// A factory returning an object of type [T] can be registered with a
-  /// supertype [S] if specified.
+  /// A factory returning an object of type [S] can be registered.
   ///
   /// If [name] is set, the factory will be registered under this name.
   /// To retrieve the same factory, the same name should be provided
   /// to [KiwiContainer.resolve].
-  void registerFactory<S, T extends S>(
+  void registerFactory<S>(
     Factory<S> factory, {
     String name,
   }) {
@@ -58,13 +56,12 @@ class KiwiContainer {
   /// Registers a factory that will be called only only when
   /// accessing it for the first time, into the container.
   ///
-  /// A factory returning an object of type [T] can be registered with a
-  /// supertype [S] if specified.
+  /// A factory returning an object of type [S] can be registered.
   ///
   /// If [name] is set, the factory will be registered under this name.
   /// To retrieve the same factory, the same name should be provided
   /// to [KiwiContainer.resolve].
-  void registerSingleton<S, T extends S>(
+  void registerSingleton<S>(
     Factory<S> factory, {
     String name,
   }) {

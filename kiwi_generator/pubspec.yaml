@@ -12,7 +12,9 @@ dependencies:
   build_config: ^0.4.2
   code_builder: ^3.3.0
   dart_style: ^1.3.6
-  kiwi: ^1.0.0
+#  kiwi: ^1.0.0
+  kiwi:
+    path: ../kiwi
   path: ^1.6.4
   source_gen: ^0.9.5
 
