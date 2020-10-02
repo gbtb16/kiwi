@@ -1,3 +1,7 @@
+## 2.0.1
+### Fixed
+- \#49 Fixed a bug that prepares for nullability. In this release we do not yet support nullability. But #51 is tracking nullability support
+
 ## 2.0.0
 ### BREAKING CHANGE
 - \#9 Removed the unused T generic for some functions
