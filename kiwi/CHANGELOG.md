@@ -1,3 +1,7 @@
+## 2.0.1
+### Fixed
+- Updated dependencies
+
 ## 2.0.0
 ### BREAKING CHANGE
 - \#9 Removed the unused T generic for some functions

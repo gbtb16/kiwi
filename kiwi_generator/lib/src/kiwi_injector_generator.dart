@@ -78,7 +78,8 @@ class KiwiInjectorGenerator extends Generator {
     final scopedContainerParam = method.parameters.singleWhere(
         (element) =>
             element.name == 'scopedContainer' &&
-            element.type.getDisplayString() == 'KiwiContainer',
+            element.type.getDisplayString(withNullability: false) ==
+                'KiwiContainer',
         orElse: () => null);
 
     return Method.returnsVoid((mb) {
@@ -132,9 +133,11 @@ class KiwiInjectorGenerator extends Generator {
     final DartType concrete = registerObject.getField('from').toTypeValue();
     final DartType concreteType = concrete ?? type;
 
-    final String className = concreteType.getDisplayString();
-    final String typeParameters =
-        concrete == null ? '' : '<${type.getDisplayString()}>';
+    final String className =
+        concreteType.getDisplayString(withNullability: false);
+    final String typeParameters = concrete == null
+        ? ''
+        : '<${type.getDisplayString(withNullability: false)}>';
 
     final String nameArgument = name == null ? '' : ", name: '$name'";
     final String constructorName =
@@ -187,7 +190,7 @@ class KiwiInjectorGenerator extends Generator {
   ) {
     final String name = resolvers == null ? null : resolvers[parameter.type];
     final String nameArgument = name == null ? '' : "'$name'";
-    return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.getDisplayString()}>($nameArgument)';
+    return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.getDisplayString(withNullability: false)}>($nameArgument)';
   }
 
   Map<DartType, String> _computeResolvers(
