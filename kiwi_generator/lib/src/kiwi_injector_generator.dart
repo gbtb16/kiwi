@@ -30,12 +30,12 @@ class KiwiInjectorGenerator extends Generator {
           .where((c) =>
               c.isAbstract &&
               c.methods.where((m) => m.isAbstract).isNotEmpty &&
-              c.methods
-                  .where((m) => m.isAbstract)
-                  .every((m) => _isRegisterMethod(m)))
+              c.methods.where((m) => m.isAbstract && _isRegisterMethod(m)).isNotEmpty)
           .toList();
 
       if (injectors.isEmpty) {
+        print(
+            'We found no injectors. So nothing could be generated. Review your code if there should be generated code.');
         return null;
       }
       final file = Library((lb) => lb
@@ -65,7 +65,7 @@ class KiwiInjectorGenerator extends Generator {
 
   List<Method> _generateInjectorMethods(ClassElement injector) {
     return injector.methods
-        .where((m) => m.isAbstract && _isRegisterMethod(m))
+        .where((m) => m.isAbstract)
         .map((m) => _generateInjectorMethod(m))
         .toList();
   }
@@ -107,13 +107,20 @@ class KiwiInjectorGenerator extends Generator {
         throw KiwiGeneratorError(
             'Only 1 parameter is supported `KiwiContainer scopedContainer`, ${method.name} contains ${method.parameters.length} param(s) and `KiwiContainer scopedContainer` is not included');
       }
-      return mb
+      final registers = _generateRegisters(method);
+      mb
         ..name = method.name
-        ..annotations.add(refer('override'))
-        ..body = Block((bb) => bb
-          ..statements.add(Code(
-              'final KiwiContainer container = ${scopedContainer}KiwiContainer();'))
-          ..statements.addAll(_generateRegisters(method)));
+        ..annotations.add(refer('override'));
+      if (registers.isEmpty) {
+        mb..body = Block();
+      } else {
+        mb
+          ..body = Block((bb) => bb
+            ..statements.add(Code(
+                'final KiwiContainer container = ${scopedContainer}KiwiContainer();'))
+            ..statements.addAll(registers));
+      }
+      return mb;
     });
   }
 

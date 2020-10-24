@@ -47,4 +47,7 @@ class _$Injector extends Injector {
     container.registerFactory(
         (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));
   }
+
+  @override
+  void methodWithoutAnnotations() {}
 }

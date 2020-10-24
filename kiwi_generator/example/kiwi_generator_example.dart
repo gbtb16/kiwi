@@ -23,6 +23,10 @@ abstract class Injector {
   @Register.factory(ServiceB, name: 'factoryB')
   @Register.factory(ServiceC, resolvers: {ServiceB: 'factoryB'})
   void configure();
+
+  void methodWithoutAnnotations();
+
+  void configureInjector() {}
 }
 
 class Service {}
