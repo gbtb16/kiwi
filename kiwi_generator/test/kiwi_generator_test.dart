@@ -20,6 +20,13 @@ void main() async {
       );
     });
 
+    test('abstract class without abstract method', () async {
+      await testKiwi(
+        'complex_factory_with_abstract_method_without_register_annotation',
+        _outputComplexFactoryWithAbstractMethodWithoutAnnotation,
+      );
+    });
+
     test('null concrete', () async {
       await testKiwiException(
         'null_concrete_factory',
@@ -124,6 +131,24 @@ class _$Injector extends Injector {
         (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));
     container.registerFactory((c) => ServiceC.other(c<ServiceB>()));
   }
+}
+''';
+
+const _outputComplexFactoryWithAbstractMethodWithoutAnnotation = r'''
+class _$Injector extends Injector {
+  @override
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) => ServiceA());
+    container.registerFactory<Service>((c) => ServiceB(c<ServiceA>()));
+    container.registerFactory((c) => ServiceB(c<ServiceA>()), name: 'factoryB');
+    container.registerFactory(
+        (c) => ServiceC(c<ServiceA>(), c<ServiceB>('factoryB')));
+    container.registerFactory((c) => ServiceC.other(c<ServiceB>()));
+  }
+
+  @override
+  void abstractMethodWithoutAnnotation() {}
 }
 ''';
 
