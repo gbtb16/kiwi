@@ -1,19 +1,18 @@
 name: example
 description: A sample command-line application as an example for kiwi.
 version: 0.1.0
-author: Romain Rastel <lets4r@gmail.com>
-homepage: https://github.com/letsar/kiwi
+homepage: https://github.com/vanlooverenkoen/kiwi
 
 environment:
   sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
-  kiwi: ^2.0.1
+  kiwi: ^2.1.0
 
 dev_dependencies:
   test: ^1.15.4
   build_runner: ^1.10.3
-  kiwi_generator: ^2.0.1
+  kiwi_generator: ^2.1.0
 
 dependency_overrides:
   kiwi:
