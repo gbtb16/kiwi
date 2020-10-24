@@ -36,8 +36,6 @@ class KiwiInjectorGenerator extends Generator {
           .toList();
 
       if (injectors.isEmpty) {
-        print(
-            'We found no injectors. So nothing could be generated. Review your code if there should be generated code.');
         return null;
       }
       final file = Library((lb) => lb
