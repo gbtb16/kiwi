@@ -1,11 +1,10 @@
 # kiwi_generator
 
 [![Pub](https://img.shields.io/pub/v/kiwi_generator.svg)](https://pub.dartlang.org/packages/kiwi_generator)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/RomainRastel)
 
 ![Logo](https://raw.githubusercontent.com/vanlooverenkoen/kiwi/master/images/logo.png)
 
-Generates dependency injection code using the [kiwi](https://github.com/letsar/kiwi) package to reduce development time.
+Generates dependency injection code using the [kiwi](https://github.com/vanlooverenkoen/kiwi) package to reduce development time.
 
 ## Configuration
 
@@ -219,4 +218,4 @@ class _$Injector extends Injector {
 
 ## Changelog
 
-Please see the [Changelog](https://github.com/letsar/kiwi/blob/master/kiwi_generator/CHANGELOG.md) page to know what's recently changed.
+Please see the [Changelog](https://github.com/vanlooverenkoen/kiwi/blob/master/kiwi_generator/CHANGELOG.md) page to know what's recently changed.
