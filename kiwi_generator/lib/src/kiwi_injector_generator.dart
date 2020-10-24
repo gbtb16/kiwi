@@ -30,7 +30,9 @@ class KiwiInjectorGenerator extends Generator {
           .where((c) =>
               c.isAbstract &&
               c.methods.where((m) => m.isAbstract).isNotEmpty &&
-              c.methods.where((m) => m.isAbstract && _isRegisterMethod(m)).isNotEmpty)
+              c.methods
+                  .where((m) => m.isAbstract && _isRegisterMethod(m))
+                  .isNotEmpty)
           .toList();
 
       if (injectors.isEmpty) {
