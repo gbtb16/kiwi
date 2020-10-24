@@ -7,6 +7,7 @@ part of 'test01.dart';
 // **************************************************************************
 
 class _$Injector extends Injector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => Test());

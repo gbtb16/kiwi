@@ -8,13 +8,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  kiwi:
-    path: ../kiwi/
+  kiwi: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^1.10.3
+  kiwi_generator: ^2.0.1
+
+dependency_overrides:
+  kiwi:
+    path: ../kiwi/
   kiwi_generator:
     path: ../kiwi_generator/
 
