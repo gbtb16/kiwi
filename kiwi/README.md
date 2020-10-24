@@ -69,7 +69,8 @@ You can also give a name to a specific instance:
 container.registerInstance(Sith('Anakin', 'Skywalker'), name: 'DartVader');
 ```
 
-By default instances are registered under their type. If you want to register an instance under a supertype, you have to specify both of them:
+By default instances are registered under their type. If you want to register an instance under a supertype: 
+you have only need to add the super type in the generics. The subtype will be detected automatically:
 
 ```dart
 container.registerInstance<Character>(Sith('Anakin', 'Skywalker'), name: 'DartVader');
