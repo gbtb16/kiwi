@@ -1,4 +1,8 @@
 ## [2.1.0] - 2020-10-24
+### Updated
+- Description to make the kiwi package easy to find in pub.dev
+
+## [2.1.0] - 2020-10-24
 ### Added
 - No response bot to git
 - Android v2 embedding for the example project

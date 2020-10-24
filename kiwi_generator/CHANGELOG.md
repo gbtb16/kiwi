@@ -1,5 +1,9 @@
 ## [2.1.0] - 2020-10-24
 ### Updated
+- Kiwi version to 2.1.1
+
+## [2.1.0] - 2020-10-24
+### Updated
 - Updated the documentation for the use of subclasses & subclasses with generics
 - Updated dependencies
 ### Added
