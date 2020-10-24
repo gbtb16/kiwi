@@ -1,0 +1,5 @@
+daysUntilClose: 14
+responseRequiredLabel: "waiting for customer response"
+closeComment: >
+This issue has been automatically closed because there has been no response.
+If there is extra information in the future this ticket will be reopenend.
