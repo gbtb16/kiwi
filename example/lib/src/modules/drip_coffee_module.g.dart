@@ -7,6 +7,7 @@ part of 'drip_coffee_module.dart';
 // **************************************************************************
 
 class _$CoffeeInjector extends CoffeeInjector {
+  @override
   void _configureFactories() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => PowerOutlet());

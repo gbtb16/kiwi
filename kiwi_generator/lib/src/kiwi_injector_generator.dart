@@ -109,6 +109,7 @@ class KiwiInjectorGenerator extends Generator {
       }
       return mb
         ..name = method.name
+        ..annotations.add(refer('override'))
         ..body = Block((bb) => bb
           ..statements.add(Code(
               'final KiwiContainer container = ${scopedContainer}KiwiContainer();'))

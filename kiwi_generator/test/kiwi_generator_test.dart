@@ -99,6 +99,7 @@ void main() async {
 
 const _outputSimpleFactory = r'''
 class _$Injector extends Injector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ServiceA());
@@ -113,6 +114,7 @@ class _$Injector extends Injector {
 
 const _outputComplexFactory = r'''
 class _$Injector extends Injector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ServiceA());
@@ -127,6 +129,7 @@ class _$Injector extends Injector {
 
 const _outputSimpleSingleton = r'''
 class _$Injector extends Injector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
@@ -141,6 +144,7 @@ class _$Injector extends Injector {
 
 const _outputComplexSingleton = r'''
 class _$Injector extends Injector {
+  @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => ServiceA());
