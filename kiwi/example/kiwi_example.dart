@@ -4,7 +4,7 @@ main() {
   KiwiContainer container = KiwiContainer();
   container.registerInstance(Logger());
   container.registerSingleton((c) => Logger(), name: 'logA');
-  container.registerFactory((c) => ServiceA(c.resolve<Logger>('logA')));
+  container.registerFactory((c) => ServiceA(c.resolve<Logger>('logA')!));
 }
 
 class Service {}
