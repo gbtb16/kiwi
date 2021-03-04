@@ -91,7 +91,8 @@ class KiwiInjectorGenerator extends Generator {
               ..name = scopedContainerParam.name
               ..named = scopedContainerParam.isNamed
               ..required = scopedContainerParam.isRequiredNamed
-              ..type = Reference('KiwiContainer'))
+              ..defaultTo = Code('null')
+              ..type = Reference('KiwiContainer?'))
           ]);
         } else {
           mb.requiredParameters = ListBuilder<Parameter>([
@@ -99,7 +100,8 @@ class KiwiInjectorGenerator extends Generator {
               ..name = scopedContainerParam.name
               ..named = scopedContainerParam.isNamed
               ..required = scopedContainerParam.isRequiredNamed
-              ..type = Reference('KiwiContainer'))
+              ..defaultTo = Code('null')
+              ..type = Reference('KiwiContainer?'))
           ]);
         }
         scopedContainer = '${scopedContainerParam.name} ?? ';
