@@ -1,15 +1,16 @@
 class KiwiGeneratorError extends Error {
   final String message;
-  final Error error;
+  final Error? error;
 
   KiwiGeneratorError(this.message, {this.error});
 
   @override
   String toString() {
     var toString = '\nKiwiGeneratorError\n\n$message\n\n';
-    if (error != null) {
+    final internalError = error;
+    if (internalError != null) {
       toString +=
-          '============\n${error.toString()}\n${error.stackTrace}\n============\n\n';
+          '============\n${internalError.toString()}\n${internalError.stackTrace}\n============\n\n';
     }
     return toString;
   }
