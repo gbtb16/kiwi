@@ -1,5 +1,4 @@
 import 'package:kiwi_generator/src/model/kiwi_generator_error.dart';
-import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'utils/test.dart';
