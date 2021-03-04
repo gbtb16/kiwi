@@ -31,7 +31,7 @@ void main() async {
       await testKiwiException(
         'null_concrete_factory',
         const TypeMatcher<KiwiGeneratorError>().having(
-              (f) => f.toString(),
+          (f) => f.toString(),
           'toString()',
           '\nKiwiGeneratorError\n\nnull can not be registered because there is no type for null\n\n',
         ),
@@ -69,7 +69,7 @@ void main() async {
       await testKiwiException(
         'null_concrete_singleton',
         const TypeMatcher<KiwiGeneratorError>().having(
-              (f) => f.toString(),
+          (f) => f.toString(),
           'toString()',
           '\nKiwiGeneratorError\n\nnull can not be registered because there is no type for null\n\n',
         ),

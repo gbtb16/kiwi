@@ -148,7 +148,8 @@ class KiwiInjectorGenerator extends Generator {
     final DartType? concreteType = concrete ?? type;
 
     if (concreteType == null) {
-      throw KiwiGeneratorError('null can not be registered because there is no type for null');
+      throw KiwiGeneratorError(
+          'null can not be registered because there is no type for null');
     }
     final String className =
         concreteType.getDisplayString(withNullability: false);
