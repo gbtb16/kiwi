@@ -4,7 +4,6 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:built_collection/built_collection.dart';
-
 import 'package:build/src/builder/build_step.dart';
 import 'package:kiwi_generator/src/model/kiwi_generator_error.dart';
 import 'package:kiwi_generator/src/util/list_extensions.dart';
@@ -149,8 +148,7 @@ class KiwiInjectorGenerator extends Generator {
     final DartType? concreteType = concrete ?? type;
 
     if (concreteType == null) {
-      throw KiwiGeneratorError(
-          'type & from are both null. This is not allowed');
+      throw KiwiGeneratorError('null can not be registered because there is no type for null');
     }
     final String className =
         concreteType.getDisplayString(withNullability: false);
