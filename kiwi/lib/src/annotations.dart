@@ -10,7 +10,7 @@ class Register {
     this.from,
     this.resolvers,
     this.constructorName,
-  })  : oneTime = null;
+  }) : oneTime = null;
 
   /// Create an annotation that will generate a `registerSingleton` method.
   const Register.singleton(
@@ -19,7 +19,7 @@ class Register {
     this.from,
     this.resolvers,
     this.constructorName,
-  })  : oneTime = true;
+  }) : oneTime = true;
 
   /// The type to register.
   final Type type;
