@@ -1,3 +1,10 @@
+## [3.0.0-nullsafety.0] - 2021-03-04
+### Added
+- Nullsafety support in a dev release (the kiwi_generator code is not yet nullsafe but the generator is)
+
+### DISCLAIMER:
+- A lot of dependencies still need to do the migration. until then we will stay in a dev release
+
 ## [2.1.1] - 2020-10-24
 ### Updated
 - Kiwi version to 2.1.1

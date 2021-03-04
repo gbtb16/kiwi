@@ -1,3 +1,7 @@
+## [3.0.0-nullsafety.0] - 2021-03-04
+### Added
+- Nullsafety support in a dev release
+
 ## [2.1.1] - 2020-10-24
 ### Updated
 - Description to make the kiwi package easy to find in pub.dev
