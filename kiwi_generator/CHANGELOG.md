@@ -1,3 +1,7 @@
+## [3.0.0-nullsafety.1] - 2021-03-07
+### Fixed
+- Analyzer bumped to 0.41.1
+
 ## [3.0.0-nullsafety.0] - 2021-03-04
 ### Added
 - Nullsafety support in a dev release (the kiwi_generator code is not yet nullsafe but the generator is)
