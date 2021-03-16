@@ -88,7 +88,7 @@ class KiwiContainer {
   ///
   ///  * [KiwiContainer.registerFactory] for register a builder function.
   ///  * [KiwiContainer.registerInstance] for register an instance.
-  T? resolve<T>([String? name]) {
+  T resolve<T>([String? name]) {
     final providers = _namedProviders[name] ?? Map<Type, _Provider<Object>>();
     if (!silent && !(providers.containsKey(T))) {
       throw KiwiError(
@@ -96,9 +96,13 @@ class KiwiContainer {
     }
 
     final value = providers[T]?.get(this);
-    if (value == null) return null;
+    if (value == null) {
+      throw KiwiError(
+          'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
+    }
     if (value is T) return value as T;
-    return null;
+    throw KiwiError(
+        'Failed to resolve `$T`:\n\nValue was not registered as `$T`\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
   }
 
   /// Attemps to resolve the type [S] and tries to cast it to T.
@@ -124,7 +128,7 @@ class KiwiContainer {
     return obj as T;
   }
 
-  T? call<T>([String? name]) => resolve<T>(name);
+  T call<T>([String? name]) => resolve<T>(name);
 
   /// Removes all instances and builders from the container.
   ///

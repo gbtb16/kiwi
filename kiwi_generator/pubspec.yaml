@@ -1,6 +1,6 @@
 name: kiwi_generator
 description: Generates dependency injection code using the kiwi package to reduce development time.
-version: 3.0.0-nullsafety-generator.1
+version: 3.0.0-nullsafety-generator.3
 homepage: https://github.com/vanlooverenkoen/kiwi/tree/master/kiwi_generator
 
 environment:
@@ -22,3 +22,7 @@ dev_dependencies:
   build_runner: ^1.12.1
   build_test: ^2.0.0
   test: ^1.16.8
+
+dependency_overrides:
+  kiwi:
+    path: ../kiwi
