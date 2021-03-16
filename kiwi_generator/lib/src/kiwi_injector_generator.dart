@@ -207,7 +207,8 @@ class KiwiInjectorGenerator extends Generator {
                 element.getDisplayString(withNullability: false) ==
                 parameter.type.getDisplayString(withNullability: false))
             .toList();
-    final String nameArgument = dartTypes.isEmpty ? '' : "'${resolvers[dartTypes.first]}'";
+    final String nameArgument =
+        dartTypes.isEmpty ? '' : "'${resolvers[dartTypes.first]}'";
     return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.getDisplayString(withNullability: false)}>($nameArgument)';
   }
 
