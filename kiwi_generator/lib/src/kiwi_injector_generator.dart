@@ -205,8 +205,18 @@ class KiwiInjectorGenerator extends Generator {
     ParameterElement parameter,
     Map<DartType?, String?>? resolvers,
   ) {
-    final String? name = resolvers == null ? null : resolvers[parameter.type];
-    final String nameArgument = name == null ? '' : "'$name'";
+    final List<DartType> dartTypes = resolvers == null
+        ? []
+        : resolvers.keys
+            .where((e) =>
+                e?.getDisplayString(withNullability: false) ==
+                parameter.type.getDisplayString(withNullability: false))
+            .where((e) => e != null)
+            .map((e) => e!)
+            .toList();
+    final String nameArgument = dartTypes.isEmpty || resolvers == null
+        ? ''
+        : "'${resolvers[dartTypes.first]}'";
     return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.getDisplayString(withNullability: false)}>($nameArgument)';
   }
 
