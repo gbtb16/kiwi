@@ -141,7 +141,6 @@ class KiwiInjectorGenerator extends Generator {
     final DartType type = registerObject.getField('type').toTypeValue();
     final DartType concrete = registerObject.getField('from').toTypeValue();
     final DartType concreteType = concrete ?? type;
-
     if (concreteType == null) {
       throw KiwiGeneratorError(
           'null can not be registered because there is no type for null');
@@ -201,8 +200,14 @@ class KiwiInjectorGenerator extends Generator {
     ParameterElement parameter,
     Map<DartType, String> resolvers,
   ) {
-    final String name = resolvers == null ? null : resolvers[parameter.type];
-    final String nameArgument = name == null ? '' : "'$name'";
+    final List<DartType> dartTypes = resolvers == null
+        ? []
+        : resolvers.keys
+            .where((element) =>
+                element.getDisplayString(withNullability: false) ==
+                parameter.type.getDisplayString(withNullability: false))
+            .toList();
+    final String nameArgument = dartTypes.isEmpty ? '' : "'${resolvers[dartTypes.first]}'";
     return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.getDisplayString(withNullability: false)}>($nameArgument)';
   }
 

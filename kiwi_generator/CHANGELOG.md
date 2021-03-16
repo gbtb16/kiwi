@@ -1,3 +1,7 @@
+## [3.0.0-nullsafety-generator.2] - 2021-03-16
+### Updated dependencies
+- Updated dependencies to make sure we can still build with new dependencies.
+
 ## [3.0.0-nullsafety-generator.1] - 2021-03-07
 ### Fixed
 - Analyzer bumped to 0.41.1
