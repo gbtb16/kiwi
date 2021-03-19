@@ -1,3 +1,7 @@
+## [3.0.0-nullsafety.1] - 2021-03-19
+### Breaking
+- resolve should not be nullable.
+
 ## [3.0.0-nullsafety.0] - 2021-03-04
 ### Added
 - Nullsafety support in a dev release
