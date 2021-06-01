@@ -1,10 +1,8 @@
-## [3.0.0-nullsafety.1] - 2021-03-19
-### Breaking
-- resolve should not be nullable.
-
-## [3.0.0-nullsafety.0] - 2021-03-04
+## [3.0.0] - 2021-06-01
 ### Added
-- Nullsafety support in a dev release
+- Nullsafety codebase migration
+### Updated dependencies
+- Updated dependencies to make sure we can still build with new dependencies.
 
 ## [2.1.1] - 2020-10-24
 ### Updated

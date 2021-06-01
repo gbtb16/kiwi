@@ -1,27 +1,8 @@
-## [3.0.0-nullsafety-generator.4] - 2021-03-16
+## [3.0.0] - 2021-06-01
 ### Added
 - Nullsafety codebase migration
 ### Updated dependencies
 - Updated dependencies to make sure we can still build with new dependencies.
-
-## [3.0.0-nullsafety-generator.3] - 2021-03-16
-### Updated dependencies
-- Updated dependencies to make sure we can still build with new dependencies.
-
-## [3.0.0-nullsafety-generator.2] - 2021-03-16
-### Updated dependencies
-- Updated dependencies to make sure we can still build with new dependencies.
-
-## [3.0.0-nullsafety-generator.1] - 2021-03-07
-### Fixed
-- Analyzer bumped to 0.41.1
-
-## [3.0.0-nullsafety-generator.0] - 2021-03-04
-### Added
-- Nullsafety support in a dev release (the kiwi_generator code is not yet nullsafe but the generator is)
-
-### DISCLAIMER:
-- A lot of dependencies still need to do the migration. until then we will stay in a dev release
 
 ## [2.1.1] - 2020-10-24
 ### Updated
