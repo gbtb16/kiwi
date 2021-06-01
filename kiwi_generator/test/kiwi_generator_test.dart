@@ -1,5 +1,4 @@
 import 'package:kiwi_generator/src/model/kiwi_generator_error.dart';
-import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'utils/test.dart';
@@ -27,13 +26,6 @@ void main() async {
       );
     });
 
-    test('null concrete', () async {
-      await testKiwiException(
-        'null_concrete_factory',
-        const TypeMatcher<UnresolvedAnnotationException>(),
-      );
-    });
-
     test('unknown constructor', () async {
       await testKiwiException(
         'unknown_ctor_factory',
@@ -58,13 +50,6 @@ void main() async {
       await testKiwi(
         'complex_singleton',
         _outputComplexSingleton,
-      );
-    });
-
-    test('null concrete', () async {
-      await testKiwiException(
-        'null_concrete_singleton',
-        const TypeMatcher<UnresolvedAnnotationException>(),
       );
     });
 

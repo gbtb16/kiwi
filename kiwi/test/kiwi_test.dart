@@ -40,8 +40,14 @@ void main() {
       expect(container.resolve<int>(), 5);
       expect(container.resolve<int>('named'), 6);
       expect(container.resolve<num>(), 7);
-      expect(container.resolve<num>('named'), null);
-      expect(container.resolve<Character>(), person);
+
+      expect(
+          () => container.resolve<num>('named'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `num`:\n\nThe type `num` was not registered for the name `named`\n\nMake sure `num` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
     });
 
     test('instances should be resolveAs', () {
@@ -49,7 +55,14 @@ void main() {
       container.registerSingleton<Character>((c) => sith);
 
       expect(container.resolveAs<Character, Sith>(), sith);
-      expect(container.resolveAs<Character, Sith>('named'), null);
+
+      expect(
+          () => container.resolveAs<Character, Sith>('named'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `Character`:\n\nThe type `Character` was not registered for the name `named`\n\nMake sure `Character` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
     });
 
     test('container should resolve when called', () {
@@ -62,7 +75,13 @@ void main() {
       expect(container<int>(), 5);
       expect(container<int>('named'), 6);
       expect(container<num>(), 7);
-      expect(container<num>('named'), null);
+      expect(
+          () => container.resolve<num>('named'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `num`:\n\nThe type `num` was not registered for the name `named`\n\nMake sure `num` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
       expect(container<Character>(), person);
     });
 
@@ -127,10 +146,22 @@ void main() {
       expect(container.resolve<int>('named'), 6);
 
       container.unregister<int>();
-      expect(container.resolve<int>(), null);
+      expect(
+          () => container.resolve<int>(),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
 
       container.unregister<int>('named');
-      expect(container.resolve<int>('named'), null);
+      expect(
+          () => container.resolve<int>('named'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `named`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
     });
   });
 
@@ -188,7 +219,7 @@ void main() {
           throwsA(TypeMatcher<KiwiError>().having(
             (f) => f.toString(),
             'toString()',
-            'KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
 
       expect(
@@ -196,7 +227,7 @@ void main() {
           throwsA(TypeMatcher<KiwiError>().having(
             (f) => f.toString(),
             'toString()',
-            'KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `name`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `name`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
     test('values should exist when resolving as', () {

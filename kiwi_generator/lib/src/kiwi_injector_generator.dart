@@ -4,9 +4,9 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:built_collection/built_collection.dart';
-
 import 'package:build/src/builder/build_step.dart';
 import 'package:kiwi_generator/src/model/kiwi_generator_error.dart';
+import 'package:kiwi_generator/src/util/list_extensions.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:dart_style/dart_style.dart';
 
@@ -22,7 +22,7 @@ class KiwiInjectorGenerator extends Generator {
   const KiwiInjectorGenerator();
 
   @override
-  String generate(LibraryReader library, BuildStep buildStep) {
+  String? generate(LibraryReader library, BuildStep? buildStep) {
     try {
       // An injector is an abstract class where all abstract methods are
       // annotated with Register.
@@ -42,21 +42,24 @@ class KiwiInjectorGenerator extends Generator {
         ..body.addAll(
             injectors.map((i) => _generateInjector(i, library, buildStep))));
 
-      final DartEmitter emitter = DartEmitter(Allocator());
+      final DartEmitter emitter = DartEmitter(allocator: Allocator());
       return DartFormatter().format('${file.accept(emitter)}');
     } catch (e) {
       if (e is KiwiGeneratorError || e is UnresolvedAnnotationException) {
         rethrow;
-      } else {
+      } else if (e is Error) {
         throw KiwiGeneratorError(
             'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/vanlooverenkoen/kiwi/issues/new?labels=kiwi_generator,bug',
             error: e);
+      } else {
+        throw KiwiGeneratorError(
+            'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/vanlooverenkoen/kiwi/issues/new?labels=kiwi_generator,bug');
       }
     }
   }
 
   Class _generateInjector(
-      ClassElement injector, LibraryReader library, BuildStep buildStep) {
+      ClassElement injector, LibraryReader library, BuildStep? buildStep) {
     return Class((cb) => cb
       ..name = '_\$${injector.name}'
       ..extend = refer(injector.name)
@@ -75,12 +78,12 @@ class KiwiInjectorGenerator extends Generator {
       throw KiwiGeneratorError(
           'Only 1 parameter is supported `KiwiContainer scopedContainer`, ${method.name} contains ${method.parameters.length} param(s)');
     }
-    final scopedContainerParam = method.parameters.singleWhere(
-        (element) =>
-            element.name == 'scopedContainer' &&
-            element.type.getDisplayString(withNullability: false) ==
-                'KiwiContainer',
-        orElse: () => null);
+    final scopedContainerParam = method.parameters.singleOrNullWhere(
+      (element) =>
+          element.name == 'scopedContainer' &&
+          element.type.getDisplayString(withNullability: true) ==
+              'KiwiContainer',
+    );
 
     return Method.returnsVoid((mb) {
       var scopedContainer = '';
@@ -91,7 +94,8 @@ class KiwiInjectorGenerator extends Generator {
               ..name = scopedContainerParam.name
               ..named = scopedContainerParam.isNamed
               ..required = scopedContainerParam.isRequiredNamed
-              ..type = Reference('KiwiContainer'))
+              ..defaultTo = Code('null')
+              ..type = Reference('KiwiContainer?'))
           ]);
         } else {
           mb.requiredParameters = ListBuilder<Parameter>([
@@ -99,7 +103,8 @@ class KiwiInjectorGenerator extends Generator {
               ..name = scopedContainerParam.name
               ..named = scopedContainerParam.isNamed
               ..required = scopedContainerParam.isRequiredNamed
-              ..type = Reference('KiwiContainer'))
+              ..defaultTo = Code('null')
+              ..type = Reference('KiwiContainer?'))
           ]);
         }
         scopedContainer = '${scopedContainerParam.name} ?? ';
@@ -120,7 +125,6 @@ class KiwiInjectorGenerator extends Generator {
                 'final KiwiContainer container = ${scopedContainer}KiwiContainer();'))
             ..statements.addAll(registers));
       }
-      return mb;
     });
   }
 
@@ -136,32 +140,37 @@ class KiwiInjectorGenerator extends Generator {
     final ConstantReader annotation = annotatedMethod.annotation;
     final DartObject registerObject = annotation.objectValue;
 
-    final String name = registerObject.getField('name').toStringValue();
-    final DartType type = registerObject.getField('type').toTypeValue();
-    final DartType concrete = registerObject.getField('from').toTypeValue();
-    final DartType concreteType = concrete ?? type;
+    final String? name = registerObject.getField('name')?.toStringValue();
+    final DartType? type = registerObject.getField('type')?.toTypeValue();
+    final DartType? concrete = registerObject.getField('from')?.toTypeValue();
+    final String? constructorName =
+        registerObject.getField('constructorName')?.toStringValue();
+    final DartType? concreteType = concrete ?? type;
 
+    if (concreteType == null) {
+      throw KiwiGeneratorError(
+          'null can not be registered because there is no type for null');
+    }
     final String className =
         concreteType.getDisplayString(withNullability: false);
     final String typeParameters = concrete == null
         ? ''
-        : '<${type.getDisplayString(withNullability: false)}>';
+        : '<${type?.getDisplayString(withNullability: false)}>';
 
     final String nameArgument = name == null ? '' : ", name: '$name'";
-    final String constructorName =
-        registerObject.getField('constructorName').toStringValue();
     final String constructorNameArgument =
         constructorName == null ? '' : '.$constructorName';
 
-    final ClassElement clazz = concreteType.element.library.getType(className);
+    final ClassElement? clazz =
+        concreteType.element?.library?.getType(className);
     if (clazz == null) {
       throw KiwiGeneratorError('$className not found');
     }
 
     final bool oneTime =
-        registerObject.getField('oneTime').toBoolValue() ?? false;
-    final Map<DartType, String> resolvers =
-        _computeResolvers(registerObject.getField('resolvers').toMapValue());
+        registerObject.getField('oneTime')?.toBoolValue() ?? false;
+    final Map<DartType?, String?>? resolvers =
+        _computeResolvers(registerObject.getField('resolvers')?.toMapValue());
 
     final String methodSuffix = oneTime ? 'Singleton' : 'Factory';
 
@@ -185,7 +194,7 @@ class KiwiInjectorGenerator extends Generator {
 
   List<String> _generateRegisterArguments(
     ConstructorElement constructor,
-    Map<DartType, String> resolvers,
+    Map<DartType?, String?>? resolvers,
   ) {
     return constructor.parameters
         .map((p) => _generateRegisterArgument(p, resolvers))
@@ -194,17 +203,27 @@ class KiwiInjectorGenerator extends Generator {
 
   String _generateRegisterArgument(
     ParameterElement parameter,
-    Map<DartType, String> resolvers,
+    Map<DartType?, String?>? resolvers,
   ) {
-    final String name = resolvers == null ? null : resolvers[parameter.type];
-    final String nameArgument = name == null ? '' : "'$name'";
+    final List<DartType> dartTypes = resolvers == null
+        ? []
+        : resolvers.keys
+            .where((e) =>
+                e?.getDisplayString(withNullability: false) ==
+                parameter.type.getDisplayString(withNullability: false))
+            .where((e) => e != null)
+            .map((e) => e!)
+            .toList();
+    final String nameArgument = dartTypes.isEmpty || resolvers == null
+        ? ''
+        : "'${resolvers[dartTypes.first]}'";
     return '${parameter.isNamed ? parameter.name + ': ' : ''}c<${parameter.type.getDisplayString(withNullability: false)}>($nameArgument)';
   }
 
-  Map<DartType, String> _computeResolvers(
-    Map<DartObject, DartObject> resolvers,
+  Map<DartType?, String?>? _computeResolvers(
+    Map<DartObject?, DartObject?>? resolvers,
   ) {
-    return resolvers?.map((key, value) =>
-        MapEntry<DartType, String>(key.toTypeValue(), value.toStringValue()));
+    return resolvers?.map((key, value) => MapEntry<DartType?, String?>(
+        key?.toTypeValue(), value?.toStringValue()));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:kiwi/src/model/exception/kiwi_error.dart';
+import 'package:kiwi/src/model/exception/not_registered_error.dart';
 import 'package:meta/meta.dart';
 
 /// Signature for a builder which creates an object of type [T].
@@ -8,14 +9,14 @@ typedef T Factory<T>(KiwiContainer container);
 class KiwiContainer {
   /// Creates a scoped container.
   KiwiContainer.scoped()
-      : _namedProviders = Map<String, Map<Type, _Provider<Object>>>();
+      : _namedProviders = Map<String?, Map<Type, _Provider<Object>>>();
 
   static final KiwiContainer _instance = KiwiContainer.scoped();
 
   /// Always returns a singleton representing the only container to be alive.
   factory KiwiContainer() => _instance;
 
-  final Map<String, Map<Type, _Provider<Object>>> _namedProviders;
+  final Map<String?, Map<Type, _Provider<Object>>> _namedProviders;
 
   /// Whether ignoring KiwiErrors in the following cases:
   /// * if you register the same type under the same name a second time.
@@ -34,7 +35,7 @@ class KiwiContainer {
   /// to [KiwiContainer.resolve].
   void registerInstance<S>(
     S instance, {
-    String name,
+    String? name,
   }) {
     _setProvider(name, _Provider<S>.instance(instance));
   }
@@ -48,7 +49,7 @@ class KiwiContainer {
   /// to [KiwiContainer.resolve].
   void registerFactory<S>(
     Factory<S> factory, {
-    String name,
+    String? name,
   }) {
     _setProvider(name, _Provider<S>.factory(factory));
   }
@@ -63,7 +64,7 @@ class KiwiContainer {
   /// to [KiwiContainer.resolve].
   void registerSingleton<S>(
     Factory<S> factory, {
-    String name,
+    String? name,
   }) {
     _setProvider(name, _Provider<S>.singleton(factory));
   }
@@ -71,7 +72,7 @@ class KiwiContainer {
   /// Removes the entry previously registered for the type [T].
   ///
   /// If [name] is set, removes the one registered for that name.
-  void unregister<T>([String name]) {
+  void unregister<T>([String? name]) {
     if (!silent && !(_namedProviders[name]?.containsKey(T) ?? false)) {
       throw KiwiError(
           'Failed to unregister `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
@@ -88,17 +89,21 @@ class KiwiContainer {
   ///
   ///  * [KiwiContainer.registerFactory] for register a builder function.
   ///  * [KiwiContainer.registerInstance] for register an instance.
-  T resolve<T>([String name]) {
-    Map<Type, _Provider<Object>> providers = _namedProviders[name];
-    if (!silent && !(providers?.containsKey(T) ?? false)) {
-      throw KiwiError(
+  T resolve<T>([String? name]) {
+    final providers = _namedProviders[name] ?? Map<Type, _Provider<Object>>();
+    if (!silent && !(providers.containsKey(T))) {
+      throw NotRegisteredKiwiError(
           'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
     }
-    if (providers == null) {
-      return null;
-    }
 
-    return providers[T]?.get(this);
+    final value = providers[T]?.get(this);
+    if (value == null) {
+      throw NotRegisteredKiwiError(
+          'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
+    }
+    if (value is T) return value as T;
+    throw NotRegisteredKiwiError(
+        'Failed to resolve `$T`:\n\nValue was not registered as `$T`\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
   }
 
   /// Attemps to resolve the type [S] and tries to cast it to T.
@@ -114,16 +119,18 @@ class KiwiContainer {
   ///  * [KiwiContainer.registerFactory] for register a builder function.
   ///  * [KiwiContainer.registerInstance] for register an instance.
   @visibleForTesting
-  T resolveAs<S, T extends S>([String name]) {
+  T? resolveAs<S, T extends S>([String? name]) {
     final obj = resolve<S>(name);
     if (!silent && !(obj is T)) {
       throw KiwiError(
           'Failed to resolve `$S` as `$T`:\n\nThe type `$S` as `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
     }
-    return obj;
+    if (obj == null) return null;
+    if (obj is T) return obj as T;
+    return null;
   }
 
-  T call<T>([String name]) => resolve<T>(name);
+  T call<T>([String? name]) => resolve<T>(name);
 
   /// Removes all instances and builders from the container.
   ///
@@ -132,32 +139,35 @@ class KiwiContainer {
     _namedProviders.clear();
   }
 
-  void _setProvider<T>(String name, _Provider<T> provider) {
+  void _setProvider<T>(String? name, _Provider<T> provider) {
+    final nameProviders = _namedProviders;
     if (!silent &&
-        (_namedProviders.containsKey(name) &&
-            _namedProviders[name].containsKey(T))) {
+        (nameProviders.containsKey(name) &&
+            nameProviders[name]!.containsKey(T))) {
       throw KiwiError(
           'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
     }
     _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
-        provider;
+        provider as _Provider<Object>;
   }
 }
 
 class _Provider<T> {
   _Provider.instance(this.object)
-      : instanceBuilder = null,
+      : _instanceBuilder = null,
         _oneTime = false;
 
-  _Provider.factory(this.instanceBuilder) : _oneTime = false;
+  _Provider.factory(this._instanceBuilder) : _oneTime = false;
 
-  _Provider.singleton(this.instanceBuilder) : _oneTime = true;
+  _Provider.singleton(this._instanceBuilder) : _oneTime = true;
 
-  final Factory<T> instanceBuilder;
-  T object;
+  final Factory<T>? _instanceBuilder;
+  T? object;
   bool _oneTime = false;
 
-  T get(KiwiContainer container) {
+  T? get(KiwiContainer container) {
+    final instanceBuilder = _instanceBuilder;
+
     if (_oneTime && instanceBuilder != null) {
       object = instanceBuilder(container);
       _oneTime = false;

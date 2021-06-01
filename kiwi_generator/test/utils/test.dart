@@ -9,13 +9,13 @@ final KiwiInjectorGenerator _injectorGenerator = const KiwiInjectorGenerator();
 
 Future<void> testKiwi(
   String fileName,
-  String output,
+  String? output,
 ) async {
   String inputFilePath = './test/inputs/$fileName.dart';
 
   final library = await resolveCompilationUnit(inputFilePath);
 
-  String actual = _injectorGenerator.generate(library, null);
+  String? actual = _injectorGenerator.generate(library, null);
   expect(actual, output);
 }
 
