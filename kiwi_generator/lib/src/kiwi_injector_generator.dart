@@ -42,7 +42,7 @@ class KiwiInjectorGenerator extends Generator {
         ..body.addAll(
             injectors.map((i) => _generateInjector(i, library, buildStep))));
 
-      final DartEmitter emitter = DartEmitter(Allocator());
+      final DartEmitter emitter = DartEmitter(allocator: Allocator());
       return DartFormatter().format('${file.accept(emitter)}');
     } catch (e) {
       if (e is KiwiGeneratorError || e is UnresolvedAnnotationException) {
