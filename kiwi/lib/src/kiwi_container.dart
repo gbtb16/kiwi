@@ -1,4 +1,5 @@
 import 'package:kiwi/src/model/exception/kiwi_error.dart';
+import 'package:kiwi/src/model/exception/not_registered_error.dart';
 import 'package:meta/meta.dart';
 
 /// Signature for a builder which creates an object of type [T].
@@ -91,17 +92,17 @@ class KiwiContainer {
   T resolve<T>([String? name]) {
     final providers = _namedProviders[name] ?? Map<Type, _Provider<Object>>();
     if (!silent && !(providers.containsKey(T))) {
-      throw KiwiError(
+      throw NotRegisteredKiwiError(
           'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
     }
 
     final value = providers[T]?.get(this);
     if (value == null) {
-      throw KiwiError(
+      throw NotRegisteredKiwiError(
           'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
     }
     if (value is T) return value as T;
-    throw KiwiError(
+    throw NotRegisteredKiwiError(
         'Failed to resolve `$T`:\n\nValue was not registered as `$T`\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
   }
 
