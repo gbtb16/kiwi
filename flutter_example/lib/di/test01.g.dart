@@ -10,8 +10,9 @@ class _$Injector extends Injector {
   @override
   void configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => Test());
-    container.registerFactory((c) => Counter(c<Test>()));
-    container.registerSingleton((c) => Counter(c<Test>()), name: 'display');
+    container
+      ..registerFactory((c) => Test())
+      ..registerFactory((c) => Counter(c<Test>()))
+      ..registerSingleton((c) => Counter(c<Test>()), name: 'display');
   }
 }

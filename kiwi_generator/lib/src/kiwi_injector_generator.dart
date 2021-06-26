@@ -116,27 +116,33 @@ class KiwiInjectorGenerator extends Generator {
       mb
         ..name = method.name
         ..annotations.add(refer('override'));
-      if (registers.isEmpty) {
+      if (registers == null) {
         mb..body = Block();
       } else {
         mb
           ..body = Block((bb) => bb
             ..statements.add(Code(
                 'final KiwiContainer container = ${scopedContainer}KiwiContainer();'))
-            ..statements.addAll(registers));
+            ..addExpression(registers));
       }
     });
   }
 
-  List<Code> _generateRegisters(MethodElement method) {
-    return _registerTypeChecker
-        .annotationsOfExact(method)
-        .map((a) =>
-            _generateRegister(AnnotatedElement(ConstantReader(a), method)))
-        .toList();
+  Expression? _generateRegisters(MethodElement method) {
+    final annotations = _registerTypeChecker.annotationsOfExact(method);
+    return annotations.isEmpty
+        ? null
+        : annotations.fold<Expression>(
+            Reference('container'),
+            (expr, annotation) => _generateRegister(
+              expr,
+              AnnotatedElement(ConstantReader(annotation), method),
+            ),
+          );
   }
 
-  Code _generateRegister(AnnotatedElement annotatedMethod) {
+  Expression _generateRegister(
+      Expression registerExpression, AnnotatedElement annotatedMethod) {
     final ConstantReader annotation = annotatedMethod.annotation;
     final DartObject registerObject = annotation.objectValue;
 
@@ -188,8 +194,8 @@ class KiwiInjectorGenerator extends Generator {
       resolvers,
     ).join(', ');
 
-    return Code(
-        'container.register$methodSuffix$typeParameters((c) => $className$constructorNameArgument($factoryParameters)$nameArgument);');
+    return registerExpression.cascade(
+        'register$methodSuffix$typeParameters((c) => $className$constructorNameArgument($factoryParameters)$nameArgument)');
   }
 
   List<String> _generateRegisterArguments(

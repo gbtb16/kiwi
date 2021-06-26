@@ -10,12 +10,11 @@ class _$CoffeeInjector extends CoffeeInjector {
   @override
   void _configureFactories() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => PowerOutlet());
-    container.registerSingleton((c) => Electricity(c<PowerOutlet>()));
     container
-        .registerSingleton<Heater>((c) => ElectricHeater(c<Electricity>()));
-    container.registerSingleton<Pump>((c) => Thermosiphon(c<Heater>()));
-    container.registerFactory(
-        (c) => CoffeeMaker(c<Heater>(), c<Pump>(), c<Model>()));
+      ..registerFactory((c) => PowerOutlet())
+      ..registerSingleton((c) => Electricity(c<PowerOutlet>()))
+      ..registerSingleton<Heater>((c) => ElectricHeater(c<Electricity>()))
+      ..registerSingleton<Pump>((c) => Thermosiphon(c<Heater>()))
+      ..registerFactory((c) => CoffeeMaker(c<Heater>(), c<Pump>(), c<Model>()));
   }
 }
