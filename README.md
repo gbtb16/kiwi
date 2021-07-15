@@ -1,6 +1,6 @@
 # kiwi
 
-[![travis](https://img.shields.io/travis/vanlooverenkoen/kiwi.svg)](https://travis-ci.org/vanlooverenkoen/kiwi)
+[![travis](https://img.shields.io/travis/vanlooverenkoen/kiwi.svg)](https://travis-ci.com/vanlooverenkoen/kiwi)
 
 ![Logo](https://raw.githubusercontent.com/vanlooverenkoen/kiwi/master/images/logo.png)
 
