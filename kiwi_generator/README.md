@@ -25,15 +25,6 @@ dev_dependencies:
   kiwi_generator: ^latest_version
 ```
 
-3. Add (or modify) the `build.yaml` file in the same folder as the `pubspec.yaml` and include the `kiwi` builder.
-
-```yaml
-targets:
-  $default:
-    builders:
-      kiwi:
-```
-
 ## Usage
 
 In your library add the following import:
