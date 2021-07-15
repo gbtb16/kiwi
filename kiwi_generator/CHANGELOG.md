@@ -1,3 +1,9 @@
+## [3.0.1] - 2021-07-15
+### Updated
+- Generated core is now using the cascade operator
+### Fixed
+- Using build_runner 2.0.4 with kiwi
+
 ## [3.0.0] - 2021-06-01
 ### Added
 - Nullsafety codebase migration
