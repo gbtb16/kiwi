@@ -2,6 +2,7 @@
 ### BREAKING
 - Updated to analyzer 2.0.0
 - Dart 2.14 min requirement
+### Updated dependencies
 
 ## [3.0.1] - 2021-07-15
 ### Updated
