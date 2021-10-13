@@ -1,3 +1,7 @@
+## [4.0.1] - 2021-10-13
+### Fixed
+- Dart constraint issue for kiwi
+
 ## [4.0.0] - 2021-10-13
 ### BREAKING
 - Updated to analyzer 2.0.0
