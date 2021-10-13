@@ -4,15 +4,15 @@ version: 0.1.0
 homepage: https://github.com/vanlooverenkoen/kiwi
 
 environment:
-  sdk: '>=2.13.0 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
-  kiwi: ^3.0.0
+  kiwi: ^4.0.0
 
 dev_dependencies:
   test: ^1.17.5
-  build_runner: ^2.0.4
-  kiwi_generator: ^3.0.0
+  build_runner: ^2.1.4
+  kiwi_generator: ^4.0.0
 
 dependency_overrides:
   kiwi:
