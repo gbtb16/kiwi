@@ -1,3 +1,9 @@
+## [4.0.0] - 2021-10-13
+### BREAKING
+- Support for kiwi_generator 4.0.0
+- Dart 2.14 min requirement
+### Updated dependencies
+
 ## [3.0.0] - 2021-06-01
 ### Added
 - Nullsafety codebase migration

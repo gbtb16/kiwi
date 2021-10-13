@@ -1,3 +1,9 @@
+## [4.0.0] - 2021-10-13
+### BREAKING
+- Updated to analyzer 2.0.0
+- Dart 2.14 min requirement
+### Updated dependencies
+
 ## [3.0.1] - 2021-07-15
 ### Updated
 - Generated core is now using the cascade operator
