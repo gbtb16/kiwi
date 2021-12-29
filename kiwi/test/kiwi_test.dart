@@ -1,5 +1,4 @@
 import 'package:kiwi/kiwi.dart';
-import 'package:kiwi/src/model/exception/kiwi_error.dart';
 import 'package:test/test.dart';
 
 void main() {

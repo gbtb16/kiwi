@@ -9,13 +9,13 @@ sudo: required
 jobs:
   include:
     - stage: analyze
-      name: "SDK: stable - DIR: kiwi - TASKS: dartfmt -n --set-exit-if-changed ."
-      script: ./tool/travis.sh dartfmt
+      name: "SDK: stable - DIR: kiwi - TASKS: dart format -o none --set-exit-if-changed ."
+      script: ./tool/travis.sh dart_format
       env: PKG="kiwi"
       dart: stable
     - stage: analyze
-      name: "SDK: dev - DIR: kiwi - TASKS: dartfmt -n --set-exit-if-changed ."
-      script: ./tool/travis.sh dartfmt
+      name: "SDK: dev - DIR: kiwi - TASKS: dart format -o none --set-exit-if-changed ."
+      script: ./tool/travis.sh dart_format
       env: PKG="kiwi"
       dart: dev
     - stage: analyze
@@ -39,13 +39,13 @@ jobs:
       env: PKG="kiwi"
       dart: dev
     - stage: analyze
-      name: "SDK: stable - DIR: kiwi_generator - TASKS: dartfmt -n --set-exit-if-changed ."
-      script: ./tool/travis.sh dartfmt
+      name: "SDK: stable - DIR: kiwi_generator - TASKS: dart format -o none --set-exit-if-changed ."
+      script: ./tool/travis.sh dart_format
       env: PKG="kiwi_generator"
       dart: stable
     - stage: analyze
-      name: "SDK: dev - DIR: kiwi_generator - TASKS: dartfmt -n --set-exit-if-changed ."
-      script: ./tool/travis.sh dartfmt
+      name: "SDK: dev - DIR: kiwi_generator - TASKS: dart format -o none --set-exit-if-changed ."
+      script: ./tool/travis.sh dart_format
       env: PKG="kiwi_generator"
       dart: dev
     - stage: analyze
