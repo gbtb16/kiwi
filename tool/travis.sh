@@ -24,10 +24,10 @@ while (( "$#" )); do
     echo -e 'dartanalyzer --fatal-infos --fatal-warnings .'
     dartanalyzer --fatal-infos --fatal-warnings . || EXIT_CODE=$?
     ;;
-  dartfmt) echo
-    echo -e '\033[1mTASK: dartfmt\033[22m'
-    echo -e 'dartfmt -n --set-exit-if-changed .'
-    dartfmt -n --set-exit-if-changed . || EXIT_CODE=$?
+  dart_format) echo
+    echo -e '\033[1mTASK: dart format\033[22m'
+    echo -e 'dart format -o none --set-exit-if-changed .'
+    dart format -o none --set-exit-if-changed . || EXIT_CODE=$?
     ;;
   test) echo
     echo -e '\033[1mTASK: test\033[22m'

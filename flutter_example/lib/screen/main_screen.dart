@@ -7,6 +7,8 @@ import 'package:kiwi/kiwi.dart';
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Main Screen'),
@@ -23,7 +25,9 @@ class MainScreen extends StatelessWidget {
             },
             child: Text(
               'Resolve Screen',
-              style: Theme.of(context).accentTextTheme.bodyText1,
+              style: theme.textTheme.bodyText1?.copyWith(
+                color: theme.colorScheme.onSecondary,
+              ),
             ),
           ),
           MaterialButton(
@@ -35,7 +39,9 @@ class MainScreen extends StatelessWidget {
             },
             child: Text(
               'Error Screen',
-              style: Theme.of(context).accentTextTheme.bodyText1,
+              style: theme.textTheme.bodyText1?.copyWith(
+                color: theme.colorScheme.onSecondary,
+              ),
             ),
           ),
           MaterialButton(
@@ -47,7 +53,9 @@ class MainScreen extends StatelessWidget {
             },
             child: Text(
               'Scoped Container Screen',
-              style: Theme.of(context).accentTextTheme.bodyText1,
+              style: theme.textTheme.bodyText1?.copyWith(
+                color: theme.colorScheme.onSecondary,
+              ),
             ),
           ),
         ],
