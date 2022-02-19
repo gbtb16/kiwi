@@ -1,3 +1,7 @@
+## [4.0.2] - 2022-02-19
+### Updated
+- Dependencies
+
 ## [4.0.1] - 2021-10-13
 ### Fixed
 - Dart constraint issue for kiwi
