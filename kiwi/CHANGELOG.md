@@ -1,3 +1,11 @@
+## [4.0.2] - 2022-02-19
+### Updated
+- Dependencies
+- Example to use Android X
+- Travis Dart format
+### Added
+- Error's are now exported as well
+
 ## [4.0.1] - 2021-10-13
 ### Fixed
 - Dart constraint issue for kiwi
