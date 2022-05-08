@@ -8,8 +8,11 @@ typedef T Factory<T>(KiwiContainer container);
 /// A simple service container.
 class KiwiContainer {
   /// Creates a scoped container.
-  KiwiContainer.scoped()
-      : _namedProviders = Map<String?, Map<Type, _Provider<Object>>>();
+  KiwiContainer.scoped([KiwiContainer? parent])
+      : _namedProviders = parent == null
+            ? Map<String?, Map<Type, _Provider<Object>>>()
+            : parent._namedProviders
+                .map((key, value) => MapEntry(key, {...value}));
 
   static final KiwiContainer _instance = KiwiContainer.scoped();
 

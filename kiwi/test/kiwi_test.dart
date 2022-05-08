@@ -16,19 +16,6 @@ void main() {
       expect(c1, c2);
     });
 
-    test('KiwiContainer.scope should be a different object', () {
-      KiwiContainer c1 = KiwiContainer();
-      KiwiContainer c2 = KiwiContainer();
-      KiwiContainer c3 = KiwiContainer.scoped();
-      KiwiContainer c4 = KiwiContainer.scoped();
-      expect(c1, c2);
-      expect(c1, isNot(c3));
-      expect(c1, isNot(c4));
-      expect(c2, isNot(c3));
-      expect(c2, isNot(c4));
-      expect(c3, isNot(c4));
-    });
-
     test('instances should be resolved', () {
       var person = Character('Anakin', 'Skywalker');
       container.registerInstance(5);
@@ -48,6 +35,103 @@ void main() {
             'Not Registered KiwiError:\n\n\nFailed to resolve `num`:\n\nThe type `num` was not registered for the name `named`\n\nMake sure `num` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
+
+    test('Parented KiwiContainer.scope should inherit registrations', () {
+      container.registerInstance(5);
+      container.registerInstance(6, name: 'named');
+      container.registerInstance<num>(7);
+      KiwiContainer scoped = KiwiContainer.scoped(container);
+      expect(scoped.resolve<int>(), 5);
+      expect(scoped.resolve<int>('named'), 6);
+      expect(scoped.resolve<num>(), 7);
+    });
+
+    test('Parented KiwiContainer.scope should be impacted by parent', () {
+      container.registerInstance(5);
+      container.registerInstance(6, name: 'named');
+      container.registerInstance<num>(7);
+
+      KiwiContainer scoped = KiwiContainer.scoped(container);
+
+      container.registerInstance(26, name: 'exclusive_to_parent');
+      container.registerInstance(8);
+
+      expect(container.resolve<int>(), 8);
+      expect(container.resolve<int>('named'), 6);
+      expect(container.resolve<int>('exclusive_to_parent'), 26);
+      expect(container.resolve<num>(), 7);
+
+      expect(scoped.resolve<int>(), 5);
+      expect(scoped.resolve<int>('named'), 6);
+      expect(scoped.resolve<num>(), 7);
+
+      expect(
+          () => scoped.resolve<int>('exclusive_to_parent'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `exclusive_to_parent`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+    });
+
+    test('Parented KiwiContainer.scope should not impact parent', () {
+      container.registerInstance(5);
+      container.registerInstance(6, name: 'named');
+      container.registerInstance<num>(7);
+
+      KiwiContainer scoped = KiwiContainer.scoped(container);
+      scoped.silent = true;
+      scoped.registerInstance(27, name: 'exclusive_to_scoped');
+      scoped.registerInstance(8);
+
+      expect(container.resolve<int>(), 5);
+      expect(container.resolve<int>('named'), 6);
+      expect(container.resolve<num>(), 7);
+
+      expect(scoped.resolve<int>(), 8);
+      expect(scoped.resolve<int>('named'), 6);
+      expect(scoped.resolve<num>(), 7);
+      expect(scoped.resolve<int>('exclusive_to_scoped'), 27);
+
+      expect(
+          () => container.resolve<int>('exclusive_to_scoped'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `exclusive_to_scoped`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+    });
+
+    test('Unparented KiwiContainer.scope should not be resolved', () {
+      KiwiContainer scoped = KiwiContainer.scoped(container);
+      expect(
+          () => scoped.resolve<int>(),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+    });
+
+    // test('instances should be resolved', () {
+    //   var person = Character('Anakin', 'Skywalker');
+    //   container.registerInstance(5);
+    //   container.registerInstance(6, name: 'named');
+    //   container.registerInstance<num>(7);
+    //   container.registerInstance(person);
+
+    //   expect(container.resolve<int>(), 5);
+    //   expect(container.resolve<int>('named'), 6);
+    //   expect(container.resolve<num>(), 7);
+
+    //   expect(
+    //       () => container.resolve<num>('named'),
+    //       throwsA(TypeMatcher<KiwiError>().having(
+    //         (f) => f.toString(),
+    //         'toString()',
+    //         'Not Registered KiwiError:\n\n\nFailed to resolve `num`:\n\nThe type `num` was not registered for the name `named`\n\nMake sure `num` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+    //       )));
+    // });
 
     test('instances should be resolveAs', () {
       final sith = Sith('Anakin', 'Skywalker', 'DartVader');
