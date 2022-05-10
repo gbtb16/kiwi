@@ -105,8 +105,7 @@ class KiwiContainer {
       throw NotRegisteredKiwiError(
           'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
     }
-    if (value is T) return value;
-    if(silent) return null as T;
+    if (value is T || silent) return value as T;
     throw NotRegisteredKiwiError(
         'Failed to resolve `$T`:\n\nValue was not registered as `$T`\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
   }
@@ -153,7 +152,7 @@ class KiwiContainer {
           'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
     }
     _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object?>>())[T] =
-        provider as _Provider<Object?>;
+        provider;
   }
 }
 
