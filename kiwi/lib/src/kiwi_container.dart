@@ -9,14 +9,14 @@ typedef T Factory<T>(KiwiContainer container);
 class KiwiContainer {
   /// Creates a scoped container.
   KiwiContainer.scoped()
-      : _namedProviders = Map<String?, Map<Type, _Provider<Object>>>();
+      : _namedProviders = Map<String?, Map<Type, _Provider<Object?>>>();
 
   static final KiwiContainer _instance = KiwiContainer.scoped();
 
   /// Always returns a singleton representing the only container to be alive.
   factory KiwiContainer() => _instance;
 
-  final Map<String?, Map<Type, _Provider<Object>>> _namedProviders;
+  final Map<String?, Map<Type, _Provider<Object?>>> _namedProviders;
 
   /// Whether ignoring KiwiErrors in the following cases:
   /// * if you register the same type under the same name a second time.
@@ -50,8 +50,12 @@ class KiwiContainer {
   void registerFactory<S>(
     Factory<S> factory, {
     String? name,
+    bool includeNull = false
   }) {
     _setProvider(name, _Provider<S>.factory(factory));
+    if(includeNull){
+      _setProvider(name, _Provider<S?>.factory(factory));
+    }
   }
 
   /// Registers a factory that will be called only only when
@@ -97,11 +101,12 @@ class KiwiContainer {
     }
 
     final value = providers[T]?.get(this);
-    if (value == null) {
+    if (value == null && !silent) {
       throw NotRegisteredKiwiError(
           'Failed to resolve `$T`:\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
     }
-    if (value is T) return value as T;
+    if (value is T) return value;
+    if(silent) return null as T;
     throw NotRegisteredKiwiError(
         'Failed to resolve `$T`:\n\nValue was not registered as `$T`\n\nThe type `$T` was not registered${name == null ? '' : ' for the name `$name`'}\n\nMake sure `$T` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.');
   }
@@ -147,8 +152,8 @@ class KiwiContainer {
       throw KiwiError(
           'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
     }
-    _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
-        provider as _Provider<Object>;
+    _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object?>>())[T] =
+        provider as _Provider<Object?>;
   }
 }
 
