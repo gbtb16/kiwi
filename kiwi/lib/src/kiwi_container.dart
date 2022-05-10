@@ -53,7 +53,7 @@ class KiwiContainer {
     bool includeNull = false
   }) {
     _setProvider(name, _Provider<S>.factory(factory));
-    if(includeNull){
+    if(includeNull && !(null is S)){
       _setProvider(name, _Provider<S?>.factory(factory));
     }
   }
