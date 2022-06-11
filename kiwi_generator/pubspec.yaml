@@ -13,7 +13,7 @@ dependencies:
   code_builder: ^4.1.0
   dart_style: ^2.2.3
   kiwi: ^4.0.3
-  path: ^1.8.2
+  path: ^1.8.1
   source_gen: ^1.2.2
   built_collection: ^5.1.1
 
