@@ -1,3 +1,9 @@
+## [4.0.3] - 2022-06-22
+### Updated
+- Dependencies
+### BREAKING
+- Dart 2.17.1 min requirement
+
 ## [4.0.2] - 2022-02-19
 ### Updated
 - Dependencies
