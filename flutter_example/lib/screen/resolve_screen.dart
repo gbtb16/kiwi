@@ -30,17 +30,17 @@ class _ResolveScreenState extends State<ResolveScreen> {
             ),
             Text(
               KiwiContainer().resolve<Counter>('display').value.toString(),
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
             Text(
               KiwiContainer().resolve<Counter>().value.toString(),
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
             Text(
               KiwiContainer().resolve<Test>().toString(),
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
           ],

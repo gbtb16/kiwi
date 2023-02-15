@@ -25,7 +25,7 @@ class MainScreen extends StatelessWidget {
             },
             child: Text(
               'Resolve Screen',
-              style: theme.textTheme.bodyText1?.copyWith(
+              style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSecondary,
               ),
             ),
@@ -39,7 +39,7 @@ class MainScreen extends StatelessWidget {
             },
             child: Text(
               'Error Screen',
-              style: theme.textTheme.bodyText1?.copyWith(
+              style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSecondary,
               ),
             ),
@@ -53,7 +53,7 @@ class MainScreen extends StatelessWidget {
             },
             child: Text(
               'Scoped Container Screen',
-              style: theme.textTheme.bodyText1?.copyWith(
+              style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSecondary,
               ),
             ),
