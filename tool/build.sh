@@ -39,6 +39,6 @@ echo "==========================="
 echo "kiwi_generator build_runner build"
 echo "---------------------------"
 cd kiwi_generator
-echo "Nothing to generate here"
+flutter packages pub run build_runner build --delete-conflicting-outputs
 echo "==========================="
 cd ..
