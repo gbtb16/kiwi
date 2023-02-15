@@ -12,7 +12,7 @@ echo "==========================="
 echo "example build_runner build"
 echo "---------------------------"
 cd example
-flutter packages pub run build_runner build --delete-conflicting-outputs
+dart pub run build_runner build --delete-conflicting-outputs
 echo "==========================="
 cd ..
 
@@ -39,6 +39,6 @@ echo "==========================="
 echo "kiwi_generator build_runner build"
 echo "---------------------------"
 cd kiwi_generator
-flutter packages pub run build_runner build --delete-conflicting-outputs
+dart pub run build_runner build --delete-conflicting-outputs
 echo "==========================="
 cd ..

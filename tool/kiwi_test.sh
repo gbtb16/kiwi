@@ -22,11 +22,11 @@ cd ..
 echo ""
 echo "kiwi test"
 cd kiwi
-flutter pub test
+dart pub run test
 cd ..
 
 echo ""
 echo "kiwi_generator test"
 cd kiwi_generator
-flutter pub test
+dart pub run test
 cd ..
