@@ -17,17 +17,20 @@ jobs:
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ matrix.sdk }}
-      - run: |
+      - name: Build & format for kiwi_generator
+        run: |
           cd kiwi_generator
           flutter packages get
           flutter packages pub run build_runner build --delete-conflicting-outputs
           flutter format .
-      - run: |
+      - name: Build & format for example
+        run: |
           cd example
           dart pub get
           flutter packages pub run build_runner build --delete-conflicting-outputs
           flutter format .
-      - run: |
+      - name: Build & format for flutter_example
+        run: |
           cd flutter_example
           flutter packages get
           flutter packages pub run build_runner build --delete-conflicting-outputs
