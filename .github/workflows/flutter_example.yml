@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: example
+        working-directory: flutter_example
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2.8.0
