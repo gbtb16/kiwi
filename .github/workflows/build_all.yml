@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [ stable ]
+        version: [ stable, beta, dev, master ]
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2.8.0
