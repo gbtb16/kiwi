@@ -16,5 +16,7 @@ jobs:
           sdk: 'stable'
       - name: Check changelog
         run: |
+         cd tool/actions
          dart pub get
+         cd .. 
          dart run tool/actions/changelog_checker.dart
