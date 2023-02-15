@@ -53,7 +53,7 @@ class MainScreen extends StatelessWidget {
             },
             child: Text(
               'Scoped Container Screen',
-              style: theme.textTheme.bodyText1?.copyWith(
+              style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSecondary,
               ),
             ),
