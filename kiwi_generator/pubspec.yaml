@@ -1,6 +1,6 @@
 name: kiwi_generator
 description: Generates dependency injection code using the kiwi package to reduce development time.
-version: 4.0.3
+version: 4.0.4
 homepage: https://github.com/vanlooverenkoen/kiwi/tree/master/kiwi_generator
 
 environment:
