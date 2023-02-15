@@ -1,0 +1,35 @@
+name: build_all
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sdk: [ stable, beta, dev ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+      - run:
+          cd kiwi_generator
+          flutter packages get
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          flutter format .
+      - run:
+          cd example
+          dart pub get
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          flutter format .
+      - run:
+          cd flutter_example
+          flutter packages get
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          flutter format .
+
