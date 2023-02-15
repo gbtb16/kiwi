@@ -1,4 +1,4 @@
-name: kiwi
+name: flutter_example
 
 on:
   push:
