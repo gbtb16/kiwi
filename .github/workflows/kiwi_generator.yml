@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        sdk: [ stable, beta, dev, master ]
+        sdk: [ stable, beta, dev ]
     defaults:
       run:
         working-directory: kiwi_generator
