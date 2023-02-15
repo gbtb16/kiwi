@@ -9,12 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: example
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2.8.0
         with:
           channel: 'stable'
-      - run: cd flutter_example
       - run: flutter packages get
       - run: flutter analyze
       - run: flutter format -n --set-exit-if-changed .

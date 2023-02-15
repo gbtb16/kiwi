@@ -9,12 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kiwi
     steps:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: 'stable'
-      - run: cd kiwi
       - run: dart pub get
       - run: dart analyze --fatal-infos --fatal-warnings .
       - run: dart format -o none --set-exit-if-changed .
