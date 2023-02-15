@@ -1,0 +1,20 @@
+name: changelog
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 'stable'
+      - name: Check changelog
+        run: |
+         dart pub get
+         dart run tool/actions/changelog_checker.dart

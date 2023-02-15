@@ -26,3 +26,8 @@ echo "kiwi_generator packages get"
 cd kiwi_generator
 dart pub get
 cd ..
+
+echo "actions packages get"
+cd tool/actions
+dart pub get
+cd ..
