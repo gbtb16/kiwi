@@ -1,6 +1,6 @@
 name: kiwi
 description: A simple yet efficient dependency injection container for Dart and Flutter (can be coupled with the kiwi_generator package).
-version: 4.0.4
+version: 4.1.0
 homepage: https://github.com/vanlooverenkoen/kiwi/tree/master/kiwi
 
 environment:

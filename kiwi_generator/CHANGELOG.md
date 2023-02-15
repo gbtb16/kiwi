@@ -1,4 +1,4 @@
-## [4.0.4] - 2022-02-15
+## [4.1.0] - 2022-02-15
 ### Updated
 - Dependencies
 - Moved from travis to github actions
