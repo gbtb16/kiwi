@@ -1,0 +1,60 @@
+name: build_all
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  flutter:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ stable ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.8.0
+        with:
+          channel: ${{ matrix.version }}
+      - name: Build & format for flutter_example
+        run: |
+          cd flutter_example
+          flutter packages get
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart format .
+      - name: Use verify-changed-files to check if any of the above files changed.
+        uses: tj-actions/verify-changed-files@v13
+      - name: Run step only when any of the above files change.
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: |
+          echo "Changed files: ${{ steps.verify-changed-files.outputs.changed_files }}"
+  dart:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sdk: [ stable, beta, dev ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+      - name: Build & format for kiwi_generator
+        run: |
+          cd kiwi_generator
+          dart pub get
+          dart run build_runner build --delete-conflicting-outputs
+          dart format .
+      - name: Build & format for example
+        run: |
+          cd example
+          dart pub get
+          dart run build_runner build --delete-conflicting-outputs
+          dart format .
+      - name: Use verify-changed-files to check if any of the above files changed.
+        uses: tj-actions/verify-changed-files@v13
+      - name: Run step only when any of the above files change.
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: |
+          echo "Changed files: ${{ steps.verify-changed-files.outputs.changed_files }}"          
+

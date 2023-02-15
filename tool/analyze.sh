@@ -30,7 +30,7 @@ echo "==========================="
 echo "kiwi analyze"
 echo "---------------------------"
 cd kiwi
-flutter analyze
+dart analyze --fatal-infos --fatal-warnings .
 echo "==========================="
 cd ..
 
@@ -39,6 +39,6 @@ echo "==========================="
 echo "kiwi_generator analyze"
 echo "---------------------------"
 cd kiwi_generator
-flutter analyze
+dart analyze --fatal-infos --fatal-warnings .
 echo "==========================="
 cd ..

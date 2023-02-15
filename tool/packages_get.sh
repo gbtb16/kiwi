@@ -19,10 +19,15 @@ cd ..
 
 echo "kiwi packages get"
 cd kiwi
-flutter packages get
+dart pub get
 cd ..
 
 echo "kiwi_generator packages get"
 cd kiwi_generator
-flutter packages get
+dart pub get
+cd ..
+
+echo "actions packages get"
+cd tool/actions
+dart pub get
 cd ..
