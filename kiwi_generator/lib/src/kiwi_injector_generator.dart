@@ -168,7 +168,7 @@ class KiwiInjectorGenerator extends Generator {
         constructorName == null ? '' : '.$constructorName';
 
     final ClassElement? clazz =
-        concreteType.element2?.library?.getClass(className);
+        concreteType.element?.library?.getClass(className);
     if (clazz == null) {
       throw KiwiGeneratorError('$className not found');
     }
