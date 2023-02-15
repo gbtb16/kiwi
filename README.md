@@ -1,6 +1,9 @@
 # kiwi
 
-[![travis](https://img.shields.io/travis/vanlooverenkoen/kiwi.svg)](https://travis-ci.com/vanlooverenkoen/kiwi)
+[![kiwi](https://github.com/vanlooverenkoen/kiwi/actions/workflows/kiwi.yml/badge.svg?branch=master)](https://github.com/vanlooverenkoen/kiwi/actions/workflows/kiwi.yml)
+[![kiwi_generator](https://github.com/vanlooverenkoen/kiwi/actions/workflows/kiwi_generator.yml/badge.svg?branch=master)](https://github.com/vanlooverenkoen/kiwi/actions/workflows/kiwi_generator.yml)
+[![flutter_example](https://github.com/vanlooverenkoen/kiwi/actions/workflows/flutter_example.yml/badge.svg?branch=master)](https://github.com/vanlooverenkoen/kiwi/actions/workflows/flutter_example.yml)
+[![example](https://github.com/vanlooverenkoen/kiwi/actions/workflows/example.yml/badge.svg?branch=master)](https://github.com/vanlooverenkoen/kiwi/actions/workflows/example.yml)
 
 ![Logo](https://raw.githubusercontent.com/vanlooverenkoen/kiwi/master/images/logo.png)
 
