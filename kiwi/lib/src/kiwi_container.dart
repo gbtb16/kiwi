@@ -140,9 +140,10 @@ class KiwiContainer {
   }
 
   
-  /// Returns if type [T] is registered.
+  /// Returns if an instance or builder of type [T] is registered.
   /// 
-  /// If [T] is registered with a name and the name is not passed to [isRegistered], returns false.
+  /// If an instance or builder of type [T] is registered with a name, 
+  /// and the name is not passed to [isRegistered], returns false.
   bool isRegistered<T>({String? name}) {
     return (_namedProviders.containsKey(name) && _namedProviders[name]!.containsKey(T));
   }
