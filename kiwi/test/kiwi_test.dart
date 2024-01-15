@@ -393,6 +393,51 @@ void main() {
             'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
+
+    test('checks that the instances are registered', () {
+      final scoped = KiwiContainer.scoped();
+
+      // Unnamed instances
+      expect(scoped.isRegistered<int>(), false);
+
+      scoped.registerInstance<int>(5);
+
+      expect(scoped.isRegistered<int>(), true);
+      expect(scoped.resolve<int>(), 5);
+
+      scoped.unregister<int>();
+
+      expect(scoped.isRegistered<int>(), false);
+      expect(
+          () => container.resolve<int>(),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+
+      // Named instances
+      expect(scoped.isRegistered<String>(name: 'named_string_instance'), false);
+
+      scoped.registerInstance<String>('random_string',
+          name: 'named_string_instance');
+
+      expect(scoped.isRegistered<String>(),
+          false); // [isRegistered] cannot be true if String it is named and is tested unnamed.
+      expect(scoped.isRegistered<String>(name: 'named_string_instance'), true);
+      expect(scoped.resolve<String>('named_string_instance'), 'random_string');
+
+      scoped.unregister<String>('named_string_instance');
+
+      expect(scoped.isRegistered<String>(), false);
+      expect(
+          () => container.resolve<String>(),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `String`:\n\nThe type `String` was not registered\n\nMake sure `String` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+    });
   });
 }
 
