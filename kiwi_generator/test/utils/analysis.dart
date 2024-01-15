@@ -9,7 +9,8 @@ import 'package:source_gen/source_gen.dart';
 Future<LibraryReader> resolveCompilationUnit(String sourceFile) async {
   var files = [File(sourceFile)];
 
-  var fileMap = Map<String, String>.fromEntries(files.map((f) => MapEntry('a|lib/${p.basename(f.path)}', f.readAsStringSync())));
+  var fileMap = Map<String, String>.fromEntries(files.map(
+      (f) => MapEntry('a|lib/${p.basename(f.path)}', f.readAsStringSync())));
 
   var library = await resolveSources(fileMap, (item) async {
     var assetId = AssetId.parse(fileMap.keys.first);
