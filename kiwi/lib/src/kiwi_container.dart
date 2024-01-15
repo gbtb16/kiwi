@@ -8,8 +8,7 @@ typedef T Factory<T>(KiwiContainer container);
 /// A simple service container.
 class KiwiContainer {
   /// Creates a scoped container.
-  KiwiContainer.scoped()
-      : _namedProviders = Map<String?, Map<Type, _Provider<Object>>>();
+  KiwiContainer.scoped() : _namedProviders = Map<String?, Map<Type, _Provider<Object>>>();
 
   static final KiwiContainer _instance = KiwiContainer.scoped();
 
@@ -141,14 +140,10 @@ class KiwiContainer {
 
   void _setProvider<T>(String? name, _Provider<T> provider) {
     final nameProviders = _namedProviders;
-    if (!silent &&
-        (nameProviders.containsKey(name) &&
-            nameProviders[name]!.containsKey(T))) {
-      throw KiwiError(
-          'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
+    if (!silent && (nameProviders.containsKey(name) && nameProviders[name]!.containsKey(T))) {
+      throw KiwiError('The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
     }
-    _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
-        provider as _Provider<Object>;
+    _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] = provider as _Provider<Object>;
   }
 }
 
