@@ -50,7 +50,7 @@ void main() {
     });
 
     test('instances should be resolveAs', () {
-      final sith = Sith('Anakin', 'Skywalker', 'DartVader');
+      final sith = Sith('Anakin', 'Skywalker', 'DarthVader');
       container.registerSingleton<Character>((c) => sith);
 
       expect(container.resolveAs<Character, Sith>(), sith);
@@ -95,19 +95,19 @@ void main() {
     test('builders should be resolved', () {
       container.registerSingleton((c) => 5);
       container.registerFactory(
-          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
+          (c) => const Sith('Anakin', 'Skywalker', 'DarthVader'));
       container.registerFactory((c) => const Character('Anakin', 'Skywalker'));
       container.registerFactory<Character>(
-          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'),
+          (c) => const Sith('Anakin', 'Skywalker', 'DarthVader'),
           name: 'named');
 
       expect(container.resolve<int>(), 5);
       expect(container.resolve<Sith>(),
-          const Sith('Anakin', 'Skywalker', 'DartVader'));
+          const Sith('Anakin', 'Skywalker', 'DarthVader'));
       expect(container.resolve<Character>(),
           const Character('Anakin', 'Skywalker'));
       expect(container.resolve<Character>('named'),
-          const Sith('Anakin', 'Skywalker', 'DartVader'));
+          const Sith('Anakin', 'Skywalker', 'DarthVader'));
     });
 
     test('builders should always be created', () {
@@ -120,13 +120,13 @@ void main() {
     test('one time builders should be resolved', () {
       container.registerSingleton((c) => 5);
       container.registerSingleton(
-          (c) => const Sith('Anakin', 'Skywalker', 'DartVader'));
+          (c) => const Sith('Anakin', 'Skywalker', 'DarthVader'));
       container.registerSingleton<Character>(
           (c) => const Character('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);
       expect(container.resolve<Sith>(),
-          const Sith('Anakin', 'Skywalker', 'DartVader'));
+          const Sith('Anakin', 'Skywalker', 'DarthVader'));
       expect(container.resolve<Character>(),
           const Character('Anakin', 'Skywalker'));
     });
@@ -247,6 +247,150 @@ void main() {
             (f) => f.toString(),
             'toString()',
             'KiwiError:\n\n\nFailed to resolve `Character` as `Sith`:\n\nThe type `Character` as `Sith` was not registered for the name `named`\n\nMake sure `Sith` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+    });
+
+    test('Parented [KiwiContainer.scoped] should inherit global registrations',
+        () {
+      container.registerInstance(5);
+      container.registerInstance(6, name: 'named');
+      container.registerInstance<num>(7);
+
+      final character = Character('Gabriel', 'Kiwilied');
+      container.registerFactory<Character>((c) => character);
+
+      final scoped = KiwiContainer.scoped(parent: container);
+
+      // The scoped instance and global container must be different.
+      expect(scoped, isNot(container));
+
+      expect(scoped.resolve<int>(), 5);
+      expect(scoped.resolve<int>('named'), 6);
+      expect(scoped.resolve<num>(), 7);
+      expect(scoped.resolve<Character>(), character);
+    });
+
+    test('Parented [KiwiContainer.scoped] should inherit registrations', () {
+      final firstScoped = KiwiContainer.scoped();
+
+      firstScoped.registerInstance<int>(5);
+      firstScoped.registerInstance<int>(6, name: 'named');
+      firstScoped.registerInstance<num>(7);
+
+      final character = Character('Gabriel', 'Kiwilied');
+      firstScoped.registerFactory<Character>((c) => character);
+
+      final secondScoped = KiwiContainer.scoped(parent: firstScoped);
+
+      // The scoped instances must be different.
+      expect(secondScoped, isNot(firstScoped));
+
+      expect(secondScoped.resolve<int>(), 5);
+      expect(secondScoped.resolve<int>('named'), 6);
+      expect(secondScoped.resolve<num>(), 7);
+      expect(secondScoped.resolve<Character>(), character);
+    });
+
+    test('Parented [KiwiContainer.scoped] should be impacted by parent', () {
+      final firstScoped = KiwiContainer.scoped();
+
+      firstScoped.registerInstance<int>(5);
+      firstScoped.registerInstance<int>(6, name: 'named');
+      firstScoped.registerInstance<num>(7);
+
+      final character = Character('Gabriel', 'Kiwilied');
+      firstScoped.registerFactory<Character>((c) => character);
+
+      final secondScoped = KiwiContainer.scoped(parent: firstScoped);
+
+      firstScoped.registerInstance<int>(26, name: 'exclusive_to_parent');
+      firstScoped.registerInstance<String>('random_string');
+
+      expect(firstScoped.resolve<int>(), 5);
+      expect(firstScoped.resolve<int>('named'), 6);
+      expect(firstScoped.resolve<num>(), 7);
+      expect(firstScoped.resolve<Character>(), character);
+      // The instances registered in [firstScoped] after creation of [secondScoped].
+      expect(firstScoped.resolve<int>('exclusive_to_parent'), 26);
+      expect(firstScoped.resolve<String>(), 'random_string');
+
+      expect(secondScoped.resolve<int>(), 5);
+      expect(secondScoped.resolve<int>('named'), 6);
+      expect(secondScoped.resolve<Character>(), character);
+
+      // The [secondScoped] must not have the [firstScoped] instances registered after [secondScoped] creation.
+      expect(
+          () => secondScoped.resolve<int>('exclusive_to_parent'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `exclusive_to_parent`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+
+      expect(
+          () => secondScoped.resolve<String>(),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `String`:\n\nThe type `String` was not registered\n\nMake sure `String` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+    });
+
+    test('Parented [KiwiContainer.scoped] should not impact parent', () {
+      final firstScoped = KiwiContainer.scoped();
+
+      firstScoped.registerInstance<int>(5);
+      firstScoped.registerInstance<int>(6, name: 'named');
+      firstScoped.registerInstance<num>(7);
+
+      final character = Character('Gabriel', 'Kiwilied');
+      firstScoped.registerFactory<Character>((c) => character);
+
+      final secondScoped = KiwiContainer.scoped(parent: firstScoped);
+
+      secondScoped.registerInstance<int>(27, name: 'exclusive_to_scoped');
+      secondScoped.registerInstance<String>('random_string');
+
+      expect(firstScoped.resolve<int>(), 5);
+      expect(firstScoped.resolve<int>('named'), 6);
+      expect(firstScoped.resolve<num>(), 7);
+      expect(firstScoped.resolve<Character>(), character);
+
+      expect(secondScoped.resolve<int>(), 5);
+      expect(secondScoped.resolve<int>('named'), 6);
+      expect(secondScoped.resolve<num>(), 7);
+      expect(secondScoped.resolve<Character>(), character);
+      // The instances registered in [secondScoped] after your creation.
+      expect(secondScoped.resolve<int>('exclusive_to_scoped'), 27);
+      expect(secondScoped.resolve<String>(), 'random_string');
+
+      // The [firstScoped] must not have the [secondScoped] instances registered only in [secondScoped].
+      expect(
+          () => firstScoped.resolve<int>('exclusive_to_scoped'),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered for the name `exclusive_to_scoped`\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+
+      expect(
+          () => firstScoped.resolve<String>(),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `String`:\n\nThe type `String` was not registered\n\nMake sure `String` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
+          )));
+    });
+
+    test('Unparented [KiwiContainer.scoped] should not be resolved', () {
+      final scoped = KiwiContainer.scoped(parent: container);
+
+      expect(
+          () => scoped.resolve<int>(),
+          throwsA(TypeMatcher<KiwiError>().having(
+            (f) => f.toString(),
+            'toString()',
+            'Not Registered KiwiError:\n\n\nFailed to resolve `int`:\n\nThe type `int` was not registered\n\nMake sure `int` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
   });
