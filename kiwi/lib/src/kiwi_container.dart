@@ -155,7 +155,8 @@ class KiwiContainer {
   /// If an instance or builder of type [T] is registered with a name,
   /// and the name is not passed to [isRegistered], returns false.
   bool isRegistered<T>({String? name}) {
-    return (_namedProviders.containsKey(name) && _namedProviders[name]!.containsKey(T));
+    return (_namedProviders.containsKey(name) &&
+        _namedProviders[name]!.containsKey(T));
   }
 
   void _setProvider<T>(String? name, _Provider<T> provider) {

@@ -419,9 +419,11 @@ void main() {
       // Named instances
       expect(scoped.isRegistered<String>(name: 'named_string_instance'), false);
 
-      scoped.registerInstance<String>('random_string', name: 'named_string_instance');
+      scoped.registerInstance<String>('random_string',
+          name: 'named_string_instance');
 
-      expect(scoped.isRegistered<String>(), false); // [isRegistered] cannot be true if String it is named and is tested unnamed.
+      expect(scoped.isRegistered<String>(),
+          false); // [isRegistered] cannot be true if String it is named and is tested unnamed.
       expect(scoped.isRegistered<String>(name: 'named_string_instance'), true);
       expect(scoped.resolve<String>('named_string_instance'), 'random_string');
 
