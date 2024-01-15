@@ -15,8 +15,8 @@ import 'package:kiwi/kiwi.dart';
 const TypeChecker _registerTypeChecker = TypeChecker.fromRuntime(Register);
 
 bool _isRegisterMethod(MethodElement method) =>
-    method.returnType.isVoid &&
-    _registerTypeChecker.hasAnnotationOfExact(method);
+    (method.returnType is VoidType &&
+        _registerTypeChecker.hasAnnotationOfExact(method));
 
 class KiwiInjectorGenerator extends Generator {
   const KiwiInjectorGenerator();
@@ -49,11 +49,11 @@ class KiwiInjectorGenerator extends Generator {
         rethrow;
       } else if (e is Error) {
         throw KiwiGeneratorError(
-            'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/vanlooverenkoen/kiwi/issues/new?labels=kiwi_generator,bug',
+            'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/gbtb16/kiwi/issues/new?labels=kiwi_generator,bug',
             error: e);
       } else {
         throw KiwiGeneratorError(
-            'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/vanlooverenkoen/kiwi/issues/new?labels=kiwi_generator,bug');
+            'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/gbtb16/kiwi/issues/new?labels=kiwi_generator,bug');
       }
     }
   }
