@@ -21,7 +21,7 @@ The latest version is [![Pub](https://img.shields.io/pub/v/kiwi_generator.svg)](
 
 ```yaml
 dev_dependencies:  
-  build_runner: ^2.3.3
+  build_runner: ^1.10.0
   kiwi_generator: ^latest_version
 ```
 
