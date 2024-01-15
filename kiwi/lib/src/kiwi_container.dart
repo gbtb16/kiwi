@@ -139,11 +139,16 @@ class KiwiContainer {
     _namedProviders.clear();
   }
 
+  
+  /// Returns if type [T] is registered.
+  /// 
+  /// If [T] is registered with a name and the name is not passed to [isRegistered], returns false.
+  bool isRegistered<T>({String? name}) {
+    return (_namedProviders.containsKey(name) && _namedProviders[name]!.containsKey(T));
+  }
+
   void _setProvider<T>(String? name, _Provider<T> provider) {
-    final nameProviders = _namedProviders;
-    if (!silent &&
-        (nameProviders.containsKey(name) &&
-            nameProviders[name]!.containsKey(T))) {
+    if (!silent && isRegistered<T>(name: name)) {
       throw KiwiError(
           'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
     }
