@@ -3,7 +3,7 @@
 [![Pub](https://img.shields.io/pub/v/kiwi.svg)](https://pub.dartlang.org/packages/kiwi)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/RomainRastel)
 
-![Logo](https://raw.githubusercontent.com/vanlooverenkoen/kiwi/master/images/logo.png)
+![Logo](https://raw.githubusercontent.com/gbtb16/kiwi/master/images/logo.png)
 
 A simple yet efficient IoC container for Dart and Flutter.
 
@@ -12,7 +12,7 @@ The container does not rely on reflection, it's just a `Map`, so it's fast.
 **IMPORTANT: Dart2 is required to use this package.**
 
 This package can be used with, or without code generation. While code generation allows you to code faster, it comes with extra configuration on you side (to be setup only one time).
-This section is only about **kiwi** which contains the IoC container and the annotations. If you are looking for the kiwi_generator configuration, you can find documentation [here](https://github.com/vanlooverenkoen/kiwi/tree/master/kiwi_generator).
+This section is only about **kiwi** which contains the IoC container and the annotations. If you are looking for the kiwi_generator configuration, you can find documentation [here](https://github.com/gbtb16/kiwi/tree/master/kiwi_generator).
 
 ## Configuration
 
@@ -197,4 +197,4 @@ In production, or when `silent` is `true`, you will get `null` if you try to res
 
 ## Changelog
 
-Please see the [Changelog](https://github.com/vanlooverenkoen/kiwi/blob/master/kiwi/CHANGELOG.md) page to know what's recently changed.
+Please see the [Changelog](https://github.com/gbtb16/kiwi/blob/master/kiwi/CHANGELOG.md) page to know what's recently changed.

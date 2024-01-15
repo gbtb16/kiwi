@@ -8,19 +8,8 @@ typedef T Factory<T>(KiwiContainer container);
 /// A simple service container.
 class KiwiContainer {
   /// Creates a scoped container.
-  ///
-  /// If [parent] is set, the new scoped instance will include its providers.
-  KiwiContainer.scoped({
-    KiwiContainer? parent,
-  }) : _namedProviders = <String?, Map<Type, _Provider<Object>>>{
-          if (parent != null)
-            ...parent._namedProviders.map(
-              // [Map.from] is needed to create a copy of value and not use its reference,
-              // because if only value is passed, everything included in the parent will be
-              // added to the new instance at any time, even after this scoped instance has been created.
-              (key, value) => MapEntry(key, Map.from(value)),
-            ),
-        };
+  KiwiContainer.scoped()
+      : _namedProviders = Map<String?, Map<Type, _Provider<Object>>>();
 
   static final KiwiContainer _instance = KiwiContainer.scoped();
 
@@ -152,10 +141,14 @@ class KiwiContainer {
 
   void _setProvider<T>(String? name, _Provider<T> provider) {
     final nameProviders = _namedProviders;
-    if (!silent && (nameProviders.containsKey(name) && nameProviders[name]!.containsKey(T))) {
-      throw KiwiError('The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
+    if (!silent &&
+        (nameProviders.containsKey(name) &&
+            nameProviders[name]!.containsKey(T))) {
+      throw KiwiError(
+          'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
     }
-    _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] = provider as _Provider<Object>;
+    _namedProviders.putIfAbsent(name, () => Map<Type, _Provider<Object>>())[T] =
+        provider as _Provider<Object>;
   }
 }
 
