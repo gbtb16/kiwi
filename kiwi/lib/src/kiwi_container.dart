@@ -3,7 +3,7 @@ import 'package:kiwi/src/model/exception/not_registered_error.dart';
 import 'package:meta/meta.dart';
 
 /// Signature for a builder which creates an object of type [T].
-typedef T Factory<T>(KiwiContainer container);
+typedef Factory<T> = T Function(KiwiContainer container);
 
 /// A simple service container.
 class KiwiContainer {
