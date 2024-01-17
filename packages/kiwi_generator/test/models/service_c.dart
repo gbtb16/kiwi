@@ -3,7 +3,7 @@ import 'service_a.dart';
 import 'service_b.dart';
 
 class ServiceC extends Service {
-  ServiceC({required ServiceA serviceA, required ServiceB serviceB});
+  const ServiceC(ServiceA serviceA, ServiceB serviceB);
 
-  ServiceC.other({required ServiceA serviceA});
+  const ServiceC.other(ServiceA serviceA);
 }

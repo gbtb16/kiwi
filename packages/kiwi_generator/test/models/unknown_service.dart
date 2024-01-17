@@ -1,4 +1,5 @@
 class UnknownService {
   const UnknownService();
-  UnknownService.other();
+
+  const UnknownService.other();
 }
