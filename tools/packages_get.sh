@@ -7,23 +7,23 @@ then
   cd ..
 fi
 
-echo "example packages get"
-cd example
+echo "dart_kiwi example package packages get"
+cd examples/dart_kiwi
 flutter packages get
 cd ..
 
-echo "flutter_example packages get"
-cd flutter_example
+echo "flutter_kiwi example package packages get"
+cd examples/flutter_kiwi
 flutter packages get
 cd ..
 
-echo "kiwi packages get"
-cd kiwi
+echo "kiwi final package packages get"
+cd packages/kiwi
 dart pub get
 cd ..
 
-echo "kiwi_generator packages get"
-cd kiwi_generator
+echo "kiwi_generator final package packages get"
+cd packages/kiwi_generator
 dart pub get
 cd ..
 

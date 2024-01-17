@@ -8,25 +8,25 @@ then
 fi
 
 echo ""
-echo "example test"
-cd example
-echo "No tests for example"
+echo "dart_kiwi example package test"
+cd examples/dart_kiwi
+echo "No tests for dart_kiwi"
 cd ..
 
 echo ""
-echo "flutter_example test"
-cd flutter_example
-echo "No test for flutter_example"
+echo "flutter_kiwi example package test"
+cd examples/flutter_kiwi
+echo "No test for flutter_kiwi"
 cd ..
 
 echo ""
-echo "kiwi test"
-cd kiwi
+echo "kiwi final package test"
+cd packages/kiwi
 dart pub run test
 cd ..
 
 echo ""
-echo "kiwi_generator test"
-cd kiwi_generator
+echo "kiwi_generator final package test"
+cd packages/kiwi_generator
 dart pub run test
 cd ..

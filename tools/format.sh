@@ -8,25 +8,25 @@ then
 fi
 
 echo ""
-echo "example format lib"
-cd example
+echo "dart_kiwi example package format lib"
+cd examples/dart_kiwi
 dart format -o none --set-exit-if-changed .
 cd ..
 
 echo ""
-echo "flutter_example format lib"
-cd flutter_example
+echo "flutter_kiwi example package format lib"
+cd examples/flutter_kiwi
 dart format -o none --set-exit-if-changed .
 cd ..
 
 echo ""
-echo "kiwi format lib"
-cd kiwi
+echo "kiwi final package format lib"
+cd packages/kiwi
 dart format -o none --set-exit-if-changed .
 cd ..
 
 echo ""
-echo "kiwi_generator format lib"
-cd kiwi_generator
+echo "kiwi_generator final package format lib"
+cd packages/kiwi_generator
 dart format -o none --set-exit-if-changed .
 cd ..

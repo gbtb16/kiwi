@@ -13,7 +13,7 @@ main() {
 
   print(comumLogger.toString()); // Hey, I'm a logger!
   print(namedLogger.toString()); // Hey, I'm a logger!
-  print(serviceA.toString()); // Hey. I'm a service A!
+  print(serviceA.toString()); // Hey, I'm a service A!
 }
 
 class Service {

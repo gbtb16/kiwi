@@ -9,36 +9,36 @@ fi
 
 echo ""
 echo "==========================="
-echo "example analyze"
+echo "dart_kiwi example package analyze"
 echo "---------------------------"
-cd example
+cd examples/dart_kiwi
 flutter analyze
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "flutter_example analyze"
+echo "flutter_kiwi example package analyze"
 echo "---------------------------"
-cd flutter_example
+cd examples/flutter_kiwi
 flutter analyze
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "kiwi analyze"
+echo "kiwi final package analyze"
 echo "---------------------------"
-cd kiwi
+cd packages/kiwi
 dart analyze --fatal-infos --fatal-warnings .
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "kiwi_generator analyze"
+echo "kiwi_generator final package analyze"
 echo "---------------------------"
-cd kiwi_generator
+cd packages/kiwi_generator
 dart analyze --fatal-infos --fatal-warnings .
 echo "==========================="
 cd ..

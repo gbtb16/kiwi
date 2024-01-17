@@ -9,36 +9,36 @@ fi
 
 echo ""
 echo "==========================="
-echo "example build_runner build"
+echo "dart_kiwi example package build_runner build"
 echo "---------------------------"
-cd example
+cd examples/dart_kiwi
 dart run build_runner build --delete-conflicting-outputs
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "flutter_example build_runner build"
+echo "flutter_kiwi example package build_runner build"
 echo "---------------------------"
-cd flutter_example
+cd examples/flutter_kiwi
 flutter packages pub run build_runner build --delete-conflicting-outputs
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "kiwi build_runner build"
+echo "kiwi final package build_runner build"
 echo "---------------------------"
-cd kiwi
+cd packages/kiwi
 echo "Nothing to generate here"
 echo "==========================="
 cd ..
 
 echo ""
 echo "==========================="
-echo "kiwi_generator build_runner build"
+echo "kiwi_generator final package build_runner build"
 echo "---------------------------"
-cd kiwi_generator
+cd packages/kiwi_generator
 flutter packages pub run build_runner build --delete-conflicting-outputs
 echo "==========================="
 cd ..
