@@ -4,7 +4,7 @@
 
 ![Logo](https://raw.githubusercontent.com/gbtb16/kiwi/master/images/logo.png)
 
-Generates dependency injection code using the [kiwi](https://github.com/gbtb16/kiwi) package to reduce development time.
+Generates dependency injection code using the [kiwi](https://github.com/gbtb16/packages/kiwi) package to reduce development time.
 
 ## Configuration
 
@@ -209,4 +209,4 @@ class _$Injector extends Injector {
 
 ## Changelog
 
-Please see the [Changelog](https://github.com/gbtb16/kiwi/blob/master/kiwi_generator/CHANGELOG.md) page to know what's recently changed.
+Please see the [Changelog](https://github.com/gbtb16/kiwi/blob/master/packages/kiwi_generator/CHANGELOG.md) page to know what's recently changed.
