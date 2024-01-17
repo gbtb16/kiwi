@@ -10,6 +10,7 @@ abstract class Injector {
   @Register.singleton(LocalService, name: null)
   @Register.singleton(Service, from: LocalService)
   @Register.singleton(ServiceA, name: 'singletonA')
-  @Register.singleton(Service, from: LocalService, name: 'singletonLocalService')
+  @Register.singleton(Service,
+      from: LocalService, name: 'singletonLocalService')
   void configure();
 }
