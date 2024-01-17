@@ -2,9 +2,9 @@ name: kiwi
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
 
 jobs:
   check:
@@ -14,7 +14,7 @@ jobs:
         sdk: [ stable, beta, dev ]
     defaults:
       run:
-        working-directory: kiwi
+        working-directory: packages/kiwi
     steps:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1

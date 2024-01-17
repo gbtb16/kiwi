@@ -2,9 +2,9 @@ name: build_all
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
 
 jobs:
   flutter:
@@ -17,9 +17,9 @@ jobs:
       - uses: subosito/flutter-action@v2.12.0
         with:
           channel: ${{ matrix.version }}
-      - name: Build & format for flutter_example
+      - name: Build & format for flutter_kiwi example
         run: |
-          cd flutter_example
+          cd examples/flutter_kiwi
           flutter packages get
           flutter packages pub run build_runner build --delete-conflicting-outputs
           dart format .
@@ -41,13 +41,13 @@ jobs:
           sdk: ${{ matrix.sdk }}
       - name: Build & format for kiwi_generator
         run: |
-          cd kiwi_generator
+          cd packages/kiwi_generator
           dart pub get
           dart run build_runner build --delete-conflicting-outputs
           dart format .
-      - name: Build & format for example
+      - name: Build & format for dart_kiwi example
         run: |
-          cd example
+          cd examples/dart_kiwi
           dart pub get
           dart run build_runner build --delete-conflicting-outputs
           dart format .
