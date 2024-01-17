@@ -96,11 +96,11 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => ServiceA())
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()))
+      ..registerFactory((c) => LocalService())
+      ..registerFactory((c) => LocalService())
+      ..registerFactory<Service>((c) => LocalService())
       ..registerFactory((c) => ServiceA(), name: 'factoryA')
-      ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB');
+      ..registerFactory<Service>((c) => LocalService(), name: 'factoryLocalService');
   }
 }
 ''';
@@ -145,11 +145,11 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton((c) => ServiceA())
-      ..registerSingleton((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerSingleton((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerSingleton<Service>((c) => ServiceB(c.resolve<ServiceA>()))
+      ..registerSingleton((c) => LocalService())
+      ..registerSingleton((c) => LocalService())
+      ..registerSingleton<Service>((c) => LocalService())
       ..registerSingleton((c) => ServiceA(), name: 'singletonA')
-      ..registerSingleton<Service>((c) => ServiceB(c.resolve<ServiceA>()), name: 'singletonB');
+      ..registerSingleton<Service>((c) => LocalService(), name: 'singletonLocalService');
   }
 }
 ''';
