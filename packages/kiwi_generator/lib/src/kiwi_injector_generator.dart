@@ -152,10 +152,12 @@ class KiwiInjectorGenerator extends Generator {
         registerObject.getField('constructorName')?.toStringValue();
     final DartType? concreteType = concrete ?? type;
 
+    // TODO: Implement null type check
     if (concreteType == null) {
       throw KiwiGeneratorError(
           'null can not be registered because there is no type for null');
     }
+
     final String className =
         concreteType.getDisplayString(withNullability: false);
     final String typeParameters = concrete == null
