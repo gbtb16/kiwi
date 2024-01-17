@@ -1,5 +1,9 @@
 import 'package:kiwi/kiwi.dart';
 
+import '../models/service.dart';
+import '../models/service_a.dart';
+import '../models/service_b.dart';
+
 abstract class Injector {
   @Register.singleton(ServiceA)
   @Register.singleton(ServiceB, from: null)
@@ -9,9 +13,3 @@ abstract class Injector {
   @Register.singleton(Service, from: ServiceB, name: 'singletonB')
   void configure();
 }
-
-class Service {}
-
-class ServiceA extends Service {}
-
-class ServiceB extends Service {}

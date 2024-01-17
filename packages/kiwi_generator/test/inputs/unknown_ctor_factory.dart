@@ -1,10 +1,8 @@
 import 'package:kiwi/kiwi.dart';
 
-abstract class Injector {
-  @Register.factory(Service, constructorName: 'unknown')
-  void configure();
-}
+import '../models/unknown_service.dart';
 
-class Service {
-  Service.other();
+abstract class Injector {
+  @Register.factory(UnknownService, constructorName: 'unknown')
+  void configure();
 }

@@ -1,7 +1,7 @@
 import 'package:kiwi_generator/src/model/kiwi_generator_error.dart';
 import 'package:test/test.dart';
 
-import 'utils/test.dart';
+import 'utils/test_helper.dart';
 
 void main() async {
   group('Register.factory', () {
@@ -96,11 +96,11 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => ServiceA())
-      ..registerFactory((c) => ServiceB())
-      ..registerFactory((c) => ServiceB())
-      ..registerFactory<Service>((c) => ServiceB())
+      ..registerFactory((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
+      ..registerFactory((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
+      ..registerFactory<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
       ..registerFactory((c) => ServiceA(), name: 'factoryA')
-      ..registerFactory<Service>((c) => ServiceB(), name: 'factoryB');
+      ..registerFactory<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'factoryB');
   }
 }
 ''';
@@ -112,10 +112,10 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => ServiceA())
-      ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
-      ..registerFactory((c) => ServiceC.other(c.resolve<ServiceB>()));
+      ..registerFactory<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
+      ..registerFactory((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'factoryB')
+      ..registerFactory((c) => ServiceC(serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>('factoryB')))
+      ..registerFactory((c) => ServiceC.other(serviceA: c.resolve<ServiceA>()));
   }
 }
 ''';
@@ -127,10 +127,10 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => ServiceA())
-      ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
-      ..registerFactory((c) => ServiceC.other(c.resolve<ServiceB>()));
+      ..registerFactory<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
+      ..registerFactory((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'factoryB')
+      ..registerFactory((c) => ServiceC(serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>('factoryB')))
+      ..registerFactory((c) => ServiceC.other(serviceA: c.resolve<ServiceA>()));
   }
 
   @override
@@ -145,11 +145,11 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton((c) => ServiceA())
-      ..registerSingleton((c) => ServiceB())
-      ..registerSingleton((c) => ServiceB())
-      ..registerSingleton<Service>((c) => ServiceB())
+      ..registerSingleton((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
+      ..registerSingleton((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
+      ..registerSingleton<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
       ..registerSingleton((c) => ServiceA(), name: 'singletonA')
-      ..registerSingleton<Service>((c) => ServiceB(), name: 'singletonB');
+      ..registerSingleton<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'singletonB');
   }
 }
 ''';
@@ -161,11 +161,11 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton((c) => ServiceA())
-      ..registerSingleton<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerSingleton((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
+      ..registerSingleton<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
+      ..registerSingleton((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'factoryB')
       ..registerSingleton(
-          (c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
-      ..registerSingleton((c) => ServiceC.other(c.resolve<ServiceB>()));
+          (c) => ServiceC(serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>('factoryB')))
+      ..registerSingleton((c) => ServiceC.other(serviceA: c.resolve<ServiceA>()));
   }
 }
 ''';
