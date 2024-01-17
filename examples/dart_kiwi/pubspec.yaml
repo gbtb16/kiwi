@@ -1,0 +1,21 @@
+name: dart_kiwi
+description: A sample command-line application as an example for kiwi.
+version: 1.0.0+2
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  kiwi: ^4.1.0
+
+dependency_overrides:
+  kiwi:
+    path: ../../packages/kiwi/
+  kiwi_generator:
+    path: ../../packages/kiwi_generator/
+  
+dev_dependencies:
+  test: ^1.23.1
+  build_runner: ^2.3.3
+  kiwi_generator: ^4.1.0
