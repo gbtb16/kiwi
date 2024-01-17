@@ -114,7 +114,7 @@ class _$Injector extends Injector {
       ..registerFactory((c) => ServiceA())
       ..registerFactory<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
       ..registerFactory((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(serviceA: c.resolve<ServiceA>()))
+      ..registerFactory((c) => ServiceC(serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>('factoryB')))
       ..registerFactory((c) => ServiceC.other(serviceA: c.resolve<ServiceA>()));
   }
 }
@@ -129,7 +129,7 @@ class _$Injector extends Injector {
       ..registerFactory((c) => ServiceA())
       ..registerFactory<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
       ..registerFactory((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(serviceA: c.resolve<ServiceA>()))
+      ..registerFactory((c) => ServiceC(serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>('factoryB')))
       ..registerFactory((c) => ServiceC.other(serviceA: c.resolve<ServiceA>()));
   }
 
@@ -164,7 +164,7 @@ class _$Injector extends Injector {
       ..registerSingleton<Service>((c) => ServiceB(serviceA: c.resolve<ServiceA>()))
       ..registerSingleton((c) => ServiceB(serviceA: c.resolve<ServiceA>()), name: 'factoryB')
       ..registerSingleton(
-          (c) => ServiceC(serviceA: c.resolve<ServiceA>()))
+          (c) => ServiceC(serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>('factoryB')))
       ..registerSingleton((c) => ServiceC.other(serviceA: c.resolve<ServiceA>()));
   }
 }

@@ -50,9 +50,7 @@ class ServiceB extends Service {
 }
 
 class ServiceC extends Service {
-  final ServiceA serviceA;
+  ServiceC({required ServiceA serviceA, required ServiceB serviceB});
 
-  const ServiceC({required this.serviceA});
-
-  const ServiceC.other({required this.serviceA});
+  ServiceC.other({required ServiceB serviceB});
 }
