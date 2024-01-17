@@ -11,35 +11,35 @@ Future<void> testKiwi(
   String fileName,
   String? output,
 ) async {
-  // try {
-  String inputFilePath = './test/inputs/$fileName.dart';
+  try {
+    String inputFilePath = './test/inputs/$fileName.dart';
 
-  final library = await resolveCompilationUnit(inputFilePath);
+    final library = await resolveCompilationUnit(inputFilePath);
 
-  String? actual = _injectorGenerator.generate(library, null);
-  expect(actual, output);
-  // } catch (genericError) {
-  //   print('Its not possible to find inputs file.');
-  //   print('Error: $genericError');
+    String? actual = _injectorGenerator.generate(library, null);
+    expect(actual, output);
+  } catch (genericError) {
+    print('Its not possible to find inputs file.');
+    print('Error: $genericError');
 
-  //   rethrow;
-  // }
+    rethrow;
+  }
 }
 
 Future<void> testKiwiException(
   String fileName,
   dynamic matcher,
 ) async {
-  // try {
-  String inputFilePath = './test/inputs/$fileName.dart';
+  try {
+    String inputFilePath = './test/inputs/$fileName.dart';
 
-  final library = await resolveCompilationUnit(inputFilePath);
+    final library = await resolveCompilationUnit(inputFilePath);
 
-  expect(() => _injectorGenerator.generate(library, null), throwsA(matcher));
-  // } catch (genericError) {
-  //   print('Its not possible to test kiwi exceptions.');
-  //   print('Error: $genericError');
+    expect(() => _injectorGenerator.generate(library, null), throwsA(matcher));
+  } catch (genericError) {
+    print('Its not possible to test kiwi exceptions.');
+    print('Error: $genericError');
 
-  //   rethrow;
-  // }
+    rethrow;
+  }
 }
