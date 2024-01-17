@@ -16,7 +16,6 @@ jobs:
           sdk: 'stable'
       - name: Check changelog
         run: |
-         cd tools/actions
+         cd tools/kiwi_cli_actions
          dart pub get
-         cd ../.. 
-         dart run tools/actions/changelog_checker.dart
+         dart run
