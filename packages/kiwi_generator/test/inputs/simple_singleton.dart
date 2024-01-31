@@ -1,16 +1,17 @@
 import 'package:kiwi/kiwi.dart';
 
-import '../models/local_service.dart';
-import '../models/service.dart';
-import '../models/service_a.dart';
-
 abstract class Injector {
   @Register.singleton(ServiceA)
-  @Register.singleton(LocalService, from: null)
-  @Register.singleton(LocalService, name: null)
-  @Register.singleton(Service, from: LocalService)
+  @Register.singleton(ServiceB, from: null)
+  @Register.singleton(ServiceB, name: null)
+  @Register.singleton(Service, from: ServiceB)
   @Register.singleton(ServiceA, name: 'singletonA')
-  @Register.singleton(Service,
-      from: LocalService, name: 'singletonLocalService')
+  @Register.singleton(Service, from: ServiceB, name: 'singletonB')
   void configure();
 }
+
+class Service {}
+
+class ServiceA extends Service {}
+
+class ServiceB extends Service {}

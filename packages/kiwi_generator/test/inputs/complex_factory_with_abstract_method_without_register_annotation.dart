@@ -1,10 +1,5 @@
 import 'package:kiwi/kiwi.dart';
 
-import '../models/service.dart';
-import '../models/service_a.dart';
-import '../models/service_b.dart';
-import '../models/service_c.dart';
-
 abstract class Injector {
   @Register.factory(ServiceA)
   @Register.factory(Service, from: ServiceB)
@@ -14,4 +9,17 @@ abstract class Injector {
   void configure();
 
   void abstractMethodWithoutAnnotation();
+}
+
+class Service {}
+
+class ServiceA extends Service {}
+
+class ServiceB extends Service {
+  ServiceB(ServiceA serviceA);
+}
+
+class ServiceC extends Service {
+  ServiceC(ServiceA serviceA, ServiceB serviceB);
+  ServiceC.other(ServiceB serviceA);
 }

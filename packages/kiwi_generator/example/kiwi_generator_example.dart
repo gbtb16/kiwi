@@ -34,7 +34,6 @@ void setup() {
   injector.configure();
 }
 
-// Same classes using in tests.
 class Service {
   const Service();
 }

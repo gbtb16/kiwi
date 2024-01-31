@@ -44,7 +44,7 @@ jobs:
           cd packages/kiwi_generator
           dart pub get
           dart run build_runner build --delete-conflicting-outputs
-          dart format .
+          dart format --line-length 160 .
       - name: Build & format for dart_kiwi example
         run: |
           cd examples/dart_kiwi

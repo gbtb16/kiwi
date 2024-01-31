@@ -96,11 +96,11 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => ServiceA())
-      ..registerFactory((c) => LocalService())
-      ..registerFactory((c) => LocalService())
-      ..registerFactory<Service>((c) => LocalService())
+      ..registerFactory((c) => ServiceB())
+      ..registerFactory((c) => ServiceB())
+      ..registerFactory<Service>((c) => ServiceB())
       ..registerFactory((c) => ServiceA(), name: 'factoryA')
-      ..registerFactory<Service>((c) => LocalService(), name: 'factoryLocalService');
+      ..registerFactory<Service>((c) => ServiceB(), name: 'factoryB');
   }
 }
 ''';
@@ -113,9 +113,11 @@ class _$Injector extends Injector {
     container
       ..registerFactory((c) => ServiceA())
       ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
-      ..registerFactory((c) => ServiceC.other(c.resolve<ServiceA>()));
+      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()),
+          name: 'factoryB')
+      ..registerFactory((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
+      ..registerFactory((c) => ServiceC.other(c.resolve<ServiceB>()));
   }
 }
 ''';
@@ -128,9 +130,11 @@ class _$Injector extends Injector {
     container
       ..registerFactory((c) => ServiceA())
       ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
-      ..registerFactory((c) => ServiceC.other(c.resolve<ServiceA>()));
+      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()),
+          name: 'factoryB')
+      ..registerFactory((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
+      ..registerFactory((c) => ServiceC.other(c.resolve<ServiceB>()));
   }
 
   @override
@@ -145,11 +149,11 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton((c) => ServiceA())
-      ..registerSingleton((c) => LocalService())
-      ..registerSingleton((c) => LocalService())
-      ..registerSingleton<Service>((c) => LocalService())
+      ..registerSingleton((c) => ServiceB())
+      ..registerSingleton((c) => ServiceB())
+      ..registerSingleton<Service>((c) => ServiceB())
       ..registerSingleton((c) => ServiceA(), name: 'singletonA')
-      ..registerSingleton<Service>((c) => LocalService(), name: 'singletonLocalService');
+      ..registerSingleton<Service>((c) => ServiceB(), name: 'singletonB');
   }
 }
 ''';
@@ -162,10 +166,11 @@ class _$Injector extends Injector {
     container
       ..registerSingleton((c) => ServiceA())
       ..registerSingleton<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerSingleton((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerSingleton(
-          (c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
-      ..registerSingleton((c) => ServiceC.other(c.resolve<ServiceA>()));
+      ..registerSingleton((c) => ServiceB(c.resolve<ServiceA>()),
+          name: 'factoryB')
+      ..registerSingleton((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
+      ..registerSingleton((c) => ServiceC.other(c.resolve<ServiceB>()));
   }
 }
 ''';

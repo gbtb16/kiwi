@@ -1,3 +1,0 @@
-class Service {
-  const Service();
-}
