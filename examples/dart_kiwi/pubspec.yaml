@@ -18,4 +18,4 @@ dependency_overrides:
 dev_dependencies:
   test: ^1.23.1
   build_runner: ^2.3.3
-  kiwi_generator: ^4.1.0
+  kiwi_generator: ^5.0.0
