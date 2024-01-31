@@ -424,6 +424,54 @@ void main() {
             'Not Registered KiwiError:\n\n\nFailed to resolve `String`:\n\nThe type `String` was not registered\n\nMake sure `String` is added to your KiwiContainer and rerun build_runner build\n(If you are using the kiwi_generator)\n\nWhen using Flutter, most of the time a hot restart is required to setup the KiwiContainer again.\n\n\n',
           )));
     });
+
+    test('Should be return all providers', () {
+      final scoped = KiwiContainer.scoped();
+
+      expect(scoped.providers.length, 0);
+
+      scoped.registerInstance<int>(1, name: 'int-instance');
+      scoped.registerInstance<double>(2.0);
+
+      expect(scoped.providers.length, 2);
+    });
+
+    test('Should be return all named providers', () {
+      final scoped = KiwiContainer.scoped();
+
+      expect(scoped.namedProviders.length, 0);
+      expect(scoped.unnamedProviders.length, 0);
+
+      scoped.registerInstance<int>(1, name: 'int-instance');
+
+      expect(scoped.namedProviders.length, 1);
+      expect(scoped.unnamedProviders.length, 0);
+    });
+
+    test('Should be return all unnamed providers', () {
+      final scoped = KiwiContainer.scoped();
+
+      expect(scoped.namedProviders.length, 0);
+      expect(scoped.unnamedProviders.length, 0);
+
+      scoped.registerInstance<int>(1);
+
+      expect(scoped.namedProviders.length, 0);
+      expect(scoped.unnamedProviders.length, 1);
+    });
+
+    test('Should be return all named and unnamed providers', () {
+      final scoped = KiwiContainer.scoped();
+
+      expect(scoped.namedProviders.length, 0);
+      expect(scoped.unnamedProviders.length, 0);
+
+      scoped.registerInstance<int>(1);
+      scoped.registerInstance<double>(2.0, name: 'double-instance');
+
+      expect(scoped.namedProviders.length, 1);
+      expect(scoped.unnamedProviders.length, 1);
+    });
   });
 }
 
