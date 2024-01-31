@@ -17,7 +17,7 @@ He continued his active and dedicated work on the Kiwi package up to version `4.
 - refactor: for the new implementations, new tests have been created. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - refactor: github actions have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - refactor: github project labels have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
-- refactor: The Dart CLI tools in the package have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- refactor: the Dart CLI tools in the package have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - fix: typedefs have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - fix: pub.dev points now sound great (150/150). ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - fix: dependabot has been updated. ([PR #107](https://github.com/gbtb16/kiwi/pull/107))

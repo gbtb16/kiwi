@@ -1,3 +1,22 @@
+# 5.0.0
+
+Now Kiwi it's a Brazilian package! 🇧🇷 ♥
+
+Thank you ([@vanlooverenkoen](https://github.com/vanlooverenkoen)) for your contribution and trust in our work.
+He continued his active and dedicated work on the Kiwi Generator package up to version `4.1.0`.
+
+- BREAKING: kiwi version has been updated to `5.0.0`.
+- refactor: the package structure has been refactored to be in line with the market. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- refactor: implemented new dart format rule for line length (160) of package development. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- refactor: github actions have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- refactor: github project labels have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- refactor: the Dart CLI tools in the package have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- fix: build_runner version has been updated. ([PR #102](https://github.com/gbtb16/kiwi/pull/102))
+- fix: typedefs have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- fix: pub.dev points now sound great (150/150). ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
+- fix: dependabot has been updated. ([PR #107](https://github.com/gbtb16/kiwi/pull/107))
+- chore: other minimalist changes.
+
 # 4.1.0
 ### Updated
 - Dependencies
