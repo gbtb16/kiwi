@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: "pub.dev"
+  - package-ecosystem: "pub"
     directory: "/packages/kiwi"
     schedule:
       interval: "daily"
@@ -9,7 +9,7 @@ updates:
       - "kiwi"
       - "dependencies"
       
-  - package-ecosystem: "pub.dev"
+  - package-ecosystem: "pub"
     directory: "/packages/kiwi_generator"
     schedule:
       interval: "daily"
@@ -18,7 +18,7 @@ updates:
       - "kiwi generator"
       - "dependencies"
 
-  - package-ecosystem: "github actions"
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
