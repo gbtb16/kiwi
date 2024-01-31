@@ -1,31 +1,27 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  - package-ecosystem: "pub"
-    directory: "/kiwi"
+  - package-ecosystem: "pub.dev"
+    directory: "/packages/kiwi"
     schedule:
       interval: "daily"
     labels:
-      - "pub"
+      - "pub.dev"
       - "kiwi"
       - "dependencies"
-  - package-ecosystem: "pub"
-    directory: "/kiwi_generator"
+      
+  - package-ecosystem: "pub.dev"
+    directory: "/packages/kiwi_generator"
     schedule:
       interval: "daily"
     labels:
-      - "pub"
-      - "kiwi_generator"
+      - "pub.dev"
+      - "kiwi generator"
       - "dependencies"
 
-  - package-ecosystem: "github-actions"
+  - package-ecosystem: "github actions"
     directory: "/"
     schedule:
       interval: "weekly"
     labels:
-      - "github-actions"
+      - "github actions"
       - "dependencies"

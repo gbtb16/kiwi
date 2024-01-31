@@ -1,0 +1,11 @@
+name: kiwi_cli_actions
+description: A CLI tool to check for problems in the kiwi and kiwi_generator changelog.
+version: 1.0.0+2
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dev_dependencies:
+  test: ^1.25.1
+  yaml: ^3.1.1

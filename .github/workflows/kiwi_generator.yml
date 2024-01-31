@@ -2,9 +2,9 @@ name: kiwi_generator
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
 
 jobs:
   check:
@@ -14,7 +14,7 @@ jobs:
         sdk: [ stable, beta, dev ]
     defaults:
       run:
-        working-directory: kiwi_generator
+        working-directory: packages/kiwi_generator
     steps:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
@@ -22,5 +22,5 @@ jobs:
           sdk: ${{ matrix.sdk }}
       - run: dart pub get
       - run: dart analyze --fatal-infos --fatal-warnings .
-      - run: dart format -o none --set-exit-if-changed .
+      - run: dart format --line-length 160 -o none --set-exit-if-changed .
       - run: dart pub run test

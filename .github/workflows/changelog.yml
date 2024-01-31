@@ -2,9 +2,9 @@ name: changelog
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ 'master', 'stable' ]
 
 jobs:
   check:
@@ -16,7 +16,6 @@ jobs:
           sdk: 'stable'
       - name: Check changelog
         run: |
-         cd tool/actions
+         cd tools/kiwi_cli_actions
          dart pub get
-         cd ../.. 
-         dart run tool/actions/changelog_checker.dart
+         dart run
