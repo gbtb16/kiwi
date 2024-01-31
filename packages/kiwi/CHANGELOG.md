@@ -21,6 +21,7 @@ He continued his active and dedicated work on the Kiwi package up to version `4.
 - fix: typedefs have been updated. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - fix: pub.dev points now sound great (150/150). ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - fix: dependabot has been updated. ([PR #107](https://github.com/gbtb16/kiwi/pull/107))
+- chore: other minimalist changes.
 
 # 4.1.0
 ## Updated
