@@ -11,22 +11,21 @@ echo ""
 echo "dart_kiwi example package test"
 cd examples/dart_kiwi
 echo "No tests for dart_kiwi"
-cd ..
+cd ../..
 
 echo ""
 echo "flutter_kiwi example package test"
 cd examples/flutter_kiwi
 echo "No test for flutter_kiwi"
-cd ..
+cd ../..
 
 echo ""
 echo "kiwi final package test"
 cd packages/kiwi
-dart pub run test
-cd ..
+dart test
+cd ../..
 
 echo ""
 echo "kiwi_generator final package test"
 cd packages/kiwi_generator
-dart pub run test
-cd ..
+dart test

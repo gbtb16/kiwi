@@ -13,26 +13,31 @@ class _$Injector extends Injector {
     container
       ..registerSingleton((c) => ServiceA())
       ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()),
+          name: 'factoryB')
+      ..registerFactory((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override
   void configureWithScopedContainer2([KiwiContainer? scopedContainer = null]) {
     final KiwiContainer container = scopedContainer ?? KiwiContainer();
-    container.registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+    container.registerFactory((c) =>
+        ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override
   void configureWithScopedContainer3({KiwiContainer? scopedContainer = null}) {
     final KiwiContainer container = scopedContainer ?? KiwiContainer();
-    container.registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+    container.registerFactory((c) =>
+        ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override
   void configureWithScopedContainer4({KiwiContainer? scopedContainer = null}) {
     final KiwiContainer container = scopedContainer ?? KiwiContainer();
-    container.registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+    container.registerFactory((c) =>
+        ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override
@@ -41,8 +46,10 @@ class _$Injector extends Injector {
     container
       ..registerSingleton((c) => ServiceA())
       ..registerFactory<Service>((c) => ServiceB(c.resolve<ServiceA>()))
-      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()), name: 'factoryB')
-      ..registerFactory((c) => ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()),
+          name: 'factoryB')
+      ..registerFactory((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override

@@ -1,9 +1,9 @@
-# 5.0.0
+# 4.2.0
 
 Now Kiwi it's a Brazilian package! 🇧🇷 ♥
 
 Thank you ([@vanlooverenkoen](https://github.com/vanlooverenkoen)) for your contribution and trust in our work.
-He continued his active and dedicated work on the Kiwi Generator package up to version `4.1.0`.
+He continued his active and dedicated work on the Kiwi Generator package up to version `4.2.0`.
 
 - BREAKING: kiwi version has been updated to `5.0.0`.
 - refactor: the package structure has been refactored to be in line with the market. ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
@@ -16,6 +16,7 @@ He continued his active and dedicated work on the Kiwi Generator package up to v
 - fix: pub.dev points now sound great (150/150). ([PR #106](https://github.com/gbtb16/kiwi/pull/106))
 - fix: dependabot has been updated. ([PR #107](https://github.com/gbtb16/kiwi/pull/107))
 - chore: other minimalist changes.
+- chore: update `analyzer` dependency to `6.0.0`.
 
 # 4.1.0
 ### Updated

@@ -12,7 +12,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => Test())
-      ..registerFactory((c) => Counter(c<Test>()))
-      ..registerSingleton((c) => Counter(c<Test>()), name: 'display');
+      ..registerFactory((c) => Counter(c.resolve<Test>()))
+      ..registerSingleton((c) => Counter(c.resolve<Test>()), name: 'display');
   }
 }

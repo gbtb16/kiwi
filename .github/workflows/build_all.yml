@@ -22,7 +22,7 @@ jobs:
           cd examples/flutter_kiwi
           flutter packages get
           flutter packages pub run build_runner build --delete-conflicting-outputs
-          dart format --line-length 160 .
+          dart format  .
       - name: Use verify-changed-files to check if any of the above files changed.
         uses: tj-actions/verify-changed-files@v19
       - name: Run step only when any of the above files change.
@@ -44,13 +44,13 @@ jobs:
           cd packages/kiwi_generator
           dart pub get
           dart run build_runner build --delete-conflicting-outputs
-          dart format --line-length 160 .
+          dart format .
       - name: Build & format for dart_kiwi example
         run: |
           cd examples/dart_kiwi
           dart pub get
           dart run build_runner build --delete-conflicting-outputs
-          dart format --line-length 160 .
+          dart format .
       - name: Use verify-changed-files to check if any of the above files changed.
         uses: tj-actions/verify-changed-files@v19
       - name: Run step only when any of the above files change.

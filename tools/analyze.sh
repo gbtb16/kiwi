@@ -14,7 +14,7 @@ echo "---------------------------"
 cd examples/dart_kiwi
 flutter analyze
 echo "==========================="
-cd ..
+cd ../..
 
 echo ""
 echo "==========================="
@@ -23,7 +23,7 @@ echo "---------------------------"
 cd examples/flutter_kiwi
 flutter analyze
 echo "==========================="
-cd ..
+cd ../..
 
 echo ""
 echo "==========================="
@@ -32,7 +32,7 @@ echo "---------------------------"
 cd packages/kiwi
 dart analyze --fatal-infos --fatal-warnings .
 echo "==========================="
-cd ..
+cd ../..
 
 echo ""
 echo "==========================="
@@ -41,4 +41,3 @@ echo "---------------------------"
 cd packages/kiwi_generator
 dart analyze --fatal-infos --fatal-warnings .
 echo "==========================="
-cd ..

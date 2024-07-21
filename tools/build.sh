@@ -14,16 +14,16 @@ echo "---------------------------"
 cd examples/dart_kiwi
 dart run build_runner build --delete-conflicting-outputs
 echo "==========================="
-cd ..
+cd ../..
 
 echo ""
 echo "==========================="
 echo "flutter_kiwi example package build_runner build"
 echo "---------------------------"
 cd examples/flutter_kiwi
-flutter packages pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 echo "==========================="
-cd ..
+cd ../..
 
 echo ""
 echo "==========================="
@@ -32,13 +32,12 @@ echo "---------------------------"
 cd packages/kiwi
 echo "Nothing to generate here"
 echo "==========================="
-cd ..
+cd ../..
 
 echo ""
 echo "==========================="
 echo "kiwi_generator final package build_runner build"
 echo "---------------------------"
 cd packages/kiwi_generator
-flutter packages pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 echo "==========================="
-cd ..
