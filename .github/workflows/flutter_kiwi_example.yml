@@ -19,4 +19,4 @@ jobs:
           channel: 'stable'
       - run: flutter packages get
       - run: flutter analyze
-      - run: dart format  -o none --set-exit-if-changed .
+      - run: dart format -o none --set-exit-if-changed .

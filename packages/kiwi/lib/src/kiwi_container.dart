@@ -60,7 +60,8 @@ class KiwiContainer {
   /// };
   /// ```
   Map<_ProviderName?, _ProviderValue> get namedProviders {
-    return Map<_ProviderName?, _ProviderValue>.from(_providers)..removeWhere((key, value) => key == null);
+    return Map<_ProviderName?, _ProviderValue>.from(_providers)
+      ..removeWhere((key, value) => key == null);
   }
 
   /// All unnamed providers values registered in the container.
@@ -73,7 +74,8 @@ class KiwiContainer {
   /// };
   /// ```
   Map<_ProviderName?, _ProviderValue> get unnamedProviders {
-    return Map<_ProviderName?, _ProviderValue>.from(_providers)..removeWhere((key, value) => key != null);
+    return Map<_ProviderName?, _ProviderValue>.from(_providers)
+      ..removeWhere((key, value) => key != null);
   }
 
   /// Whether ignoring KiwiErrors in the following cases:
@@ -214,10 +216,12 @@ class KiwiContainer {
 
   void _setProvider<T>(String? name, _Provider<T> provider) {
     if (!silent && isRegistered<T>(name: name)) {
-      throw KiwiError('The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
+      throw KiwiError(
+          'The type `$T` was already registered${name == null ? '' : ' for the name `$name`'}');
     }
 
-    _providers.putIfAbsent(name, () => _ProviderValue.from({}))[T] = provider as _Provider<Object>;
+    _providers.putIfAbsent(name, () => _ProviderValue.from({}))[T] =
+        provider as _Provider<Object>;
   }
 }
 

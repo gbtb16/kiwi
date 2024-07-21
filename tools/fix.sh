@@ -8,24 +8,24 @@ then
 fi
 
 echo ""
-echo "dart_kiwi example package format lib"
+echo "dart_kiwi example package fix lib"
 cd examples/dart_kiwi
-dart format .
+dart fix --apply
 cd ../..
 
 echo ""
-echo "flutter_kiwi example package format lib"
+echo "flutter_kiwi example package fix lib"
 cd examples/flutter_kiwi
-dart format .
+dart fix --apply
 cd ../..
 
 echo ""
-echo "kiwi final package format lib"
+echo "kiwi final package fix lib"
 cd packages/kiwi
-dart format .
+dart fix --apply
 cd ../..
 
 echo ""
-echo "kiwi_generator final package format lib"
+echo "kiwi_generator final package fix lib"
 cd packages/kiwi_generator
-dart format .
+dart fix --apply
