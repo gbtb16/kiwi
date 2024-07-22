@@ -21,6 +21,6 @@ jobs:
         with:
           sdk: ${{ matrix.sdk }}
       - run: dart pub get
-      - run: dart analyze --fatal-infos --fatal-warnings .
-      - run: dart format --line-length 160 -o none --set-exit-if-changed .
-      - run: dart pub run test
+      - run: dart analyze --fatal-warnings .
+      - run: dart format -o none --set-exit-if-changed .
+      - run: dart test

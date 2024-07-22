@@ -5,7 +5,8 @@ main() {
 
   container.registerInstance(Logger());
   container.registerSingleton((c) => Logger(), name: 'namedLogger');
-  container.registerFactory((c) => ServiceA(logger: c.resolve<Logger>('namedLogger')));
+  container.registerFactory(
+      (c) => ServiceA(logger: c.resolve<Logger>('namedLogger')));
 
   final comumLogger = container.resolve<Logger>();
   final namedLogger = container.resolve<Logger>('namedLogger');

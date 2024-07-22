@@ -12,7 +12,8 @@ class KiwiGeneratorError extends Error {
     var toString = '\nKiwiGeneratorError\n\n$message\n\n';
     final internalError = error;
     if (internalError != null) {
-      toString += '============\n${internalError.toString()}\n${internalError.stackTrace}\n============\n\n';
+      toString +=
+          '============\n${internalError.toString()}\n${internalError.stackTrace}\n============\n\n';
     }
     return toString;
   }

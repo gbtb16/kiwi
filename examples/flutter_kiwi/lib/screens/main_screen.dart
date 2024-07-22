@@ -21,7 +21,8 @@ class MainScreen extends StatelessWidget {
           MaterialButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              await Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResolveScreen()));
+              await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ResolveScreen()));
               KiwiContainer().clear();
             },
             child: Text(
@@ -34,7 +35,8 @@ class MainScreen extends StatelessWidget {
           MaterialButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              await Navigator.of(context).push(MaterialPageRoute(builder: (context) => ErrorScreen()));
+              await Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => ErrorScreen()));
               KiwiContainer().clear();
             },
             child: Text(
@@ -47,7 +49,8 @@ class MainScreen extends StatelessWidget {
           MaterialButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              await Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScopedScreen()));
+              await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ScopedScreen()));
               KiwiContainer().clear();
             },
             child: Text(

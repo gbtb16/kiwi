@@ -94,30 +94,41 @@ void main() {
 
     test('builders should be resolved', () {
       container.registerSingleton((c) => 5);
-      container.registerFactory((c) => const Sith('Anakin', 'Skywalker', 'DarthVader'));
+      container.registerFactory(
+          (c) => const Sith('Anakin', 'Skywalker', 'DarthVader'));
       container.registerFactory((c) => const Character('Anakin', 'Skywalker'));
-      container.registerFactory<Character>((c) => const Sith('Anakin', 'Skywalker', 'DarthVader'), name: 'named');
+      container.registerFactory<Character>(
+          (c) => const Sith('Anakin', 'Skywalker', 'DarthVader'),
+          name: 'named');
 
       expect(container.resolve<int>(), 5);
-      expect(container.resolve<Sith>(), const Sith('Anakin', 'Skywalker', 'DarthVader'));
-      expect(container.resolve<Character>(), const Character('Anakin', 'Skywalker'));
-      expect(container.resolve<Character>('named'), const Sith('Anakin', 'Skywalker', 'DarthVader'));
+      expect(container.resolve<Sith>(),
+          const Sith('Anakin', 'Skywalker', 'DarthVader'));
+      expect(container.resolve<Character>(),
+          const Character('Anakin', 'Skywalker'));
+      expect(container.resolve<Character>('named'),
+          const Sith('Anakin', 'Skywalker', 'DarthVader'));
     });
 
     test('builders should always be created', () {
       container.registerFactory((c) => Character('Anakin', 'Skywalker'));
 
-      expect(container.resolve<Character>(), isNot(same(container.resolve<Character>())));
+      expect(container.resolve<Character>(),
+          isNot(same(container.resolve<Character>())));
     });
 
     test('one time builders should be resolved', () {
       container.registerSingleton((c) => 5);
-      container.registerSingleton((c) => const Sith('Anakin', 'Skywalker', 'DarthVader'));
-      container.registerSingleton<Character>((c) => const Character('Anakin', 'Skywalker'));
+      container.registerSingleton(
+          (c) => const Sith('Anakin', 'Skywalker', 'DarthVader'));
+      container.registerSingleton<Character>(
+          (c) => const Character('Anakin', 'Skywalker'));
 
       expect(container.resolve<int>(), 5);
-      expect(container.resolve<Sith>(), const Sith('Anakin', 'Skywalker', 'DarthVader'));
-      expect(container.resolve<Character>(), const Character('Anakin', 'Skywalker'));
+      expect(container.resolve<Sith>(),
+          const Sith('Anakin', 'Skywalker', 'DarthVader'));
+      expect(container.resolve<Character>(),
+          const Character('Anakin', 'Skywalker'));
     });
 
     test('one time builders should be created one time only', () {
@@ -239,7 +250,8 @@ void main() {
           )));
     });
 
-    test('Parented [KiwiContainer.scoped] should inherit global registrations', () {
+    test('Parented [KiwiContainer.scoped] should inherit global registrations',
+        () {
       container.registerInstance(5);
       container.registerInstance(6, name: 'named');
       container.registerInstance<num>(7);
@@ -407,9 +419,11 @@ void main() {
       // Named instances
       expect(scoped.isRegistered<String>(name: 'named_string_instance'), false);
 
-      scoped.registerInstance<String>('random_string', name: 'named_string_instance');
+      scoped.registerInstance<String>('random_string',
+          name: 'named_string_instance');
 
-      expect(scoped.isRegistered<String>(), false); // [isRegistered] cannot be true if String it is named and is tested unnamed.
+      expect(scoped.isRegistered<String>(),
+          false); // [isRegistered] cannot be true if String it is named and is tested unnamed.
       expect(scoped.isRegistered<String>(name: 'named_string_instance'), true);
       expect(scoped.resolve<String>('named_string_instance'), 'random_string');
 

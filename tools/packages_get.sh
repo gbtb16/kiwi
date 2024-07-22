@@ -10,24 +10,23 @@ fi
 echo "dart_kiwi example package packages get"
 cd examples/dart_kiwi
 flutter packages get
-cd ..
+cd ../..
 
 echo "flutter_kiwi example package packages get"
 cd examples/flutter_kiwi
 flutter packages get
-cd ..
+cd ../..
 
 echo "kiwi final package packages get"
 cd packages/kiwi
 dart pub get
-cd ..
+cd ../..
 
 echo "kiwi_generator final package packages get"
 cd packages/kiwi_generator
 dart pub get
-cd ..
+cd ../..
 
 echo "actions packages get"
-cd tools/actions
+cd tools/kiwi_cli_actions
 dart pub get
-cd ..
