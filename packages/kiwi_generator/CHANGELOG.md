@@ -1,3 +1,7 @@
+# 4.2.1
+
+- kiwi version has been updated to `5.0.1`.
+
 # 4.2.0
 
 Now Kiwi it's a Brazilian package! 🇧🇷 ♥
