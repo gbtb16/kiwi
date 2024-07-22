@@ -3,7 +3,7 @@ description: A simple yet efficient dependency injection container for Dart and 
 version: 5.0.0
 homepage: https://github.com/gbtb16/kiwi/tree/master/packages/kiwi
 repository: https://github.com/gbtb16/kiwi/tree/master/packages/kiwi
-issue_tracker: https://github.com/gbtb16/kiwi/issues?q=is%3Aissue+is%3Aopen+label%3Akiwi
+issue_tracker: https://github.com/gbtb16/kiwi/issues
 
 environment:
   sdk: ">=2.14.0 <4.0.0"
