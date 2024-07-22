@@ -22,7 +22,7 @@ jobs:
           cd examples/flutter_kiwi
           flutter packages get
           flutter packages pub run build_runner build --delete-conflicting-outputs
-          dart format  .
+          dart format .
       - name: Use verify-changed-files to check if any of the above files changed.
         uses: tj-actions/verify-changed-files@v20
       - name: Run step only when any of the above files change.
