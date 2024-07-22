@@ -1,3 +1,7 @@
+# 5.0.1
+
+- Fix a problem with pub.dev scores.
+
 # 5.0.0
 
 Now Kiwi it's a Brazilian package! 🇧🇷 ♥
