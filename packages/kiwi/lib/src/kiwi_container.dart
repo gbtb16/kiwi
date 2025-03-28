@@ -11,6 +11,8 @@ typedef _ProviderName = String;
 /// Signature for the generic provider value.
 typedef _ProviderValue = Map<Type, _Provider<Object>>;
 
+typedef AssistedInjector<S, P> = S Function(P);
+
 /// A simple service container.
 class KiwiContainer {
   /// Creates a scoped container.
@@ -112,6 +114,21 @@ class KiwiContainer {
     String? name,
   }) {
     _setProvider(name, _Provider<S>.factory(factory));
+  }
+
+  /// Registers a factory with assistend injection into the container.
+  ///
+  /// A factory returning Function that returns an object of type [S] can be registered.
+  ///
+  /// If [name] is set, the factory will be registered under this name.
+  /// To retrieve the same factory, the same name should be provided
+  /// to [KiwiContainer.resolve].
+
+  void registerAssistedFactory<S, P>(
+    FactoryBuilder<AssistedInjector<S, P>> factory, {
+    String? name,
+  }) {
+    _setProvider(name, _Provider<AssistedInjector<S, P>>.factory(factory));
   }
 
   /// Registers a factory that will be called only only when

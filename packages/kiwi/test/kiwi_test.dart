@@ -101,6 +101,11 @@ void main() {
           (c) => const Sith('Anakin', 'Skywalker', 'DarthVader'),
           name: 'named');
 
+      container.registerAssistedFactory<Sith, SithAssistedParameters>((c) {
+        return (SithAssistedParameters args) =>
+            Sith('Sheev', 'Palpatine', args.id);
+      });
+
       expect(container.resolve<int>(), 5);
       expect(container.resolve<Sith>(),
           const Sith('Anakin', 'Skywalker', 'DarthVader'));
@@ -108,6 +113,14 @@ void main() {
           const Character('Anakin', 'Skywalker'));
       expect(container.resolve<Character>('named'),
           const Sith('Anakin', 'Skywalker', 'DarthVader'));
+
+      final Sith sith =
+          container.resolve<AssistedInjector<Sith, SithAssistedParameters>>()(
+              (id: 'DarthSidious'));
+
+      expect(sith.id, equals('DarthSidious'));
+      expect(sith.firstName, equals('Sheev'));
+      expect(sith.lastName, equals('Palpatine'));
     });
 
     test('builders should always be created', () {
@@ -498,6 +511,8 @@ class Character {
   final String firstName;
   final String lastName;
 }
+
+typedef SithAssistedParameters = ({String id});
 
 class Sith extends Character {
   const Sith(
