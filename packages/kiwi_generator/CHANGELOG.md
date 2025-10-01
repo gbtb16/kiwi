@@ -1,3 +1,7 @@
+# 4.3.0
+### Updated
+- Dependencies
+
 # 4.2.1
 
 - kiwi version has been updated to `5.0.1`.
@@ -70,7 +74,7 @@ He continued his active and dedicated work on the Kiwi Generator package up to v
 - Android v2 embedding for the example project
 ## Fixed
 - \#44 Fixed a bug where the @override was never generated
-- \#45 Fixed a bug where a file that contained a abstract void method without @register would be skipped. This is not the case anymore. 
+- \#45 Fixed a bug where a file that contained a abstract void method without @register would be skipped. This is not the case anymore.
 
 # 2.0.1
 ## Fixed

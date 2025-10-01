@@ -1,3 +1,7 @@
+# 5.1.0
+### Updated
+- Dependencies
+
 # 5.0.1
 
 - Fix a problem with pub.dev scores.
