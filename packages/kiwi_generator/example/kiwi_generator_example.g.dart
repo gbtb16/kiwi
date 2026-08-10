@@ -22,22 +22,25 @@ class _$Injector extends Injector {
   @override
   void configureWithScopedContainer2([KiwiContainer? scopedContainer = null]) {
     final KiwiContainer container = scopedContainer ?? KiwiContainer();
-    container.registerFactory((c) =>
-        ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+    container
+      ..registerFactory((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override
   void configureWithScopedContainer3({KiwiContainer? scopedContainer = null}) {
     final KiwiContainer container = scopedContainer ?? KiwiContainer();
-    container.registerFactory((c) =>
-        ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+    container
+      ..registerFactory((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override
   void configureWithScopedContainer4({KiwiContainer? scopedContainer = null}) {
     final KiwiContainer container = scopedContainer ?? KiwiContainer();
-    container.registerFactory((c) =>
-        ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
+    container
+      ..registerFactory((c) =>
+          ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')));
   }
 
   @override

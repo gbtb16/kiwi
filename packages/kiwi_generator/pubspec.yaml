@@ -1,6 +1,6 @@
 name: kiwi_generator
 description: Generates dependency injection code using the kiwi package to reduce development time.
-version: 4.2.1
+version: 5.0.0
 homepage: https://github.com/gbtb16/kiwi/tree/master/packages/kiwi_generator
 repository: https://github.com/gbtb16/kiwi/tree/master/packages/kiwi_generator
 issue_tracker: https://github.com/gbtb16/kiwi/issues
@@ -9,7 +9,7 @@ environment:
   sdk: '^3.5.0'
 
 dependencies:
-  analyzer: ^10.2.0
+  analyzer: ^10.0.0
   build: ^4.0.7
   build_config: ^1.1.1
   built_collection: ^5.1.1

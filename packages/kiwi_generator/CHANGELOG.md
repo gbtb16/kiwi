@@ -1,3 +1,22 @@
+# 5.0.0
+
+**Breaking:** the minimum Dart SDK is now `3.5.0` (was `2.14.0`).
+
+- Migrated the build stack to `analyzer ^10.0.0`, `source_gen ^4.2.4`,
+  `build ^4.0.7`, `dart_style ^3.1.5` and `build_test ^3.5.16`. The previous
+  pins held the whole `build_runner` toolchain at 2024 versions and pulled in
+  `build_resolvers` / `build_runner_core`, both discontinued. Depending on
+  `kiwi_generator` either forced the rest of your code generators backwards
+  (`freezed` 2.x, `json_serializable` 6.8.x) or failed version solving outright
+  if you required a current `build_runner`.
+- **Breaking:** the builder key is now `kiwi_generator|kiwi` (was `kiwi|kiwi`).
+  `build_config` rejects a package declaring builders under another package's
+  name. If you referenced `kiwi:kiwi` in your own `build.yaml`, rename it.
+- `build_runner build` no longer accepts `--delete-conflicting-outputs`; it was
+  removed upstream. Drop the flag from your scripts.
+- Generated output is unchanged apart from `dart_style` 3 reformatting a
+  single-element cascade onto its own line.
+
 # 4.2.1
 
 - kiwi version has been updated to `5.0.1`.
