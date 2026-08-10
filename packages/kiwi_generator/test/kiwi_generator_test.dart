@@ -26,6 +26,16 @@ void main() async {
       );
     });
 
+    // Nullable constructor parameters must resolve as their non-nullable type:
+    // `ServiceA? a` has to emit `c.resolve<ServiceA>()`, because that is the
+    // type the user registered. Guards the `withNullability` migration.
+    test('nullable constructor parameters', () async {
+      await testKiwi(
+        'nullable_factory',
+        _outputNullableFactory,
+      );
+    });
+
     test('unknown constructor', () async {
       await testKiwiException(
         'unknown_ctor_factory',
@@ -118,6 +128,20 @@ class _$Injector extends Injector {
       ..registerFactory((c) =>
           ServiceC(c.resolve<ServiceA>(), c.resolve<ServiceB>('factoryB')))
       ..registerFactory((c) => ServiceC.other(c.resolve<ServiceB>()));
+  }
+}
+''';
+
+const _outputNullableFactory = r'''
+class _$Injector extends Injector {
+  @override
+  void configure() {
+    final KiwiContainer container = KiwiContainer();
+    container
+      ..registerFactory((c) => ServiceA())
+      ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()))
+      ..registerFactory((c) => ServiceC(
+          serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>()));
   }
 }
 ''';
