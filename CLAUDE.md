@@ -1,114 +1,83 @@
 # CLAUDE.md
 
-Guidance for Claude Code (claude.com/claude-code) and other AI agents working in
-this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## What this is
+## Repository layout
 
-`kiwi` is a reflection-free IoC / dependency-injection container for Dart and
-Flutter, plus an optional `build_runner` code generator. Published on pub.dev.
-Public OSS with external contributors — treat every change as user-facing.
+Multi-package Dart/Flutter monorepo with **no** workspace tool (no melos, no pub workspaces). Each package has its own `pubspec.yaml` and must be operated on from its own directory.
 
-Monorepo, but no orchestrator is actually in use. Each package resolves
-independently.
-
-```
-packages/kiwi/            # the container + annotations. Only dep: meta.
-packages/kiwi_generator/  # build_runner generator. Depends on kiwi.
-examples/dart_kiwi/       # CLI example (uses dependency_overrides)
-examples/flutter_kiwi/    # Flutter example (uses dependency_overrides)
-tools/kiwi_cli_actions/   # CI helper that validates CHANGELOG entries
-tools/*.sh                # convenience scripts — see the gotcha below
-```
-
-`packages/*/mono_pkg.yaml` are **stale**. They configure dart-lang `mono_repo`
-with `dartfmt` / `dartanalyzer`, both removed from the Dart SDK, and nothing
-consumes them — CI is hand-written GitHub Actions. Ignore them; don't extend them.
+- `packages/kiwi` — the runtime IoC container + `@Register` annotations. Zero deps except `meta`. Published to pub.
+- `packages/kiwi_generator` — `source_gen` builder that emits container registration code from annotations. Depends on `kiwi` from pub (`^5.0.1`), **not** via a path override.
+- `examples/dart_kiwi`, `examples/flutter_kiwi` — consumer examples; their generated `*.g.dart` files are committed and CI fails if regeneration changes them.
+- `tools/*.sh` — bash helpers that loop the same command over all four packages.
+- `tools/kiwi_cli_actions` — small Dart CLI used by CI to assert `CHANGELOG.md` starts with `# <pubspec version>`.
 
 ## Commands
 
-Run per package — there is no workspace-wide `pub get`.
+Repo-wide helpers — **currently broken, prefer the per-package commands below.**
+`tools/*.sh` are all committed without the executable bit, so `./tools/all.sh`
+fails with "Permission denied". Invoke them through `bash` instead. Most of them
+self-locate (a `basename == 'tools'` cd-up guard), but `all.sh` does **not** — it
+calls `./packages_get.sh` relative to cwd, so it only resolves from inside
+`tools/`, and fails there anyway because its siblings aren't executable.
 
 ```bash
-cd packages/kiwi           && dart pub get && dart analyze --fatal-warnings . && dart test
-cd packages/kiwi_generator && dart pub get && dart analyze --fatal-warnings . && dart test
-cd packages/kiwi_generator && dart run build_runner build --delete-conflicting-outputs
+cd tools && bash packages_get.sh   # pub get in all packages
+cd tools && bash analyze.sh        # dart/flutter analyze in all packages (--fatal-infos)
+cd tools && bash format.sh         # dart format .
+cd tools && bash test.sh           # dart test for kiwi + kiwi_generator (examples have no tests)
+cd tools && bash build.sh          # build_runner in kiwi_generator + both examples
 ```
 
-The `tools/*.sh` helpers are checked in **without the executable bit**, so
-`./tools/all.sh` fails with "Permission denied" — and `all.sh` invokes its
-siblings as `./packages_get.sh`, so it only resolves from inside `tools/` anyway.
-Until that is fixed, run them as `cd tools && bash analyze.sh` (one at a time),
-or just use the per-package commands above.
+Per-package (what CI actually runs):
 
-CI additionally enforces `dart format -o none --set-exit-if-changed .`, so
-always format before committing. Both packages are tested on the `stable`,
-`beta`, and `dev` SDK channels.
+```bash
+cd packages/kiwi            # or packages/kiwi_generator
+dart pub get
+dart analyze --fatal-warnings .
+dart format -o none --set-exit-if-changed .
+dart test
+dart test test/kiwi_test.dart -n 'name of the test'   # single test / group
+```
+
+Examples use Flutter tooling even for `dart_kiwi`: `flutter packages get && flutter analyze`.
+
+Regenerating code (required after touching the generator or example annotations):
+
+```bash
+cd packages/kiwi_generator && dart run build_runner build --delete-conflicting-outputs
+cd examples/dart_kiwi       && dart run build_runner build --delete-conflicting-outputs
+cd examples/flutter_kiwi    && flutter packages pub run build_runner build --delete-conflicting-outputs
+```
 
 ## Architecture
 
-**`packages/kiwi/lib/src/kiwi_container.dart`** is the whole container, ~270
-lines. Storage is `Map<String?, Map<Type, _Provider<Object>>>` — outer key is the
-optional registration name (`null` for unnamed), inner key is the type.
+**Runtime (`packages/kiwi`)** — `KiwiContainer` is a two-level map: `Map<String? name, Map<Type, _Provider>>`. No reflection. `KiwiContainer.scoped({parent})` copies the parent's inner maps (`Map.from`) so later parent registrations don't leak into the child scope — but the `_Provider` objects themselves are **shared**, so a singleton already built in the parent hands back the *same instance* in the child. Resolution failures throw `NotRegisteredError` (subclass of `KiwiError`). Public surface is re-exported from `lib/kiwi.dart`; everything else lives under `lib/src/`.
 
-- `KiwiContainer()` is a factory returning a process-wide singleton.
-- `KiwiContainer.scoped({parent})` copies the parent's inner maps at construction
-  time (`Map.from`), so later parent registrations do **not** propagate. The
-  `_Provider` objects themselves are *shared*, so a singleton already cached in
-  the parent yields the same instance in the child. This is deliberate; see the
-  comment at the constructor.
-- `_Provider` has three shapes: instance, factory (rebuilds every resolve), and
-  singleton (`_oneTime` — builds once, then caches).
-- `silent` suppresses duplicate-registration and not-registered errors.
+**Annotations** — `Register.factory(...)` and `Register.singleton(...)` differ only in the private `oneTime` flag. Options: `from` (concrete impl for an abstract `type`), `name` (named registration), `resolvers` (`Map<Type, String>` telling the generator which *named* dependency to resolve per constructor param type), `constructorName` (named constructors).
 
-**`packages/kiwi_generator/lib/src/kiwi_injector_generator.dart`** is a
-`source_gen` `Generator`. It finds abstract classes whose abstract methods carry
-a `@Register.factory` / `@Register.singleton` annotation, and emits a `_$Name`
-subclass that cascades `registerFactory` / `registerSingleton` calls onto a
-`KiwiContainer`. Constructor injection only.
+**Generator (`packages/kiwi_generator`)** — `KiwiInjectorGenerator extends Generator` (a `SharedPartBuilder`, output `.kiwi.g.part`, `auto_apply: dependents`, `build_to: cache`). It scans a library for **abstract classes with at least one abstract method annotated with `@Register`** and emits `class _$Injector extends Injector` using `code_builder` + `DartFormatter`. Only constructor injection is supported. Abstract register methods accept at most one parameter, which must be a `KiwiContainer scopedContainer`. All unexpected `Error`s are wrapped in `KiwiGeneratorError` pointing users at the issue tracker; `KiwiGeneratorError` and `UnresolvedAnnotationException` pass through.
 
-Generator tests are golden-file based: `test/inputs/*.dart` are the sources,
-`test/utils/test_helper.dart` compares generated output. Add a new input file
-plus a test case when changing generator behaviour.
+`packages/kiwi_generator/build.yaml` restricts generation to `example/kiwi_generator_example.dart` for the package's own build — the real coverage is in tests, not that build.
 
-## Conventions
+## Generator tests
 
-- **English everywhere** — code, comments, docs, commits, issue and PR replies.
-- Commit messages: `type(scope): description.` — e.g.
-  `fix(kiwi-generator): upgrade analyzer dependency.` Common types seen in
-  history: `fix`, `chore`, `build(deps)`, `feat`.
-- Every change to a package **must** add a CHANGELOG entry. The `changelog`
-  workflow (`tools/kiwi_cli_actions`) fails the build otherwise, and it also
-  checks that the CHANGELOG top version matches `pubspec.yaml`.
-- Analysis is configured per package in `analysis_options.yaml`. It is currently
-  a short hand-picked rule list, not `package:lints`.
+Golden-string tests, not snapshot files. `test/inputs/<case>.dart` holds the annotated input; `kiwi_generator_test.dart` holds the expected generated source as a `const` string; `testKiwi('<case>', expected)` runs the generator over the resolved library via `resolveSources` (`test/utils/analysis.dart`) and compares strings. Error cases use `testKiwiException('<case>', matcher)`.
+
+Adding a generator feature means: new file in `test/inputs/`, new expected-output string, new `testKiwi` call. Expected output must match `DartFormatter` output exactly (whitespace included) — `generate()` returns only the emitted classes, without any part/ignore header.
+
+## Release / CI constraints
+
+- Bumping a package's `version` in `pubspec.yaml` **requires** the `CHANGELOG.md` to begin with `# <that version>` — the `changelog` workflow exits 1 otherwise.
+- `build_all` regenerates code in the generator and both examples. It *intends* to fail when tracked files change, but the gate is **dead**: the `verify-changed-files` step has no `id:`, so the `if:` that reads its output is always false, and the guarded step only `echo`s. Commit regenerated output anyway — nothing is checking for you.
+- `kiwi` and `kiwi_generator` are tested against `stable`, `beta` and `dev` Dart SDKs; both target `sdk: '>=2.14.0 <4.0.0'`, so avoid newer language features.
+- Local `tools/analyze.sh` uses `--fatal-infos` (stricter than CI's `--fatal-warnings`).
 
 ## Gotchas
 
-- **The examples use `dependency_overrides` pointing at local paths.** This means
-  CI never exercises real pub resolution, and cannot catch the case where a
-  published `kiwi_generator` fails to resolve against a user's other codegen
-  packages. When touching generator dependency constraints, verify resolution in
-  a scratch project *without* overrides.
-- `kiwi_generator` currently pins an old build stack (`analyzer ^6`,
-  `source_gen >=1.5.0 <3.0.0`, `build ^2.4.1`, `dart_style ^2.2.4`). Bumping
-  these is a breaking migration — the analyzer element model, `TypeChecker`
-  construction, `getDisplayString(withNullability:)`, and the `DartFormatter`
-  constructor all changed.
-- `resolve<T>()` returns non-nullable `T` and throws on a missing registration
-  **even when `silent` is true**. The README claims it returns `null`. The docs
-  are wrong, not the code — don't "fix" the code without a deliberate API decision.
-- `packages/kiwi/lib/src/kiwi_container.dart` exposes `providers` as the live
-  internal map, not a copy. Changing that is a breaking change.
-- Version bumps must stay consistent across `packages/kiwi_generator/pubspec.yaml`
-  (its `kiwi:` constraint) and both example pubspecs.
-
-## Before opening a PR
-
-1. Both packages: `dart pub get`, `dart analyze --fatal-warnings .`, `dart test`,
-   and `dart format -o none --set-exit-if-changed .` all pass.
-2. CHANGELOG updated for every package you touched — the top line must be
-   exactly `# <version from pubspec.yaml>`, which is what
-   `tools/kiwi_cli_actions` asserts.
-3. If generator output changed, both examples' `.g.dart` files are regenerated
-   and committed.
+- **The examples use `dependency_overrides` pointing at local paths**, so CI never exercises real pub resolution and cannot catch a published `kiwi_generator` that fails to resolve against a user's other codegen packages. When touching generator dependency constraints, verify in a scratch project *without* overrides.
+- `kiwi_generator` pins a 2024 build stack (`analyzer ^6`, `source_gen >=1.5.0 <3.0.0`, `build ^2.4.1`, `dart_style ^2.2.4`); `build_resolvers` and `build_runner_core` are discontinued at those versions. Bumping is a breaking migration — element model, `TypeChecker` construction, `getDisplayString(withNullability:)` and the `DartFormatter` constructor all changed.
+- `resolve<T>()` returns non-nullable `T` and throws on a missing registration **even when `silent` is true** (`kiwi_container.dart:162`). `packages/kiwi/README.md` claims it returns `null`. The docs are wrong, not the code — don't "fix" the code without a deliberate API decision.
+- `KiwiContainer.providers` returns the **live** internal map, not a copy. Changing that is breaking.
+- `packages/*/mono_pkg.yaml` are stale dart-lang `mono_repo` configs invoking `dartfmt`/`dartanalyzer` (both removed from the SDK). Nothing reads them; don't extend them.
+- Version bumps must stay consistent across `packages/kiwi_generator/pubspec.yaml` (its `kiwi:` constraint) and both example pubspecs.
