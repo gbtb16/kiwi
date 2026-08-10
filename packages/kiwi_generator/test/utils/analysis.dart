@@ -20,10 +20,17 @@ Future<LibraryReader> resolveCompilationUnit(String sourceFile) async {
     ),
   );
 
-  final library = await resolveSources(fileMap, (item) async {
-    final assetId = AssetId.parse(fileMap.keys.first);
-    return await item.libraryFor(assetId);
-  });
+  final library = await resolveSources(
+    fileMap,
+    (item) async {
+      final assetId = AssetId.parse(fileMap.keys.first);
+      return await item.libraryFor(assetId);
+    },
+    // Without this the `package:kiwi` sources backing the `@Register`
+    // annotations are not readable, every annotation resolves to `null`,
+    // and source_gen throws UnresolvedAnnotationException.
+    readAllSourcesFromFilesystem: true,
+  );
 
   return LibraryReader(library);
 }
