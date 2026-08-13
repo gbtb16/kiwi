@@ -4,6 +4,7 @@ abstract class Injector {
   @Register.factory(ServiceA)
   @Register.factory(ServiceB)
   @Register.factory(ServiceC)
+  @Register.factory(ServiceD)
   void configure();
 }
 
@@ -17,4 +18,8 @@ class ServiceB extends Service {
 
 class ServiceC extends Service {
   ServiceC({ServiceA? serviceA, required ServiceB serviceB});
+}
+
+class ServiceD extends Service {
+  ServiceD(List<ServiceA?>? services, Map<String, ServiceB?> lookup);
 }

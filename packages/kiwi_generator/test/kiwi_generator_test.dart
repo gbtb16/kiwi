@@ -141,7 +141,9 @@ class _$Injector extends Injector {
       ..registerFactory((c) => ServiceA())
       ..registerFactory((c) => ServiceB(c.resolve<ServiceA>()))
       ..registerFactory((c) => ServiceC(
-          serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>()));
+          serviceA: c.resolve<ServiceA>(), serviceB: c.resolve<ServiceB>()))
+      ..registerFactory((c) => ServiceD(
+          c.resolve<List<ServiceA>>(), c.resolve<Map<String, ServiceB>>()));
   }
 }
 ''';

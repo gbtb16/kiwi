@@ -71,12 +71,10 @@ For Flutter the command is different though:
 flutter packages pub run build_runner build
 ```
 
-**Note:** On first attempt to run this command you might encounter a conflict error. If so, please add the --delete-conflicting-outputs argument to your command:
-
-```bash
-flutter packages pub run build_runner build --delete-conflicting-outputs
-```
-(This additional argument allows the command to overwrite the `.g.dart` file if necessary.)
+**Note:** older guides tell you to pass `--delete-conflicting-outputs` when the
+build reports a conflict. `build_runner` removed that option — passing it now
+aborts with *"Could not find an option named"*. Current versions overwrite
+conflicting outputs on their own, so just run the command above.
 
 You can also use the `watch` command instead of `build`. This will generate your file when it's saved.
 

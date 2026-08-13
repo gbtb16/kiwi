@@ -6,7 +6,7 @@ repository: https://github.com/gbtb16/kiwi/tree/master/packages/kiwi_generator
 issue_tracker: https://github.com/gbtb16/kiwi/issues
 
 environment:
-  sdk: '^3.5.0'
+  sdk: '^3.9.0'
 
 dependencies:
   analyzer: ^10.0.0

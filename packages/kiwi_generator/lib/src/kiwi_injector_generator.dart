@@ -13,17 +13,17 @@ import 'package:source_gen/source_gen.dart';
 const TypeChecker _registerTypeChecker =
     TypeChecker.typeNamed(Register, inPackage: 'kiwi');
 
-/// The display name of [type] with its outer nullability suffix removed.
+/// The display name of [type] with every nullability suffix removed.
 ///
 /// A dependency declared as `ServiceA? a` is still registered in the container
 /// as `ServiceA`, so the generated code has to resolve the non-nullable type.
-String _typeName(DartType type) {
-  final displayString = type.getDisplayString();
-
-  return displayString.endsWith('?')
-      ? displayString.substring(0, displayString.length - 1)
-      : displayString;
-}
+///
+/// The stripping is deliberately recursive — `List<ServiceA?>` becomes
+/// `List<ServiceA>` — to reproduce the removed
+/// `getDisplayString(withNullability: false)`. `KiwiContainer` keys its
+/// providers by exact `Type`, so `List<ServiceA?>` and `List<ServiceA>` are
+/// different keys and emitting the wrong one throws at resolve time.
+String _typeName(DartType type) => type.getDisplayString().replaceAll('?', '');
 
 bool _isRegisterMethod(MethodElement method) =>
     (method.returnType is VoidType &&

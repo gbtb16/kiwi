@@ -1,6 +1,8 @@
 # 5.0.0
 
-**Breaking:** the minimum Dart SDK is now `3.5.0` (was `2.14.0`).
+**Breaking:** the minimum Dart SDK is now `3.9.0` (was `2.14.0`). `analyzer`,
+`source_gen` and `dart_style` all require `^3.9.0`, so anything lower cannot
+resolve.
 
 - Migrated the build stack to `analyzer ^10.0.0`, `source_gen ^4.2.4`,
   `build ^4.0.7`, `dart_style ^3.1.5` and `build_test ^3.5.16`. The previous
@@ -14,8 +16,11 @@
   name. If you referenced `kiwi:kiwi` in your own `build.yaml`, rename it.
 - `build_runner build` no longer accepts `--delete-conflicting-outputs`; it was
   removed upstream. Drop the flag from your scripts.
-- Generated output is unchanged apart from `dart_style` 3 reformatting a
-  single-element cascade onto its own line.
+- Generated code is semantically unchanged. The only textual difference is
+  `dart_style` 3 putting a single-element cascade on its own line. Nullable
+  constructor parameters still resolve as their non-nullable registered type,
+  recursively (`List<ServiceA?>` -> `c.resolve<List<ServiceA>>()`), which is
+  now covered by a golden test.
 
 # 4.2.1
 
