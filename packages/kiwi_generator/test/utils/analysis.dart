@@ -7,16 +7,11 @@ import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
 Future<LibraryReader> resolveCompilationUnit(String sourceFile) async {
-  final files = [
-    File(sourceFile),
-  ];
+  final files = [File(sourceFile)];
 
   final fileMap = Map<String, String>.fromEntries(
     files.map(
-      (f) => MapEntry(
-        'a|lib/${p.basename(f.path)}',
-        f.readAsStringSync(),
-      ),
+      (f) => MapEntry('a|lib/${p.basename(f.path)}', f.readAsStringSync()),
     ),
   );
 

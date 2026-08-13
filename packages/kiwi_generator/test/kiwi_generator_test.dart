@@ -6,17 +6,11 @@ import 'utils/test_helper.dart';
 void main() async {
   group('Register.factory', () {
     test('simple', () async {
-      await testKiwi(
-        'simple_factory',
-        _outputSimpleFactory,
-      );
+      await testKiwi('simple_factory', _outputSimpleFactory);
     });
 
     test('complex', () async {
-      await testKiwi(
-        'complex_factory',
-        _outputComplexFactory,
-      );
+      await testKiwi('complex_factory', _outputComplexFactory);
     });
 
     test('abstract class without abstract method', () async {
@@ -30,10 +24,7 @@ void main() async {
     // `ServiceA? a` has to emit `c.resolve<ServiceA>()`, because that is the
     // type the user registered. Guards the `withNullability` migration.
     test('nullable constructor parameters', () async {
-      await testKiwi(
-        'nullable_factory',
-        _outputNullableFactory,
-      );
+      await testKiwi('nullable_factory', _outputNullableFactory);
     });
 
     test('unknown constructor', () async {
@@ -50,17 +41,11 @@ void main() async {
 
   group('Register.singleton', () {
     test('simple', () async {
-      await testKiwi(
-        'simple_singleton',
-        _outputSimpleSingleton,
-      );
+      await testKiwi('simple_singleton', _outputSimpleSingleton);
     });
 
     test('complex', () async {
-      await testKiwi(
-        'complex_singleton',
-        _outputComplexSingleton,
-      );
+      await testKiwi('complex_singleton', _outputComplexSingleton);
     });
 
     test('unknown constructor', () async {
@@ -77,24 +62,15 @@ void main() async {
 
   group('Generates null', () {
     test('abstract class', () async {
-      await testKiwi(
-        'abstract_class',
-        null,
-      );
+      await testKiwi('abstract_class', null);
     });
 
     test('abstract class without method', () async {
-      await testKiwi(
-        'abstract_class_without_method',
-        null,
-      );
+      await testKiwi('abstract_class_without_method', null);
     });
 
     test('abstract class without abstract method', () async {
-      await testKiwi(
-        'abstract_class_without_abstract_method',
-        null,
-      );
+      await testKiwi('abstract_class_without_abstract_method', null);
     });
   });
 }

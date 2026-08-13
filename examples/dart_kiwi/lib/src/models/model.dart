@@ -1,8 +1,5 @@
 class Model {
-  const Model(
-    this.brand,
-    this.name,
-  );
+  const Model(this.brand, this.name);
   final String name;
   final String brand;
 

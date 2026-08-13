@@ -7,11 +7,7 @@ class CoffeeMaker {
   final Pump _pump;
   final Model _model;
 
-  const CoffeeMaker(
-    this._heater,
-    this._pump,
-    this._model,
-  );
+  const CoffeeMaker(this._heater, this._pump, this._model);
 
   void brew() {
     _heater.on();

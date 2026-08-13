@@ -17,17 +17,12 @@ class _ResolveScreenState extends State<ResolveScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Resolve Screen'),
-      ),
+      appBar: AppBar(title: Text('Resolve Screen')),
       body: Center(
         child: ListView(
           children: [
             Container(height: 16),
-            Text(
-              'Counter instances:',
-              textAlign: TextAlign.center,
-            ),
+            Text('Counter instances:', textAlign: TextAlign.center),
             Text(
               KiwiContainer().resolve<Counter>('display').value.toString(),
               style: Theme.of(context).textTheme.headlineMedium,

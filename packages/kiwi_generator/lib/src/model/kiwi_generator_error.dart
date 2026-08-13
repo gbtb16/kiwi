@@ -2,10 +2,7 @@ class KiwiGeneratorError extends Error {
   final String message;
   final Error? error;
 
-  KiwiGeneratorError(
-    this.message, {
-    this.error,
-  });
+  KiwiGeneratorError(this.message, {this.error});
 
   @override
   String toString() {

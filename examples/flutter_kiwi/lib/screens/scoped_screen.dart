@@ -21,9 +21,7 @@ class _ScopedScreenState extends State<ScopedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Error Screen'),
-      ),
+      appBar: AppBar(title: Text('Error Screen')),
       body: ListView(
         children: [
           Container(height: 16),
