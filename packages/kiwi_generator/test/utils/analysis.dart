@@ -7,23 +7,25 @@ import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
 Future<LibraryReader> resolveCompilationUnit(String sourceFile) async {
-  final files = [
-    File(sourceFile),
-  ];
+  final files = [File(sourceFile)];
 
   final fileMap = Map<String, String>.fromEntries(
     files.map(
-      (f) => MapEntry(
-        'a|lib/${p.basename(f.path)}',
-        f.readAsStringSync(),
-      ),
+      (f) => MapEntry('a|lib/${p.basename(f.path)}', f.readAsStringSync()),
     ),
   );
 
-  final library = await resolveSources(fileMap, (item) async {
-    final assetId = AssetId.parse(fileMap.keys.first);
-    return await item.libraryFor(assetId);
-  });
+  final library = await resolveSources(
+    fileMap,
+    (item) async {
+      final assetId = AssetId.parse(fileMap.keys.first);
+      return await item.libraryFor(assetId);
+    },
+    // Without this the `package:kiwi` sources backing the `@Register`
+    // annotations are not readable, every annotation resolves to `null`,
+    // and source_gen throws UnresolvedAnnotationException.
+    readAllSourcesFromFilesystem: true,
+  );
 
   return LibraryReader(library);
 }

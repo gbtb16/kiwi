@@ -21,7 +21,7 @@ jobs:
         run: |
           cd examples/flutter_kiwi
           flutter packages get
-          flutter packages pub run build_runner build --delete-conflicting-outputs
+          flutter packages pub run build_runner build
           dart format .
       - name: Use verify-changed-files to check if any of the above files changed.
         uses: tj-actions/verify-changed-files@v20
@@ -43,13 +43,13 @@ jobs:
         run: |
           cd packages/kiwi_generator
           dart pub get
-          dart run build_runner build --delete-conflicting-outputs
+          dart run build_runner build
           dart format .
       - name: Build & format for dart_kiwi example
         run: |
           cd examples/dart_kiwi
           dart pub get
-          dart run build_runner build --delete-conflicting-outputs
+          dart run build_runner build
           dart format .
       - name: Use verify-changed-files to check if any of the above files changed.
         uses: tj-actions/verify-changed-files@v20

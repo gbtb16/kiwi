@@ -14,9 +14,15 @@ class _$CoffeeInjector extends CoffeeInjector {
       ..registerFactory((c) => PowerOutlet())
       ..registerSingleton((c) => Electricity(c.resolve<PowerOutlet>()))
       ..registerSingleton<Heater>(
-          (c) => ElectricHeater(c.resolve<Electricity>()))
+        (c) => ElectricHeater(c.resolve<Electricity>()),
+      )
       ..registerSingleton<Pump>((c) => Thermosiphon(c.resolve<Heater>()))
-      ..registerFactory((c) => CoffeeMaker(
-          c.resolve<Heater>(), c.resolve<Pump>(), c.resolve<Model>()));
+      ..registerFactory(
+        (c) => CoffeeMaker(
+          c.resolve<Heater>(),
+          c.resolve<Pump>(),
+          c.resolve<Model>(),
+        ),
+      );
   }
 }

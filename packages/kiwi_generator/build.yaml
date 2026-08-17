@@ -1,13 +1,16 @@
 targets:
   $default:
     builders:
-      kiwi:
+      kiwi_generator|kiwi:
         generate_for:
           - example/kiwi_generator_example.dart
 
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
-  kiwi|kiwi:
+  # The key must be `<declaring package>|<builder name>`. It used to be
+  # `kiwi|kiwi`, which build_config now rejects outright: a package may only
+  # declare builders under its own name.
+  kiwi_generator|kiwi:
     import: "package:kiwi_generator/builder.dart"
     builder_factories: ["buildKiwi"]
     build_extensions: {".dart": [".kiwi.g.part"]}

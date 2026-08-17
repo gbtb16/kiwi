@@ -7,10 +7,7 @@ import 'analysis.dart';
 
 final KiwiInjectorGenerator _injectorGenerator = const KiwiInjectorGenerator();
 
-Future<void> testKiwi(
-  String fileName,
-  String? output,
-) async {
+Future<void> testKiwi(String fileName, String? output) async {
   try {
     String inputFilePath = './test/inputs/$fileName.dart';
 
@@ -26,10 +23,7 @@ Future<void> testKiwi(
   }
 }
 
-Future<void> testKiwiException(
-  String fileName,
-  dynamic matcher,
-) async {
+Future<void> testKiwiException(String fileName, dynamic matcher) async {
   try {
     String inputFilePath = './test/inputs/$fileName.dart';
 

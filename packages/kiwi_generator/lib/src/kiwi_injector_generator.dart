@@ -2,7 +2,6 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
-import 'package:build/src/builder/build_step.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
@@ -11,11 +10,26 @@ import 'package:kiwi_generator/src/model/kiwi_generator_error.dart';
 import 'package:kiwi_generator/src/util/list_extensions.dart';
 import 'package:source_gen/source_gen.dart';
 
-const TypeChecker _registerTypeChecker = TypeChecker.fromRuntime(Register);
+const TypeChecker _registerTypeChecker = TypeChecker.typeNamed(
+  Register,
+  inPackage: 'kiwi',
+);
+
+/// The display name of [type] with every nullability suffix removed.
+///
+/// A dependency declared as `ServiceA? a` is still registered in the container
+/// as `ServiceA`, so the generated code has to resolve the non-nullable type.
+///
+/// The stripping is deliberately recursive — `List<ServiceA?>` becomes
+/// `List<ServiceA>` — to reproduce the removed
+/// `getDisplayString(withNullability: false)`. `KiwiContainer` keys its
+/// providers by exact `Type`, so `List<ServiceA?>` and `List<ServiceA>` are
+/// different keys and emitting the wrong one throws at resolve time.
+String _typeName(DartType type) => type.getDisplayString().replaceAll('?', '');
 
 bool _isRegisterMethod(MethodElement method) =>
     (method.returnType is VoidType &&
-        _registerTypeChecker.hasAnnotationOfExact(method));
+    _registerTypeChecker.hasAnnotationOfExact(method));
 
 class KiwiInjectorGenerator extends Generator {
   const KiwiInjectorGenerator();
@@ -26,43 +40,57 @@ class KiwiInjectorGenerator extends Generator {
       // An injector is an abstract class where all abstract methods are
       // annotated with Register.
       final injectors = library.classes
-          .where((c) =>
-              c.isAbstract &&
-              c.methods.where((m) => m.isAbstract).isNotEmpty &&
-              c.methods
-                  .where((m) => m.isAbstract && _isRegisterMethod(m))
-                  .isNotEmpty)
+          .where(
+            (c) =>
+                c.isAbstract &&
+                c.methods.where((m) => m.isAbstract).isNotEmpty &&
+                c.methods
+                    .where((m) => m.isAbstract && _isRegisterMethod(m))
+                    .isNotEmpty,
+          )
           .toList();
 
       if (injectors.isEmpty) {
         return null;
       }
-      final file = Library((lb) => lb
-        ..body.addAll(
-            injectors.map((i) => _generateInjector(i, library, buildStep))));
+      final file = Library(
+        (lb) => lb
+          ..body.addAll(
+            injectors.map((i) => _generateInjector(i, library, buildStep)),
+          ),
+      );
 
       final DartEmitter emitter = DartEmitter(allocator: Allocator());
-      return DartFormatter().format('${file.accept(emitter)}');
+      return DartFormatter(
+        languageVersion: DartFormatter.latestShortStyleLanguageVersion,
+      ).format('${file.accept(emitter)}');
     } catch (e) {
       if (e is KiwiGeneratorError || e is UnresolvedAnnotationException) {
         rethrow;
       } else if (e is Error) {
         throw KiwiGeneratorError(
-            'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/gbtb16/kiwi/issues/new',
-            error: e);
+          'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/gbtb16/kiwi/issues/new',
+          error: e,
+        );
       } else {
         throw KiwiGeneratorError(
-            'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/gbtb16/kiwi/issues/new');
+          'Something went wrong with the KiwiGenerator. Please create a new ticket with a copy of your error to https://github.com/gbtb16/kiwi/issues/new',
+        );
       }
     }
   }
 
   Class _generateInjector(
-      ClassElement injector, LibraryReader library, BuildStep? buildStep) {
-    return Class((cb) => cb
-      ..name = '_\$${injector.name}'
-      ..extend = refer(injector.name)
-      ..methods.addAll(_generateInjectorMethods(injector)));
+    ClassElement injector,
+    LibraryReader library,
+    BuildStep? buildStep,
+  ) {
+    return Class(
+      (cb) => cb
+        ..name = '_\$${injector.name}'
+        ..extend = refer(injector.name!)
+        ..methods.addAll(_generateInjectorMethods(injector)),
+    );
   }
 
   List<Method> _generateInjectorMethods(ClassElement injector) {
@@ -73,43 +101,49 @@ class KiwiInjectorGenerator extends Generator {
   }
 
   Method _generateInjectorMethod(MethodElement method) {
-    if (method.parameters.length > 1) {
+    if (method.formalParameters.length > 1) {
       throw KiwiGeneratorError(
-          'Only 1 parameter is supported `KiwiContainer scopedContainer`, ${method.name} contains ${method.parameters.length} param(s)');
+        'Only 1 parameter is supported `KiwiContainer scopedContainer`, ${method.name} contains ${method.formalParameters.length} param(s)',
+      );
     }
-    final scopedContainerParam = method.parameters.singleOrNullWhere(
+    final scopedContainerParam = method.formalParameters.singleOrNullWhere(
       (element) =>
           element.name == 'scopedContainer' &&
-          element.type.getDisplayString(withNullability: true) ==
-              'KiwiContainer',
+          element.type.getDisplayString() == 'KiwiContainer',
     );
 
     return Method.returnsVoid((mb) {
       var scopedContainer = '';
       if (scopedContainerParam != null) {
+        final String scopedContainerParamName = scopedContainerParam.name ?? '';
         if (scopedContainerParam.isOptional) {
           mb.optionalParameters = ListBuilder<Parameter>([
-            Parameter((builder) => builder
-              ..name = scopedContainerParam.name
-              ..named = scopedContainerParam.isNamed
-              ..required = scopedContainerParam.isRequiredNamed
-              ..defaultTo = Code('null')
-              ..type = Reference('KiwiContainer?'))
+            Parameter(
+              (builder) => builder
+                ..name = scopedContainerParamName
+                ..named = scopedContainerParam.isNamed
+                ..required = scopedContainerParam.isRequiredNamed
+                ..defaultTo = Code('null')
+                ..type = Reference('KiwiContainer?'),
+            ),
           ]);
         } else {
           mb.requiredParameters = ListBuilder<Parameter>([
-            Parameter((builder) => builder
-              ..name = scopedContainerParam.name
-              ..named = scopedContainerParam.isNamed
-              ..required = scopedContainerParam.isRequiredNamed
-              ..defaultTo = Code('null')
-              ..type = Reference('KiwiContainer?'))
+            Parameter(
+              (builder) => builder
+                ..name = scopedContainerParamName
+                ..named = scopedContainerParam.isNamed
+                ..required = scopedContainerParam.isRequiredNamed
+                ..defaultTo = Code('null')
+                ..type = Reference('KiwiContainer?'),
+            ),
           ]);
         }
-        scopedContainer = '${scopedContainerParam.name} ?? ';
-      } else if (method.parameters.isNotEmpty) {
+        scopedContainer = '$scopedContainerParamName ?? ';
+      } else if (method.formalParameters.isNotEmpty) {
         throw KiwiGeneratorError(
-            'Only 1 parameter is supported `KiwiContainer scopedContainer`, ${method.name} contains ${method.parameters.length} param(s) and `KiwiContainer scopedContainer` is not included');
+          'Only 1 parameter is supported `KiwiContainer scopedContainer`, ${method.name} contains ${method.formalParameters.length} param(s) and `KiwiContainer scopedContainer` is not included',
+        );
       }
       final registers = _generateRegisters(method);
       mb
@@ -119,10 +153,15 @@ class KiwiInjectorGenerator extends Generator {
         mb..body = Block();
       } else {
         mb
-          ..body = Block((bb) => bb
-            ..statements.add(Code(
-                'final KiwiContainer container = ${scopedContainer}KiwiContainer();'))
-            ..addExpression(registers));
+          ..body = Block(
+            (bb) => bb
+              ..statements.add(
+                Code(
+                  'final KiwiContainer container = ${scopedContainer}KiwiContainer();',
+                ),
+              )
+              ..addExpression(registers),
+          );
       }
     });
   }
@@ -141,43 +180,49 @@ class KiwiInjectorGenerator extends Generator {
   }
 
   Expression _generateRegister(
-      Expression registerExpression, AnnotatedElement annotatedMethod) {
+    Expression registerExpression,
+    AnnotatedElement annotatedMethod,
+  ) {
     final ConstantReader annotation = annotatedMethod.annotation;
     final DartObject registerObject = annotation.objectValue;
 
     final String? name = registerObject.getField('name')?.toStringValue();
     final DartType? type = registerObject.getField('type')?.toTypeValue();
     final DartType? concrete = registerObject.getField('from')?.toTypeValue();
-    final String? constructorName =
-        registerObject.getField('constructorName')?.toStringValue();
+    final String? constructorName = registerObject
+        .getField('constructorName')
+        ?.toStringValue();
     final DartType? concreteType = concrete ?? type;
 
     // TODO: Implement null type check
     if (concreteType == null) {
       throw KiwiGeneratorError(
-          'null can not be registered because there is no type for null');
+        'null can not be registered because there is no type for null',
+      );
     }
 
-    final String className =
-        concreteType.getDisplayString(withNullability: false);
-    final String typeParameters = concrete == null
+    final String className = _typeName(concreteType);
+    final String typeParameters = concrete == null || type == null
         ? ''
-        : '<${type?.getDisplayString(withNullability: false)}>';
+        : '<${_typeName(type)}>';
 
     final String nameArgument = name == null ? '' : ", name: '$name'";
-    final String constructorNameArgument =
-        constructorName == null ? '' : '.$constructorName';
+    final String constructorNameArgument = constructorName == null
+        ? ''
+        : '.$constructorName';
 
-    final ClassElement? clazz =
-        concreteType.element?.library?.getClass(className);
+    final ClassElement? clazz = concreteType.element?.library?.getClass(
+      className,
+    );
     if (clazz == null) {
       throw KiwiGeneratorError('$className not found');
     }
 
     final bool oneTime =
         registerObject.getField('oneTime')?.toBoolValue() ?? false;
-    final Map<DartType?, String?>? resolvers =
-        _computeResolvers(registerObject.getField('resolvers')?.toMapValue());
+    final Map<DartType?, String?>? resolvers = _computeResolvers(
+      registerObject.getField('resolvers')?.toMapValue(),
+    );
 
     final String methodSuffix = oneTime ? 'Singleton' : 'Factory';
 
@@ -187,7 +232,8 @@ class KiwiInjectorGenerator extends Generator {
 
     if (constructor == null) {
       throw KiwiGeneratorError(
-          'the constructor ${clazz.name}.$constructorName does not exist');
+        'the constructor ${clazz.name}.$constructorName does not exist',
+      );
     }
 
     final String factoryParameters = _generateRegisterArguments(
@@ -196,41 +242,50 @@ class KiwiInjectorGenerator extends Generator {
     ).join(', ');
 
     return registerExpression.cascade(
-        'register$methodSuffix$typeParameters((c) => $className$constructorNameArgument($factoryParameters)$nameArgument)');
+      'register$methodSuffix$typeParameters((c) => $className$constructorNameArgument($factoryParameters)$nameArgument)',
+    );
   }
 
   List<String> _generateRegisterArguments(
     ConstructorElement constructor,
     Map<DartType?, String?>? resolvers,
   ) {
-    return constructor.parameters
+    return constructor.formalParameters
         .map((p) => _generateRegisterArgument(p, resolvers))
         .toList();
   }
 
   String _generateRegisterArgument(
-    ParameterElement parameter,
+    FormalParameterElement parameter,
     Map<DartType?, String?>? resolvers,
   ) {
     final List<DartType> dartTypes = resolvers == null
         ? []
         : resolvers.keys
-            .where((e) =>
-                e?.getDisplayString(withNullability: false) ==
-                parameter.type.getDisplayString(withNullability: false))
-            .where((e) => e != null)
-            .map((e) => e!)
-            .toList();
+              .where(
+                (e) => e != null && _typeName(e) == _typeName(parameter.type),
+              )
+              .where((e) => e != null)
+              .map((e) => e!)
+              .toList();
     final String nameArgument = dartTypes.isEmpty || resolvers == null
         ? ''
         : "'${resolvers[dartTypes.first]}'";
-    return '${parameter.isNamed ? parameter.name + ': ' : ''}c.resolve<${parameter.type.getDisplayString(withNullability: false)}>($nameArgument)';
+    final String namedPrefix = parameter.isNamed
+        ? '${parameter.name ?? ''}: '
+        : '';
+
+    return '${namedPrefix}c.resolve<${_typeName(parameter.type)}>($nameArgument)';
   }
 
   Map<DartType?, String?>? _computeResolvers(
     Map<DartObject?, DartObject?>? resolvers,
   ) {
-    return resolvers?.map((key, value) => MapEntry<DartType?, String?>(
-        key?.toTypeValue(), value?.toStringValue()));
+    return resolvers?.map(
+      (key, value) => MapEntry<DartType?, String?>(
+        key?.toTypeValue(),
+        value?.toStringValue(),
+      ),
+    );
   }
 }
