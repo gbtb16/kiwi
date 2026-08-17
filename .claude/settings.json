@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-release-consistency.sh\"",
+            "timeout": 10,
+            "statusMessage": "Checking release consistency"
+          }
+        ]
+      }
+    ]
+  }
+}

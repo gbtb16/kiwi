@@ -13,3 +13,7 @@ pubspec.lock
 doc/api/
 .idea/
 .vscode/
+
+# Claude Code creates worktrees here; the tracked config next to them stays in.
+.claude/worktrees/
+.claude/settings.local.json
